@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:text="결과 그래프"
+        android:textSize="@dimen/textSize4"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/spiral_graph"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:layout_marginEnd="@dimen/patientListMargin"
+        android:layout_marginStart="@dimen/patientListMargin"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        android:background="@color/design_default_color_primary"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:text="이전 결과 목록"
+        android:textSize="@dimen/textSize4"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spiral_graph" />
+
+    <Button
+        android:id="@+id/rectangle_list"
+        android:layout_width="@dimen/T30"
+        android:layout_height="@dimen/T30"
+        android:layout_marginEnd="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:background="@drawable/down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spiral_graph" />
+
+    <Button
+        android:id="@+id/list"
+        android:layout_width="@dimen/T30"
+        android:layout_height="@dimen/T30"
+        android:layout_marginEnd="@dimen/patientListMargin2"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:background="@drawable/down"
+        app:layout_constraintEnd_toStartOf="@+id/rectangle_list"
+        app:layout_constraintTop_toBottomOf="@+id/spiral_graph" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginEnd="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        android:background="#9E9E9E"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+    <FrameLayout
+        android:id="@+id/personal_spiral_taskList"
+        android:layout_width="727dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="645dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

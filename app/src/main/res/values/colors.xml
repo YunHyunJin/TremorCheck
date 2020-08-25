@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="WhiteGray">#CCCCCC</color>
+    <color name="Background">#EDEFF3</color>
+    <color name="Gray">#868e96</color>
+
+    <color name="Primary">#004e66</color>
+    <color name="Secondary">#fcbe32</color>
+    <color name="Third">#ff5f2e</color>
+    <color name="Fourth">#FCFCFC</color>
+    <color name="SemiBoldColor">#70A3F0</color>
+
+    <color name="list_item_selected_state">#F4F6F6</color>
+    <color name="list_item_normal_state">#FFFFFF</color>
+    <color name="d">#D1D1D1</color>
+    <color name="main">#37BFA7</color>
+    <color name="crts">#8FE1A1</color>
+    <color name="updrs">#0F5549</color>
+    <color name="survey_header">#1F6A5D</color>
+    <color name="red">#EB5757</color>
+</resources>

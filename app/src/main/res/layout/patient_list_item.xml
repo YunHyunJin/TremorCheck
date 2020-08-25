@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_listitem"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/patientListReH"
+    android:layout_marginBottom="@dimen/patientListMargin4"
+    android:clickable="true"
+    android:focusable="true"
+
+    android:background="@drawable/white_rounded"
+    android:paddingLeft="@dimen/patientListHeaderP">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="0.4"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintRight_toLeftOf="@id/clinicIDItem"
+        android:layout_gravity="right|center_vertical"
+        />
+
+
+        <TextView
+            android:id="@+id/clinicIDItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/checkBox"
+            app:layout_constraintRight_toLeftOf="@id/patientNameItem"
+            app:layout_constraintHorizontal_weight="1.2"
+            android:textAlignment="center"
+            android:textColor="#545454"
+            android:textSize="@dimen/textSize2" />
+
+        <TextView
+            android:id="@+id/patientNameItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/clinicIDItem"
+            app:layout_constraintRight_toLeftOf="@id/linear"
+            app:layout_constraintHorizontal_weight="1"
+            android:textColor="#545454"
+            android:textSize="@dimen/textSize2"  />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_weight="1.6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/patientNameItem"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dateFirstItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="TextView"
+            android:layout_weight="1"
+            android:textColor="#545454"
+            android:textSize="@dimen/textSize2"  />
+
+        <TextView
+            android:id="@+id/date_divide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center_horizontal"
+            android:text=" - "
+            android:textSize="@dimen/textSize2" />
+
+
+        <TextView
+            android:id="@+id/dateFinalItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="TextView"
+            android:layout_weight="1"
+            android:textColor="#545454"
+            android:textSize="@dimen/textSize2"  />
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

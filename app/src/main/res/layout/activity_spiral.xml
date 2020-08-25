@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id = "@+id/main_container">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="@dimen/H50"
+        android:layout_height="@dimen/H50"
+        android:layout_marginBottom="@dimen/imageWeight"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:background="@drawable/green_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/writingcanvasLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/S80"
+        android:layout_marginTop="@dimen/patientListMargin"
+        android:layout_marginEnd="@dimen/S70"
+        android:layout_marginBottom="@dimen/patientListMargin"
+        android:background="@drawable/black_rectangle"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/writingfinish"
+        android:layout_width="@dimen/W150"
+        android:layout_height="@dimen/H50"
+        android:layout_marginStart="@dimen/W690"
+        android:layout_marginTop="@dimen/personalBack"
+        android:text="다음"
+        android:rotation="270"
+        android:textColor="@color/list_item_normal_state"
+        android:background="@drawable/green_rounded"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/writingagain"
+        android:layout_width="@dimen/H50"
+        android:layout_height="@dimen/H50"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:background="@drawable/refresh"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
