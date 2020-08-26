@@ -1,8 +1,10 @@
 package com.bcilab.tremorapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.internal.BottomNavigationPresenter;
@@ -45,6 +47,7 @@ public class PatientListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
 
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
         bottomNavigationView.setVisibility(View.GONE);
         Fragment fragment = new PatientListFragment();
@@ -52,8 +55,46 @@ public class PatientListActivity extends AppCompatActivity {
         transaction.replace(R.id.patientList, fragment);
 
         transaction.commit();
+        checkVerify();
+        folderCreate();
 
     }
+
+    public void checkVerify() {
+        if (
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                ) {
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // ...
+            }
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        }
+
+    }
+
+    public void folderCreate(){
+
+        File path = Environment.getExternalStoragePublicDirectory(
+                "/TremorApp");
+
+        if (!path.mkdirs()) {
+
+            Log.e("FILE", "Directory not created");
+
+        }else{
+
+            Toast.makeText(this, "폴더 저장", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+
 }
+
 
 

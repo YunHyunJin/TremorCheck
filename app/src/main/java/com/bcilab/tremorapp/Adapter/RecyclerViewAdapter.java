@@ -18,10 +18,10 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private Activity activity;
-    public ArrayList<PatientItem> patientList = new ArrayList<>();
-    public ArrayList<PatientItem> selected_patientList = new ArrayList<>();
-    Context mContext;
-    boolean checkboxIsVisible = true ;
+    private ArrayList<PatientItem> patientList = new ArrayList<>();
+    private ArrayList<PatientItem> selected_patientList = new ArrayList<>();
+    private Context mContext;
+    private boolean checkboxIsVisible = false ;
 
     public RecyclerViewAdapter(Context context, ArrayList<PatientItem> patientList, ArrayList<PatientItem> selected_patientList) {
         this.mContext = context;
@@ -83,7 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     //어댑터 정비
-    public void refreshAdapter() {
+    public void refreshAdapter(ArrayList<PatientItem> patientList, ArrayList<PatientItem> selected_patientList) {
         this.selected_patientList = selected_patientList;
         this.patientList = patientList;
         this.notifyDataSetChanged();

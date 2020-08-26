@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.bcilab.tremorapp.Fragment.PatientListFragment;
 import com.bcilab.tremorapp.Fragment.SpiralFragment;
@@ -18,7 +19,7 @@ public class PersonalPatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_patient);
-        String clinicID, patientName ;
+        String clinicID, patientName, dateFirst, dateFinal ;
 
         Intent intent = getIntent() ;
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
@@ -27,11 +28,10 @@ public class PersonalPatientActivity extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("Spiral"));
         tabLayout.addTab(tabLayout.newTab().setText("Line"));
-
+        ((TextView) findViewById(R.id.patient)).setText(clinicID+" "+patientName) ;
         Fragment fragment = new SpiralFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.task, fragment);
-        transaction.commit();
+        transaction.replace(R.id.task, fragment);transaction.commit();
 
 
 

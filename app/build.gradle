@@ -51,5 +51,6 @@ dependencies {
     implementation files('libs/dsp-collection.jar')
     implementation 'de.dfki.mary:voice-cmu-slt-hsmm:5.2'
     implementation 'com.github.haifengl:smile-core:1.5.3'
+    implementation 'com.opencsv:opencsv:5.2'
 }
 
