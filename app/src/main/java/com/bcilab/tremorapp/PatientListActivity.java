@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bcilab.tremorapp.Adapter.RecyclerViewAdapter;
@@ -43,23 +44,45 @@ import java.util.Map;
 public class PatientListActivity extends AppCompatActivity {
 
     private long lastTimeBackPressed;
-
+    private BottomNavigationView bottomNavigationView ;
+    private PatientListFragment patientListFragment ;
+    private TextView selectNum ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
         bottomNavigationView.setVisibility(View.GONE);
-
+        patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
+        selectNum = (TextView) findViewById(R.id.patient_number) ;
         Fragment fragment = new PatientListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.patientList, fragment);
         transaction.commit();
         checkVerify();
         folderCreate();
+
+        ((Button) findViewById(R.id.button_cancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (patientListFragment.getdeleteMode() == true) {
+                    patientListFragment.delete_exit();
+                }
+            }
+        });
     }
 
+    public void visibleBottom(int visible){
+        Log.v("PatientList", "BottomVisible" +visible) ;
+        bottomNavigationView.setVisibility(visible);
+    }
+    public void selectNum(int size){
+        if (size > 0)
+            selectNum.setText("총 " + size + " 명의 환자 선택");
+        else
+            selectNum.setText("총 0 명의 환자 선택");
+    }
     public void checkVerify() {
         if (
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -79,8 +102,9 @@ public class PatientListActivity extends AppCompatActivity {
 
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp");
-
-        if (!path.mkdirs()) {
+        File deleteFolder = Environment.getExternalStoragePublicDirectory(
+                "/TremorApp/RemovePatient");
+        if (!path.mkdirs()&&!deleteFolder.mkdirs()) {
             Log.e("FILE", "Directory not created");
         }else{
             Toast.makeText(this, "폴더 저장", Toast.LENGTH_SHORT).show();

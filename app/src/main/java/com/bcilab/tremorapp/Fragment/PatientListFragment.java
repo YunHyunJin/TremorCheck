@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.bcilab.tremorapp.Adapter.ItemClickSupport;
 import com.bcilab.tremorapp.Adapter.RecyclerViewAdapter;
 import com.bcilab.tremorapp.Data.PatientItem;
+import com.bcilab.tremorapp.PatientListActivity;
 import com.bcilab.tremorapp.PersonalPatientActivity;
 import com.bcilab.tremorapp.R;
 
@@ -48,6 +49,9 @@ public class PatientListFragment extends Fragment {
     private boolean isMultiSelect = false;
     private boolean deleteMode = false;
     private View view ;
+    private TextView patientTotal ;
+    private TextView patientNum ;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +69,7 @@ public class PatientListFragment extends Fragment {
         RelativeLayout patientListL = (RelativeLayout)view.findViewById(R.id.patientListL);
         Button addPatient = (Button)view.findViewById(R.id.patientAdd);
         all_checkBox = (CheckBox) view.findViewById(R.id.all_checkBox);
-
-        ((TextView) view.findViewById(R.id.item_count)).setText(String.valueOf("Total "+PatientLoad()));
+        patientTotal = (TextView) view.findViewById(R.id.item_count) ;
 
         all_checkBox.setVisibility(View.GONE);
 
@@ -134,23 +137,30 @@ public class PatientListFragment extends Fragment {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
                 if (!isMultiSelect) {
-                    all_checkBox.setVisibility(View.VISIBLE);
-                    selected_patientList = new ArrayList<PatientItem>();
-                    isMultiSelect = true;
-                    //toolbar.setVisibility(View.VISIBLE);
-                    recyclerViewAdapter.visible();
-                    deleteMode = true;
+                    delete_exit();
                 }
                 multi_select(position);
                 return true;
             }
         });
 
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        patientTotal.setText(String.valueOf("Total "+PatientLoad()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();  // data set changed
-        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     public void addPatient(){
@@ -206,6 +216,10 @@ public class PatientListFragment extends Fragment {
                             recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
                             recyclerView.setAdapter(recyclerViewAdapter);
 
+                            String total = patientTotal.getText().toString();
+                            int totalNum = Integer.parseInt(total.substring(6, total.length()))+1 ;
+                            patientTotal.setText("Total "+String.valueOf(totalNum)) ;
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -234,6 +248,7 @@ public class PatientListFragment extends Fragment {
         return deleteMode;
     }
     public int PatientLoad() {
+        patientList = new ArrayList<PatientItem>() ;
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp");
 
@@ -249,6 +264,8 @@ public class PatientListFragment extends Fragment {
                 while (str!=null) {
                     str = buffer.readLine();
                     String[] patientStr= str.split(",");
+                    patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
+                    patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
                     patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
                 }
                 buffer.close();
@@ -274,15 +291,7 @@ public class PatientListFragment extends Fragment {
                 selected_patientList.add(patientList.get(position));
                 patientList.get(position).setDeleteBox(true);
             }
-
-            if (selected_patientList.size() > 0){
-
-            }
-                //patientNum.setText("총 " + selected_patientList.size() + " 명의 환자 선택");
-            else{
-
-            }
-                //patientNum.setText("총 " + 0 + " 명의 환자 선택");
+            ((PatientListActivity)getActivity()).selectNum(selected_patientList.size());
             recyclerViewAdapter.refreshAdapter(patientList, selected_patientList);
 
         }
@@ -293,7 +302,7 @@ public class PatientListFragment extends Fragment {
             deleteMode = false;
             isMultiSelect = false;
             recyclerViewAdapter.novisible();
-            //toolbar.setVisibility(View.GONE);
+            ((PatientListActivity)getActivity()).visibleBottom(View.GONE);
             all_checkBox.setVisibility(View.GONE);
             for (int i = 0; i < patientList.size(); i++) {
                 patientList.get(i).setDeleteBox(false);
@@ -307,9 +316,13 @@ public class PatientListFragment extends Fragment {
             all_checkBox.setVisibility(View.VISIBLE);
             selected_patientList = new ArrayList<PatientItem>();
             isMultiSelect = true;
-            //toolbar.setVisibility(View.VISIBLE);
+            ((PatientListActivity)getActivity()).visibleBottom(View.VISIBLE);
             recyclerViewAdapter.visible();
             deleteMode = true;
         }
+    }
+
+    public void removeList(String clinicID) {
+
     }
 }
