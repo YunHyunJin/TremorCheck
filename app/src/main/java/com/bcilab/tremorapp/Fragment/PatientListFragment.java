@@ -1,6 +1,7 @@
 package com.bcilab.tremorapp.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bcilab.tremorapp.Adapter.ItemClickSupport;
@@ -43,6 +47,7 @@ public class PatientListFragment extends Fragment {
     private CheckBox all_checkBox;
     private boolean isMultiSelect = false;
     private boolean deleteMode = false;
+    private View view ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,58 +56,62 @@ public class PatientListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patient_list, container, false);
+        view = inflater.inflate(R.layout.fragment_patient_list, container, false);
 
-        final InputMethodManager[] imm = new InputMethodManager[1];
+        //int patineLength ;
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         recyclerView = view.findViewById(R.id.patientList);
-        final EditText searchPatient = (EditText) view.findViewById(R.id.searchPatient);
+        EditText searchPatient = (EditText) view.findViewById(R.id.searchPatient);
         RelativeLayout patientListL = (RelativeLayout)view.findViewById(R.id.patientListL);
         Button addPatient = (Button)view.findViewById(R.id.patientAdd);
         all_checkBox = (CheckBox) view.findViewById(R.id.all_checkBox);
-        PatientLoad() ;
-        all_checkBox.setVisibility(View.GONE);
 
+        ((TextView) view.findViewById(R.id.item_count)).setText(String.valueOf("Total "+PatientLoad()));
+
+        all_checkBox.setVisibility(View.GONE);
 
         searchPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imm[0].showSoftInput(searchPatient, 0);
+                imm.showSoftInput(searchPatient, 0);
+            }
+        });
+        patientListL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(searchPatient.getWindowToken(), 0);
+            }
+        });
+        searchPatient.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                query = query.toString().toLowerCase();
+                final ArrayList<PatientItem> filteredList = new ArrayList<>();
+                for (int i = 0; i < patientList.size(); i++) {
+                    final String text = patientList.get(i).getClinicID();
+                    final String text2 = patientList.get(i).getPatientName();
+                    if (text.contains(query) || text2.contains(query)) {
+                        filteredList.add(patientList.get(i));
+                    }
+                }
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), filteredList, selected_patientList);
+                recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter.notifyDataSetChanged();  // data set changed
             }
         });
 
-        addPatient.setOnClickListener(new View.OnClickListener() {
+        ((Button)view.findViewById(R.id.patientAdd)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addPatient();
             }
         });
-
-//        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {//blog
-//                if (isMultiSelect) multi_select(position);
-//                else {
-//                    Intent intent = new Intent(getActivity(), PersonalPatientActivity.class);
-//                    intent.putExtra("clinicID", patientList.get(position).getClinicID());//수정
-//                    intent.putExtra("patientName", patientList.get(position).getPatientName());
-//                    intent.putExtra("task", "UPDRS");
-//                    startActivity(intent);
-//                }
-//            }
-//
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                if (!isMultiSelect) {
-//                    all_checkBox.setVisibility(View.VISIBLE);
-//                    selected_patientList = new ArrayList<PatientItem>();
-//                    isMultiSelect = true;
-//                    //toolbar.setVisibility(View.VISIBLE);
-//                    recyclerViewAdapter.visible();
-//                    deleteMode = true;
-//                }
-//                multi_select(position);
-//            }
-//        }));
 
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
 
@@ -218,21 +227,19 @@ public class PatientListFragment extends Fragment {
         });
 
         final AlertDialog dialog = builder.create();
-
-
         dialog.show();
-
     }
 
-    public void PatientLoad() {
+    public boolean getdeleteMode(){
+        return deleteMode;
+    }
+    public int PatientLoad() {
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp");
 
         File directory = new File(String.valueOf(path)) ;
         File[] foder = directory.listFiles() ;
-
         for (int i=0; i< foder.length; i++) {
-
             try {
                 String patientPath = String.valueOf(path)+"/"+foder[i].getName() ;
                 File patientCSV = new File(patientPath, "patient.csv");
@@ -249,7 +256,7 @@ public class PatientListFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
+        return foder.length ;
     }
 
     private String DateAdd(String date) {
@@ -281,7 +288,7 @@ public class PatientListFragment extends Fragment {
         }
     }
 
-    private void delete_exit() {
+    public void delete_exit() {
         if(isMultiSelect==true){
             deleteMode = false;
             isMultiSelect = false;
@@ -305,6 +312,4 @@ public class PatientListFragment extends Fragment {
             deleteMode = true;
         }
     }
-
-
 }

@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -41,23 +42,22 @@ import java.util.Map;
 
 public class PatientListActivity extends AppCompatActivity {
 
-    InputMethodManager imm;
+    private long lastTimeBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
 
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
         bottomNavigationView.setVisibility(View.GONE);
+
         Fragment fragment = new PatientListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.patientList, fragment);
-
         transaction.commit();
         checkVerify();
         folderCreate();
-
     }
 
     public void checkVerify() {
@@ -73,7 +73,6 @@ public class PatientListActivity extends AppCompatActivity {
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     1);
         }
-
     }
 
     public void folderCreate(){
@@ -82,18 +81,27 @@ public class PatientListActivity extends AppCompatActivity {
                 "/TremorApp");
 
         if (!path.mkdirs()) {
-
             Log.e("FILE", "Directory not created");
-
         }else{
-
             Toast.makeText(this, "폴더 저장", Toast.LENGTH_SHORT).show();
-
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        PatientListFragment patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
+        if (System.currentTimeMillis() - lastTimeBackPressed < 2000) {
+            ActivityCompat.finishAffinity(this);
+            return;
+        }
+        if (patientListFragment.getdeleteMode() == true) {
+            patientListFragment.delete_exit();
+        }
+        else {
+            lastTimeBackPressed = System.currentTimeMillis();
+            Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
 
