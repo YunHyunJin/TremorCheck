@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.bcilab.tremorapp.PersonalPatientActivity;
 import com.bcilab.tremorapp.R;
@@ -17,18 +19,26 @@ import com.bcilab.tremorapp.TaskSelectActivity;
 
 public class SpiralFragment extends Fragment {
 
+    private String clinicID ;
+    private String patientName ;
+    private String task ;
+    private int taskNum ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view ;
         if (getArguments() != null) {
-//            Clinic_ID = getArguments().getString("Clinic_ID");
-//            PatientName = getArguments().getString("PatientName");
-//            path = getArguments().getString("path");
+            clinicID = getArguments().getString("clinicID");
+            patientName = getArguments().getString("patientName");
+            task = getArguments().getString("task");
+            taskNum = getArguments().getInt("taskNum",0);
         }
 
         view = inflater.inflate(R.layout.fragment_spiral, container, false);
-
+        //Log.v("SpiralFragment", "TaskName"+task) ;
+        ((TextView)view.findViewById(R.id.client_name)).setText(patientName);
+        ((TextView)view.findViewById(R.id.task_count)).setText("총 "+taskNum+"번");
+        ((TextView)view.findViewById(R.id.task_name)).setText(task.equals("Spiral")?"나선 그리기 검사" : "선 긋기 검사");
         Fragment fragment = new SpiralRightFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.handside, fragment);

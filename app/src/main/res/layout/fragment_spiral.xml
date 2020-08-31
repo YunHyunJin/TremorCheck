@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/client_spiral_count"
+                android:id="@+id/task_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/patientListMargin"
@@ -62,11 +62,11 @@
                 android:layout_marginTop="@dimen/T25"
                 android:text="의"
                 android:textSize="@dimen/textSize4"
-                app:layout_constraintStart_toEndOf="@+id/client_spiral_count"
+                app:layout_constraintStart_toEndOf="@+id/task_count"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/task_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/T25"
@@ -85,7 +85,7 @@
                 android:text="를 진행하였습니다. "
                 android:textSize="@dimen/textSize4"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView2" />
+                app:layout_constraintStart_toEndOf="@+id/task_name" />
 
             <Button
                 android:id="@+id/spiral_add"

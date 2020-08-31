@@ -125,9 +125,7 @@ public class PatientListFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), PersonalPatientActivity.class);
                     intent.putExtra("clinicID", patientList.get(position).getClinicID());//수정
                     intent.putExtra("patientName", patientList.get(position).getPatientName());
-                    intent.putExtra("task", "UPDRS");
-                    intent.putExtra("dateFirst",patientList.get(position).getDateFirst());
-                    intent.putExtra("dateFinal",patientList.get(position).getDateFinal());
+                    intent.putExtra("task", "Spiral");
                     startActivity(intent);
                 }
             }
@@ -264,8 +262,6 @@ public class PatientListFragment extends Fragment {
                 while (str!=null) {
                     str = buffer.readLine();
                     String[] patientStr= str.split(",");
-                    patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
-                    patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
                     patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
                 }
                 buffer.close();
