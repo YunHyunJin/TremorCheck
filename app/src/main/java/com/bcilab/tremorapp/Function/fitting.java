@@ -68,7 +68,7 @@ public class fitting {
 		/* ******************************** make csv file *************************************/
 
 		File mfolder = Environment.getExternalStorageDirectory();
-		String dataname = data_path.split("/")[5];
+		String dataname = data_path.split("/")[3];
 		String foldername = "";
 		/* ******************************** 데이터 저장 경로 만들기 *************************************/
 

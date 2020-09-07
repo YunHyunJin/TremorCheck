@@ -26,7 +26,8 @@
         <activity android:name=".PersonalPatientActivity" />
         <activity android:name=".TaskSelectActivity" />
         <activity android:name=".SpiralActivity" />
-        <activity android:name=".ResultActivity"></activity>
+        <activity android:name=".ResultActivity" />
+        <activity android:name=".AnalysisActivity"></activity>
     </application>
 
 </manifest>

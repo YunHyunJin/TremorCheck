@@ -49,6 +49,9 @@ public class SpiralFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TaskSelectActivity.class);
+                intent.putExtra("clinicID", clinicID);
+                intent.putExtra("patientName", patientName);
+                intent.putExtra("task", "Spiral") ;
                 startActivity(intent);
             }
         });

@@ -8,16 +8,28 @@ import android.widget.Button;
 
 public class TaskSelectActivity extends AppCompatActivity {
 
+    private String clinicID;
+    private String patientName ;
+    private String task ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_select);
+
+        Intent intent = getIntent() ;
+        clinicID = intent.getExtras().getString("clinicID");
+        patientName = intent.getExtras().getString("patientName");
 
         Button right_select = (Button) findViewById(R.id.right_select);
         right_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                intent.putExtra("clinicID", clinicID);
+                intent.putExtra("patientName", patientName);
+                intent.putExtra("task", "Spiral") ;
+                intent.putExtra("both","Right") ;
                 startActivity(intent) ;
             }
         });
