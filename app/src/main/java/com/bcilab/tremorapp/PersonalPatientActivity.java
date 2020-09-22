@@ -102,7 +102,6 @@ public class PersonalPatientActivity extends AppCompatActivity {
                                 dialogBuilder.setNegativeButton("아니오",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-
                                             }
                                         });
                                 dialogBuilder.create().show();
@@ -172,9 +171,13 @@ public class PersonalPatientActivity extends AppCompatActivity {
     }
 
     public void changeView(int position) {
+        Bundle bundle ;
+        spiralFragment = new SpiralFragment() ;
+        nonTaskFragment = new NonTaskFragment() ;
         switch (position){
             case 0 :
-                Bundle bundle = new Bundle() ;
+                bundle = new Bundle() ;
+                task = "Spiral";
 //                if(spiral==0) {
 //                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
 //                    fragmentTransaction.replace(R.id.task, nonTaskFragment);
@@ -191,7 +194,7 @@ public class PersonalPatientActivity extends AppCompatActivity {
 //                }
                 bundle.putString("patientName", patientName) ;
                 bundle.putString("clinicID", clinicID) ;
-                bundle.putString("task", "Spiral") ;
+                bundle.putString("task", task) ;
                 bundle.putInt("taskNum", spiral) ;
                 spiralFragment.setArguments(bundle);
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -199,7 +202,16 @@ public class PersonalPatientActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
                 break;
             case 1 :
-
+                bundle = new Bundle() ;
+                task="Line";
+                bundle.putString("patientName", patientName) ;
+                bundle.putString("clinicID", clinicID) ;
+                bundle.putString("task", task) ;
+                bundle.putInt("taskNum", line) ;
+                spiralFragment.setArguments(bundle);
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.task, spiralFragment);
+                fragmentTransaction.commit();
                 break ;
         }
     }

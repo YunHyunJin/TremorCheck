@@ -222,12 +222,9 @@ public class PatientListFragment extends Fragment {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
+                        Toast.makeText(getActivity(), "환자 추가", Toast.LENGTH_SHORT).show();
 
                     }
-
-
-                    Toast.makeText(getActivity(), "환자 추가", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -277,7 +274,7 @@ public class PatientListFragment extends Fragment {
             recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();  // data set changed
-            return foder.length ;
+            return foder.length-1 ;
         }
         else{
             return 0 ;

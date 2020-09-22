@@ -53,8 +53,9 @@ class SpiralActivity : AppCompatActivity() {
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
 
+        Log.v("SpiralActivity", "SpiralActivity"+task+both)
         filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
-
+        Log.v("SpiralActivity", "SSSSSS"+filename)
         val layout = writingcanvasLayout
         val view = DrawView(this)
         val baseLine = baseView(this)
@@ -98,7 +99,7 @@ class SpiralActivity : AppCompatActivity() {
                 v1.buildDrawingCache()
                 var captureView = v1.drawingCache
                 try {
-                    var fos = FileOutputStream("sdcard/Download/")
+                    var fos = FileOutputStream(path)
                     captureView.compress(Bitmap.CompressFormat.JPEG, 100, fos)
                     fos.close()
                     fos.flush()
@@ -107,7 +108,7 @@ class SpiralActivity : AppCompatActivity() {
                 }
                 val baos = ByteArrayOutputStream()
                 captureView.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                var uri = Uri.fromFile(File("sdcard/Download/"))
+                var uri = Uri.fromFile(path)
                 val data = baos.toByteArray()
                 /* ******************************** save image local *************************************/
                 try{
@@ -120,6 +121,7 @@ class SpiralActivity : AppCompatActivity() {
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
+                intent.putExtra("timestamp", filename)
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
                 intent.putExtra("task", task)
@@ -201,8 +203,26 @@ class SpiralActivity : AppCompatActivity() {
     @Throws(Exception::class)
     private fun onCap(bm: Bitmap) {
         try {
-            val imgFile = "save.jpg"
-            val imgPath = StringBuffer("sdcard/Download/")
+            val path = Environment.getExternalStoragePublicDirectory(
+                    "/TremorApp/$clinicID/$task$both")
+            var first = false
+            val file_name = clinicID + "_" + task + both + ".csv"
+            val foder = path.listFiles()
+            for (name in foder) {
+                if (name.getName() == file_name) {
+                    first = true
+                }
+            }
+            var imgFile = ""
+            if (first==false) {
+                imgFile = "/"+clinicID+"_"+task+both+"_1.jpg"
+            }
+            else{
+                val count = readCSV(path,clinicID+"_"+task+both+".csv")
+                imgFile = "/"+clinicID+"_"+task+both+"_"+count+".jpg"
+            }
+
+            val imgPath = StringBuffer(path.toString())
             val saveFile = File(imgPath.toString())
             if (!saveFile.isDirectory) {
                 saveFile.mkdirs()
@@ -239,5 +259,31 @@ class SpiralActivity : AppCompatActivity() {
             onSafeClick(it)
         }
         setOnClickListener(safeClickListener)
+    }
+
+    fun readCSV(path: File, file: String): Int {
+        var line_length = 0
+        var br: BufferedReader? = null
+        val spiralCSV = File(path, file)
+
+        try {
+            br = BufferedReader(FileReader(spiralCSV))
+            var line = ""
+            while (br.readLine() != null) {
+                line_length++
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                br?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+        return line_length
     }
 }

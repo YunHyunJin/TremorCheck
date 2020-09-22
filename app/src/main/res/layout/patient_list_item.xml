@@ -7,7 +7,6 @@
     android:layout_marginBottom="@dimen/patientListMargin4"
     android:clickable="true"
     android:focusable="true"
-
     android:background="@drawable/white_rounded"
     android:paddingLeft="@dimen/patientListHeaderP">
 

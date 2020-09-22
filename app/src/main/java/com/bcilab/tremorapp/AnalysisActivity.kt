@@ -45,6 +45,9 @@ class AnalysisActivity : AppCompatActivity() {
         intent1.putExtra("spiral_result", spiral_result)
         intent1.putExtra("clinicID", clinicID)
         intent1.putExtra("patientName", patientName)
+        intent1.putExtra("task", task)
+        intent1.putExtra("both", both)
+        intent1.putExtra("timestamp", intent.getStringExtra("timestamp"))
         startActivity(intent1)
         finish()
 

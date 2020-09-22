@@ -35,7 +35,7 @@ public class SpiralFragment extends Fragment {
         }
 
         view = inflater.inflate(R.layout.fragment_spiral, container, false);
-        //Log.v("SpiralFragment", "TaskName"+task) ;
+        Log.v("SpiralFragment", "TaskName"+task) ;
         ((TextView)view.findViewById(R.id.client_name)).setText(patientName);
         ((TextView)view.findViewById(R.id.task_count)).setText("총 "+taskNum+"번");
         ((TextView)view.findViewById(R.id.task_name)).setText(task.equals("Spiral")?"나선 그리기 검사" : "선 긋기 검사");
@@ -51,7 +51,7 @@ public class SpiralFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), TaskSelectActivity.class);
                 intent.putExtra("clinicID", clinicID);
                 intent.putExtra("patientName", patientName);
-                intent.putExtra("task", "Spiral") ;
+                intent.putExtra("task", task) ;
                 startActivity(intent);
             }
         });

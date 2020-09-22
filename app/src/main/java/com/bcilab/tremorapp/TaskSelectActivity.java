@@ -20,16 +20,36 @@ public class TaskSelectActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         clinicID = intent.getExtras().getString("clinicID");
         patientName = intent.getExtras().getString("patientName");
+        task = intent.getExtras().getString("task");
 
         Button right_select = (Button) findViewById(R.id.right_select);
         right_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                Intent intent ;
+                if(task.equals("Spiral"))
+                    intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                else intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
                 intent.putExtra("clinicID", clinicID);
                 intent.putExtra("patientName", patientName);
-                intent.putExtra("task", "Spiral") ;
+                intent.putExtra("task", task) ;
                 intent.putExtra("both","Right") ;
+                startActivity(intent) ;
+            }
+        });
+
+        Button left_select = (Button) findViewById(R.id.left_select);
+        left_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent ;
+                if(task.equals("Spiral"))
+                    intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                else intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                intent.putExtra("clinicID", clinicID);
+                intent.putExtra("patientName", patientName);
+                intent.putExtra("task", task) ;
+                intent.putExtra("both","Left") ;
                 startActivity(intent) ;
             }
         });
