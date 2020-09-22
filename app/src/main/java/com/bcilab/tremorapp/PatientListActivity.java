@@ -63,6 +63,14 @@ public class PatientListActivity extends AppCompatActivity {
         checkVerify();
         folderCreate();
 
+        String iconsStoragePath = Environment.getExternalStorageDirectory() + "/Abc/";
+        File sdIconStorageDir = new File(iconsStoragePath);
+
+
+        if(!sdIconStorageDir.exists()){
+            sdIconStorageDir.mkdirs();
+        }
+
         ((Button) findViewById(R.id.button_cancel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +112,7 @@ public class PatientListActivity extends AppCompatActivity {
                 "/TremorApp");
         File deleteFolder = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/RemovePatient");
+
         if (!path.mkdirs()&&!deleteFolder.mkdirs()) {
             Log.e("FILE", "Directory not created");
         }else{

@@ -28,9 +28,9 @@ public class fitting {
 
 	//직선 그리기 할 때, base line의 시작점과 끝점
 	public static int startX = 480;
-	public static int startY = 100;   //finalY -> 1748 ,startY -> 100
+	public static int startY = 100;   //finalY -> 1848 ,startY -> 100
 	public static double[] distance;
-	public static int finalY=1748;   //this.resources.displayMetrics.heightPixels
+	public static int finalY=1848;   //this.resources.displayMetrics.heightPixels
 	public static int count = 0;
 	static String Clinic_ID;
 

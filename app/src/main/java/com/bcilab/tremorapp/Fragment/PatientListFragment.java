@@ -62,9 +62,12 @@ public class PatientListFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_patient_list, container, false);
 
+
         //int patineLength ;
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         recyclerView = view.findViewById(R.id.patientList);
+
+        Log.v("PatientList", "PatientListTTTTonCreatView");
         EditText searchPatient = (EditText) view.findViewById(R.id.searchPatient);
         RelativeLayout patientListL = (RelativeLayout)view.findViewById(R.id.patientListL);
         Button addPatient = (Button)view.findViewById(R.id.patientAdd);
@@ -73,6 +76,7 @@ public class PatientListFragment extends Fragment {
 
         all_checkBox.setVisibility(View.GONE);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         searchPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,11 +152,10 @@ public class PatientListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         patientTotal.setText(String.valueOf("Total "+PatientLoad()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.notifyDataSetChanged();  // data set changed
+        Log.v("PatientList", "PatientListTTTTonStart");
+
     }
 
     @Override
@@ -183,9 +186,7 @@ public class PatientListFragment extends Fragment {
                             "/TremorApp/"+clinic_id);
                     Log.v("PatintList", "환자 id"+clinic_id);
                     if (!path.mkdirs()) {
-
                         Toast.makeText(getActivity(), "동일한 Clinic ID가 존재합니다.\nid나 이름을 변경하여 등록하세요.", Toast.LENGTH_SHORT).show();
-
                     }
                     else{
                         Log.v("PatintList", "환자 추가"+clinic_id);
@@ -252,24 +253,35 @@ public class PatientListFragment extends Fragment {
 
         File directory = new File(String.valueOf(path)) ;
         File[] foder = directory.listFiles() ;
-        for (int i=0; i< foder.length; i++) {
-            try {
-                String patientPath = String.valueOf(path)+"/"+foder[i].getName() ;
-                File patientCSV = new File(patientPath, "patient.csv");
+        if (foder!=null) {
+            for (int i=0; i< foder.length; i++) {
+                try {
+                    String patientPath = String.valueOf(path)+"/"+foder[i].getName() ;
+                    File patientCSV = new File(patientPath, "patient.csv");
 
-                BufferedReader buffer = new BufferedReader(new FileReader(patientCSV));
-                String str = buffer.readLine();
-                while (str!=null) {
-                    str = buffer.readLine();
-                    String[] patientStr= str.split(",");
-                    patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
+                    BufferedReader buffer = new BufferedReader(new FileReader(patientCSV));
+                    String str = buffer.readLine();
+                    while (str!=null) {
+                        str = buffer.readLine();
+                        String[] patientStr= str.split(",");
+                        patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
+                        Log.v("PatientList", "PatientListTTadd가 되는가");
+                    }
+                    buffer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                buffer.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+
             }
+
+            recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+            recyclerView.setAdapter(recyclerViewAdapter);
+            recyclerViewAdapter.notifyDataSetChanged();  // data set changed
+            return foder.length ;
         }
-        return foder.length ;
+        else{
+            return 0 ;
+        }
     }
 
     private String DateAdd(String date) {

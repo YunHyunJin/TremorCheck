@@ -62,6 +62,10 @@ class SpiralActivity : AppCompatActivity() {
         layout.addView(baseLine)
 
         image_path = "Sprial/Right/Image/1.jpg"
+        val startx = this.resources.displayMetrics.widthPixels / 2
+        val starty = this.resources.displayMetrics.heightPixels / 2
+
+        Log.v("SpiralActivity", "spiral 결과"+startx+"  "+starty)
 
         // 그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
@@ -123,7 +127,7 @@ class SpiralActivity : AppCompatActivity() {
                 intent.putExtra("data_path", data_path)
                 startActivity(intent)
                 Toast.makeText(this, "Wait...", Toast.LENGTH_LONG).show()
-                //loadingEnd()
+                loadingEnd()
                 finish()
 
                 }
@@ -171,6 +175,7 @@ class SpiralActivity : AppCompatActivity() {
         private val startX = this.resources.displayMetrics.widthPixels / 2
         private val startY = this.resources.displayMetrics.heightPixels / 2
 
+        //Log.v("SpiralActivity", "spiral 결과"+startX+"  "+startY)
         private val theta = FloatArray(720) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
         private val basePath = Path()
         private val basePaint = Paint()
