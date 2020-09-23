@@ -44,6 +44,7 @@ class SpiralActivity : AppCompatActivity() {
     private var patientName :String=""
     private var task :String = ""
     private var both : String = ""
+    private var resut_image_path : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +127,7 @@ class SpiralActivity : AppCompatActivity() {
                 intent.putExtra("patientName", patientName)
                 intent.putExtra("task", task)
                 intent.putExtra("both", both)
+                intent.putExtra("image_path", resut_image_path)
                 intent.putExtra("data_path", data_path)
                 startActivity(intent)
                 Toast.makeText(this, "Wait...", Toast.LENGTH_LONG).show()
@@ -172,13 +174,11 @@ class SpiralActivity : AppCompatActivity() {
             timer.cancel()
         }
     }
-
     inner class baseView(context: Context) : View(context) {
-        private val startX = this.resources.displayMetrics.widthPixels / 2
-        private val startY = this.resources.displayMetrics.heightPixels / 2
+        private val startX = (this.resources.displayMetrics.widthPixels / 2.1).toInt()
+        private val startY = (this.resources.displayMetrics.heightPixels / 2.0).toInt()
 
-        //Log.v("SpiralActivity", "spiral 결과"+startX+"  "+startY)
-        private val theta = FloatArray(720) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
+        private val theta = FloatArray(750) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
         private val basePath = Path()
         private val basePaint = Paint()
 
@@ -194,7 +194,7 @@ class SpiralActivity : AppCompatActivity() {
         override fun onDraw(canvas: Canvas) {
             basePath.moveTo(startX.toFloat(), startY.toFloat())
             for (t in theta)
-                basePath.lineTo((t * Math.cos(2.5 * t) * 50 + startX).toFloat(), (t * Math.sin(2.5 * t) * 50 + startY).toFloat())
+                basePath.lineTo((t * Math.cos(2.5 * t) * 60 + startX).toFloat(), (t * Math.sin(2.5 * t) * 60 + startY).toFloat())
 
             canvas.drawPath(basePath, basePaint)
         }
@@ -228,6 +228,7 @@ class SpiralActivity : AppCompatActivity() {
                 saveFile.mkdirs()
             }
             imgPath.append(imgFile)
+            resut_image_path = imgPath.toString()
             var out = FileOutputStream(imgPath.toString())
             bm.compress(Bitmap.CompressFormat.JPEG, 100, out)
             sendBroadcast(Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())))

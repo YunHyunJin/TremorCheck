@@ -25,9 +25,20 @@
         android:layout_marginEnd="@dimen/patientListMargin"
         android:layout_marginStart="@dimen/patientListMargin"
         android:layout_marginTop="@dimen/patientListMargin2"
-        android:background="@color/design_default_color_primary"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" >
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/measure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.design.widget.TabLayout>
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.jjoe64.graphview.GraphView>
+    </android.support.constraint.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView4"

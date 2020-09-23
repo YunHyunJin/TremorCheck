@@ -52,4 +52,9 @@ dependencies {
     implementation 'de.dfki.mary:voice-cmu-slt-hsmm:5.2'
     implementation 'com.github.haifengl:smile-core:1.5.3'
     implementation 'com.opencsv:opencsv:5.2'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    implementation 'com.jjoe64:graphview:4.2.2'
 }

@@ -48,6 +48,7 @@ class AnalysisActivity : AppCompatActivity() {
         intent1.putExtra("task", task)
         intent1.putExtra("both", both)
         intent1.putExtra("timestamp", intent.getStringExtra("timestamp"))
+        intent1.putExtra("image_path", intent.getStringExtra("image_path"))
         startActivity(intent1)
         finish()
 

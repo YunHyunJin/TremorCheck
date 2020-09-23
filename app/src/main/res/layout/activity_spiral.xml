@@ -20,9 +20,9 @@
         android:id="@+id/writingcanvasLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/S80"
+        android:layout_marginStart="65dp"
         android:layout_marginTop="@dimen/patientListMargin"
-        android:layout_marginEnd="@dimen/S70"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="@dimen/patientListMargin"
         android:background="@drawable/black_rectangle"
         android:orientation="vertical"
@@ -38,24 +38,27 @@
         android:id="@+id/writingfinish"
         android:layout_width="@dimen/W150"
         android:layout_height="@dimen/H50"
-        android:layout_marginStart="@dimen/W690"
+        android:layout_marginEnd="695dp"
         android:layout_marginTop="@dimen/personalBack"
         android:text="다음"
         android:rotation="270"
         android:textColor="@color/list_item_normal_state"
         android:background="@drawable/green_rounded"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/writingagain"
-        android:layout_width="@dimen/H50"
+        android:layout_width="@dimen/W150"
         android:layout_height="@dimen/H50"
-        android:layout_marginStart="@dimen/imageWeight"
-        android:layout_marginTop="@dimen/imageWeight"
-        android:background="@drawable/refresh"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="695dp"
+        android:background="@drawable/green_rounded"
+        android:rotation="270"
+        android:text="다시"
+        android:textColor="@color/list_item_normal_state"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/writingfinish" />
 
 
 </android.support.constraint.ConstraintLayout>

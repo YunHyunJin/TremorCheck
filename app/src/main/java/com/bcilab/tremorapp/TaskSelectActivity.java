@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.bcilab.tremorapp.Function.LineActivity;
+
 public class TaskSelectActivity extends AppCompatActivity {
 
     private String clinicID;
@@ -29,7 +31,7 @@ public class TaskSelectActivity extends AppCompatActivity {
                 Intent intent ;
                 if(task.equals("Spiral"))
                     intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
-                else intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                else intent = new Intent(getApplicationContext(), LineActivity.class) ;
                 intent.putExtra("clinicID", clinicID);
                 intent.putExtra("patientName", patientName);
                 intent.putExtra("task", task) ;
@@ -45,7 +47,7 @@ public class TaskSelectActivity extends AppCompatActivity {
                 Intent intent ;
                 if(task.equals("Spiral"))
                     intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
-                else intent = new Intent(getApplicationContext(), SpiralActivity.class) ;
+                else intent = new Intent(getApplicationContext(), LineActivity.class) ;
                 intent.putExtra("clinicID", clinicID);
                 intent.putExtra("patientName", patientName);
                 intent.putExtra("task", task) ;

@@ -146,11 +146,11 @@ public class PersonalPatientActivity extends AppCompatActivity {
         spiral = 0 ;
         line = 0 ;
         //File spiralDirectory =new File(String.valueOf(path)+"/SpiralLeft") ;
-        spiral+= new File(String.valueOf(path)+"/SpiralLeft").listFiles().length;
-        spiral+=new File(String.valueOf(path)+"/SpiralRight").listFiles().length;
+        spiral+= new File(String.valueOf(path)+"/SpiralLeft").listFiles().length==0 ? 0 :new File(String.valueOf(path)+"/SpiralLeft").listFiles().length-1 ;
+        spiral+=new File(String.valueOf(path)+"/SpiralRight").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/SpiralRight").listFiles().length-1 ;
 
-        line+=new File(String.valueOf(path)+"/LineLeft").listFiles().length;
-        line+=new File(String.valueOf(path)+"/LineRight").listFiles().length;
+        line+=new File(String.valueOf(path)+"/LineLeft").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/LineLeft").listFiles().length-1 ;
+        line+=new File(String.valueOf(path)+"/LineRight").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/LineRight").listFiles().length-1 ;
 
         String date = null ;
             try {
