@@ -73,6 +73,7 @@ public class LineTaskAnalyze {
 
     // *****************************BPF  *****************************
     public double[] myBPF(double[] data,boolean SpiralOrLine){
+        for(double a : data) Log.v("LineTask", "이거 맞냐"+a);
         float [] data_float=new float[data.length];
         float[] temp_float = new float[data.length];
         double[] temp_double = new double[data.length];

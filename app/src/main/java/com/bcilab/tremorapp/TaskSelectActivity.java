@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.bcilab.tremorapp.Function.LineActivity;
-
 public class TaskSelectActivity extends AppCompatActivity {
 
     private String clinicID;

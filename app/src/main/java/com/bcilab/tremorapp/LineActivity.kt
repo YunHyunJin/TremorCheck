@@ -25,13 +25,13 @@ import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SpiralActivity : AppCompatActivity() {
-    private var filename: String = ""
-    private lateinit var progressDialog : ProgressDialog
+class LineActivity : AppCompatActivity() {
+    private var isdraw : Boolean = false
     private var currentX: Float = 0.toFloat()
     private var currentY: Float = 0.toFloat()
-    private var isdraw : Boolean = false
+    private var filename: String = ""
     private var image_path : String = ""
+    private lateinit var progressDialog : ProgressDialog
     private val pathTrace: MutableList<PathTraceData> = mutableListOf()
     private val timer = object : CountDownTimer(Long.MAX_VALUE, 1000 / 60) {
         override fun onTick(millisUntilFinished: Long) {
@@ -49,32 +49,41 @@ class SpiralActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spiral)
+
         clinicID = intent.getStringExtra("clinicID")
         patientName = intent.getStringExtra("patientName")
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
 
-        Log.v("SpiralActivity", "SpiralActivity"+task+both)
-        Log.v("SpiralActivity", "SSSSSS"+filename)
-        val path = Environment.getExternalStoragePublicDirectory(
-                "/TremorApp/$clinicID/$task$both")
-        val count = readCSV(path,clinicID+"_"+task+both+".csv")
         val layout = writingcanvasLayout
         val view = DrawView(this)
         val baseLine = baseView(this)
         layout.addView(view)
         layout.addView(baseLine)
-
+        val path = Environment.getExternalStoragePublicDirectory(
+                "/TremorApp/$clinicID/$task$both")
+        val count = readCSV(path,clinicID+"_"+task+both+".csv")
         image_path = "$clinicID/$task/$both/$count.jpg"
         filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
-
-        // 그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
             timer.cancel()
             var prevData: PathTraceData? = null
+            val metaData = "$clinicID,$filename"
+            if (!path.exists()) path.mkdirs()
+            val file = File(path, "${clinicID}_$filename.csv")
+            try {
+                PrintWriter(file).use { out ->
+                    out.println(metaData)
+                    for (item in pathTrace)
+                        out.println(item.joinToString(","))
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
+                println(e.message)
+            }
             if(!isdraw)
             {
-                Toast.makeText(this, "직선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
             }
             else
             {
@@ -104,20 +113,6 @@ class SpiralActivity : AppCompatActivity() {
                 }finally {
                     captureView.recycle();
                 }
-                val metaData = "$clinicID,$filename"
-                //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
-                if (!path.exists()) path.mkdirs()
-                val file = File(path, "${clinicID}_$filename.csv")
-                try {
-                    PrintWriter(file).use { out ->
-                        out.println(metaData)
-                        for (item in pathTrace)
-                            out.println(item.joinToString(","))
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
-                    println(e.message)
-                }
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
@@ -129,11 +124,10 @@ class SpiralActivity : AppCompatActivity() {
                 intent.putExtra("image_path", resut_image_path)
                 intent.putExtra("data_path", data_path)
                 startActivity(intent)
-                Toast.makeText(this, "Wait...", Toast.LENGTH_LONG).show()
                 loadingEnd()
                 finish()
 
-                }
+            }
             /* ******************************** processing image file *************************************/
 
             if (pathTrace.size > 2) {
@@ -145,17 +139,26 @@ class SpiralActivity : AppCompatActivity() {
                         break
                 }
             }
+            if (pathTrace.size > 2) {
+                prevData = pathTrace[pathTrace.size - 1]
+                for (i in (pathTrace.size - 2) downTo 0) {
+                    if (prevData.isSamePosition(pathTrace[i]))
+                        pathTrace.removeAt(i)
+                    else
+                        break
+                }
+            }
 
         }
-
     }
     inner class DrawView(context: Context) : Drawable(context) {
         private var flag = false
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
+            isdraw = true
             currentX = event.x
             currentY = event.y
-            isdraw = true
+
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (!flag) {
@@ -173,17 +176,22 @@ class SpiralActivity : AppCompatActivity() {
             timer.cancel()
         }
     }
-    inner class baseView(context: Context) : View(context) {
-        private val startX = (this.resources.displayMetrics.widthPixels / 2.1).toInt()
-        private val startY = (this.resources.displayMetrics.heightPixels / 2.0).toInt()
 
-        private val theta = FloatArray(750) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
+    inner class baseView(context: Context) : View(context) {
+        private val startX = this.resources.displayMetrics.widthPixels / 5 * 2
+        private val startY = 100
+
+        private val finalX = this.resources.displayMetrics.widthPixels / 5 * 2
+        private val finalY = this.resources.displayMetrics.heightPixels - 100
+
+
+        //private val theta = FloatArray(720) { (it * (Math.PI / 180)).toFloat() }
         private val basePath = Path()
         private val basePaint = Paint()
 
         init {
             basePaint.style = Paint.Style.STROKE
-            basePaint.strokeWidth = 2f
+            basePaint.strokeWidth = 10f
             basePaint.alpha = 50
             basePaint.isAntiAlias = true
             fitting.startX = startX
@@ -192,18 +200,14 @@ class SpiralActivity : AppCompatActivity() {
 
         override fun onDraw(canvas: Canvas) {
             basePath.moveTo(startX.toFloat(), startY.toFloat())
-            for (t in theta)
-                basePath.lineTo((t * Math.cos(2.5 * t) * 60 + startX).toFloat(), (t * Math.sin(2.5 * t) * 60 + startY).toFloat())
+            basePath.lineTo(finalX.toFloat(), finalY.toFloat())
 
             canvas.drawPath(basePath, basePaint)
         }
-
     }
     @Throws(Exception::class)
     private fun onCap(bm: Bitmap, path: File, count: Int) {
         try {
-            val path = Environment.getExternalStoragePublicDirectory(
-                    "/TremorApp/$clinicID/$task$both")
             var first = false
             val file_name = clinicID + "_" + task + both + ".csv"
             val foder = path.listFiles()
@@ -217,7 +221,6 @@ class SpiralActivity : AppCompatActivity() {
                 imgFile = "/"+clinicID+"_"+task+both+"_1.jpg"
             }
             else{
-                val count = readCSV(path,clinicID+"_"+task+both+".csv")
                 imgFile = "/"+clinicID+"_"+task+both+"_"+count+".jpg"
             }
 
@@ -243,7 +246,7 @@ class SpiralActivity : AppCompatActivity() {
         //로딩
         android.os.Handler().postDelayed(
                 {
-                    progressDialog = ProgressDialog(this@SpiralActivity)
+                    progressDialog = ProgressDialog(this@LineActivity)
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
                     progressDialog.setIndeterminate(true)
                     progressDialog.setMessage("분석 중입니다.")
@@ -260,7 +263,6 @@ class SpiralActivity : AppCompatActivity() {
         }
         setOnClickListener(safeClickListener)
     }
-
     fun readCSV(path: File, file: String): Int {
         var line_length = 0
         var br: BufferedReader? = null

@@ -30,7 +30,7 @@
         <activity android:name=".SpiralActivity" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".AnalysisActivity" />
-        <activity android:name=".Function.LineActivity"></activity>
+        <activity android:name=".LineActivity"></activity>
     </application>
 
 </manifest>

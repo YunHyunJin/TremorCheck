@@ -5,7 +5,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import com.bcilab.tremorapp.Function.main
+import com.bcilab.tremorapp.Function.main1
 
 class AnalysisActivity : AppCompatActivity() {
 
@@ -21,13 +23,14 @@ class AnalysisActivity : AppCompatActivity() {
         setContentView(R.layout.activity_analysis)
 
         val intent = intent
-        var spiral_result: DoubleArray = doubleArrayOf()
+        var result: DoubleArray = doubleArrayOf()
         clinicID = intent.getStringExtra("clinicID") ;
         patientName = intent.getStringExtra("patientName")
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
         data_path = intent.getStringExtra("data_path")
-
+        val path = Environment.getExternalStoragePublicDirectory(
+                "/TremorApp/$clinicID/$task$both")
         val dialog = ProgressDialog(this)
         dialog.setMessage("Analysing...")
         dialog.setCancelable(false);
@@ -38,11 +41,12 @@ class AnalysisActivity : AppCompatActivity() {
             startActivity(cancel_Intent)
         }})
         dialog.show()
-
-        spiral_result = main.main("${this.filesDir.path}/testData/$filename", applicationContext, clinicID, data_path)
+        if(task.equals("Spiral")) result = main.main("$path/$filename", applicationContext, clinicID, data_path)
+        else result = main1.main1("$path/$filename", applicationContext, clinicID, data_path)
+        dialog.dismiss()
         dialog.dismiss()
         val intent1 = Intent(this, ResultActivity::class.java)
-        intent1.putExtra("spiral_result", spiral_result)
+        intent1.putExtra("spiral_result", result)
         intent1.putExtra("clinicID", clinicID)
         intent1.putExtra("patientName", patientName)
         intent1.putExtra("task", task)
