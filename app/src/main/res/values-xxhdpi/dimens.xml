@@ -66,4 +66,10 @@
 
     <dimen name="W400">250dp</dimen>
     <dimen name="H280">175dp</dimen>
+
+    <dimen name="H120">75dp</dimen>
+    <dimen name="W695">347dp</dimen>
+
+    <dimen name="W65">34dp</dimen>
+    <dimen name="W10">5dp</dimen>
 </resources>

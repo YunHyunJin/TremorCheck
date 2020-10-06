@@ -71,4 +71,10 @@
     <dimen name="W690">690dp</dimen>
     <dimen name="H60">60dp</dimen>
 
+    <dimen name="H120">120dp</dimen>
+    <dimen name="W695">695dp</dimen>
+
+    <dimen name="W65">65dp</dimen>
+    <dimen name="W10">10dp</dimen>
+
 </resources>

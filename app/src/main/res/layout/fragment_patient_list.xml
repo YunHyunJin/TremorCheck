@@ -15,67 +15,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <EditText
+            android:id="@+id/searchPatient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4.5"
-            android:background="#FFFFFF">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/patientListStart"
-                android:layout_marginTop="@dimen/patientListTop"
-                android:text="Patients List"
-                android:textColor="@color/many"
-                android:textSize="@dimen/textSize1"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/item_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/patientListStart"
-                android:layout_marginTop="0.1dp"
-                android:textColor="@color/many"
-                android:textSize="@dimen/textSize2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-            <EditText
-                android:id="@+id/searchPatient"
-                android:layout_width="@dimen/patientListSearchW"
-                android:layout_height="@dimen/patientListSearchH"
-                android:layout_marginBottom="@dimen/patientListSearchBottom"
-                android:layout_marginStart="@dimen/patientListStart"
-                android:background="@drawable/gray_rounded"
-                android:drawableLeft="@drawable/search"
-                android:drawablePadding="@dimen/patientListSearchPadding"
-                android:hint="Search ClinicID or Name"
-                android:textColor="#000000"
-                android:textColorHint="#838383"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/patientAdd"
-                android:layout_width="@dimen/patientListAddW"
-                android:layout_height="@dimen/patientListAddH"
-                android:layout_marginBottom="@dimen/patientListSearchBottom"
-                android:layout_marginEnd="@dimen/patientListAddE"
-                android:text="Add Patient"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:background="@drawable/green_gradient_rounded"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-
-        </android.support.constraint.ConstraintLayout>
+            android:layout_height="@dimen/patientListSearchH"
+            android:layout_marginBottom="@dimen/patientListSearchBottom"
+            android:background="@drawable/gray_rounded"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="@dimen/patientListSearchPadding"
+            android:hint="Search ClinicID or Name"
+            android:textColor="#000000"
+            android:textColorHint="#838383"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -174,7 +126,6 @@
                 android:scrollbars="vertical"
                 android:background="@color/Background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 

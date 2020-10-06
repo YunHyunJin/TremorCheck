@@ -35,7 +35,7 @@ public class main {
 	static Context ctx;
 
 
-	public static double[] main(String args, Context context, String id, String data_path) throws IOException {
+	public static double[] main(String args, Context context, String id, String data_path, String task, String both) throws IOException {
 		ctx = context;
 		Clinic_ID = id;
 		double[] resultx = new double[4];      double[] resulty = new double[4];// result of fft
@@ -56,8 +56,6 @@ public class main {
 		//writeToFile("0", ctx);
 
 		try {
-
-
 			br = new BufferedReader(new FileReader(csvFile));
 			br.readLine();
 			while ((line = br.readLine()) != null) {
@@ -131,7 +129,7 @@ public class main {
 		}
 
 		Result=new double[5];
-		Result = fg.fitting(x_position, y_position,time_array, n, true, data_path, Clinic_ID);
+		Result = fg.fitting(x_position, y_position,time_array, n, true, data_path, Clinic_ID, task, both);
 
 		for(int i = 0;i<5;i++){
 			Result[i] = Math.round(Result[i]*1000)/1000.0;

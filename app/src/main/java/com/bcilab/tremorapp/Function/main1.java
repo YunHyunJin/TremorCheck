@@ -34,7 +34,7 @@ public class main1 {
 
 
 
-	public static double[] main1(String args, Context context, String id, String data_path) throws IOException {
+	public static double[] main1(String args, Context context, String id, String data_path, String task, String both) throws IOException {
 
 
 		ctx = context;
@@ -155,7 +155,7 @@ public class main1 {
 
 		//5가지 결과값 저장용 - 라인 테스트 용
 		Result=new double[5];
-		Result = fg.fitting(x_position, y_position,time_array, n, false, data_path, Clinic_ID);
+		Result = fg.fitting(x_position, y_position,time_array, n, false, data_path, Clinic_ID, task, both);
 
 		for(int i = 0;i<5;i++){
 			Result[i] = Math.round(Result[i]*1000)/1000.0;

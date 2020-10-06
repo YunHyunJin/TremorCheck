@@ -1,11 +1,14 @@
 package com.bcilab.tremorapp;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,11 +47,18 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         RequestManager mGlideRequestManager;
         RequestManager mGlideRequestManager_pre;
         mGlideRequestManager = Glide.with(ResultActivity.this);
         mGlideRequestManager_pre = Glide.with(ResultActivity.this);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("21600752 오른손 나선 그리기");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_navigate_before_black_48);
+
         Intent intent = getIntent() ;
 
         final double[] spiral_result = intent.getDoubleArrayExtra("spiral_result");
@@ -66,10 +76,10 @@ public class ResultActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Distance"));
         tabLayout.addTab(tabLayout.newTab().setText("Time"));
         tabLayout.addTab(tabLayout.newTab().setText("Speed"));
-        ((TextView) findViewById(R.id.clinic_ID)).setText(clinicID+" "+patientName) ;
-        ((TextView) findViewById(R.id.testTitle)).setText(both.equals("Right")?"오른손" : "왼손" + (task.equals("Spiral")? " 나선 그리기 결과" : " 선 긋기 결과")) ;
-        ((TextView) findViewById(R.id.today_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
-                +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
+//        ((TextView) findViewById(R.id.clinic_ID)).setText(clinicID+" "+patientName) ;
+//        ((TextView) findViewById(R.id.testTitle)).setText(both.equals("Right")?"오른손" : "왼손" + (task.equals("Spiral")? " 나선 그리기 결과" : " 선 긋기 결과")) ;
+//        ((TextView) findViewById(R.id.today_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
+//                +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
 
 
         File path = Environment.getExternalStoragePublicDirectory(
@@ -156,7 +166,13 @@ public class ResultActivity extends AppCompatActivity {
 
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.result_toolbar, menu);
 
+        return true;
+    }
     public int readCSV(File path, String file) {
         int line_length = 0 ;
         BufferedReader br = null;

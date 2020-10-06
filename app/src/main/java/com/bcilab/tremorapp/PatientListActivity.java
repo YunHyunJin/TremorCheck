@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -56,6 +57,7 @@ public class PatientListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("환자 목록 : 3명");
         setSupportActionBar(toolbar);
+
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
         bottomNavigationView.setVisibility(View.GONE);
         patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
@@ -84,7 +86,13 @@ public class PatientListActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.patient_list_toolbar, menu);
 
+        return true;
+    }
     public void visibleBottom(int visible){
         Log.v("PatientList", "BottomVisible" +visible) ;
         bottomNavigationView.setVisibility(visible);

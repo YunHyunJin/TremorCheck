@@ -68,13 +68,13 @@ class SpiralActivity : AppCompatActivity() {
         image_path = "$clinicID/$task/$both/$count.jpg"
         filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
 
-        // 그림 그리고 나서, 다음으로 넘어가는 버튼
+         //그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
             timer.cancel()
             var prevData: PathTraceData? = null
             if(!isdraw)
             {
-                Toast.makeText(this, "직선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "나선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
             }
             else
             {
@@ -284,6 +284,7 @@ class SpiralActivity : AppCompatActivity() {
             }
 
         }
+        if (line_length==0) line_length=1
         return line_length
     }
 }

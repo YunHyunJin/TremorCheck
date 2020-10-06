@@ -7,71 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".PersonalPatientActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/personalTopH"
-        android:background="#FFFFFF">
-
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="@dimen/personalBack"
-            android:layout_height="@dimen/personalBack"
-            android:layout_marginBottom="@dimen/patientListMargin"
-            android:layout_marginStart="@dimen/personalBackS"
-            android:layout_marginTop="@dimen/patientListMargin"
-            android:background="@drawable/baseline_navigate_before_black_48"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/patientListMargin"
-            android:layout_marginEnd="@dimen/patientListMargin"
-            android:layout_marginStart="@dimen/patientListMargin"
-            android:layout_marginTop="@dimen/patientListMargin"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dot"
-            app:layout_constraintStart_toEndOf="@+id/backButton"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/patient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="7522 하하하재경"
-                android:textAlignment="center"
-                android:textColor="#545454"
-                android:textSize="@dimen/textSize5" />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="2020.07.02 - 2020.08.02"
-                android:textSize="@dimen/textSize2" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/dot"
-            android:layout_width="@dimen/personalDotW"
-            android:layout_height="@dimen/personalDotW"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/patientListMargin"
-            android:layout_marginEnd="@dimen/imageWeight"
-            android:background="@drawable/baseline_more_horiz_black_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:titleTextColor="#000000"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/taskTab"
@@ -84,7 +27,7 @@
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
         android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabIndicatorColor="#37BFA7"
         app:tabTextColor="#545454">
 

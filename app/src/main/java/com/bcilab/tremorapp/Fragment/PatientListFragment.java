@@ -70,9 +70,9 @@ public class PatientListFragment extends Fragment {
         Log.v("PatientList", "PatientListTTTTonCreatView");
         EditText searchPatient = (EditText) view.findViewById(R.id.searchPatient);
         RelativeLayout patientListL = (RelativeLayout)view.findViewById(R.id.patientListL);
-        Button addPatient = (Button)view.findViewById(R.id.patientAdd);
+        //Button addPatient = (Button)view.findViewById(R.id.patientAdd);
         all_checkBox = (CheckBox) view.findViewById(R.id.all_checkBox);
-        patientTotal = (TextView) view.findViewById(R.id.item_count) ;
+        //patientTotal = (TextView) view.findViewById(R.id.item_count) ;
 
         all_checkBox.setVisibility(View.GONE);
 
@@ -113,12 +113,12 @@ public class PatientListFragment extends Fragment {
             }
         });
 
-        ((Button)view.findViewById(R.id.patientAdd)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addPatient();
-            }
-        });
+//        ((Button)view.findViewById(R.id.patientAdd)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                addPatient();
+//            }
+//        });
 
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
 
@@ -152,8 +152,8 @@ public class PatientListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        patientTotal.setText(String.valueOf("Total "+PatientLoad()));
+        PatientLoad();
+        //patientTotal.setText(String.valueOf("Total "+PatientLoad()));
         Log.v("PatientList", "PatientListTTTTonStart");
 
     }

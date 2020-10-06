@@ -39,12 +39,13 @@ public class fitting {
 		return new baseline(x , y, t);}
 
 	//obj = base, org = subject
-	public double[] fitting(double[] orgX, double[] orgY, double[] time, int m, boolean SorL, String data_path, String id) throws FileNotFoundException {
+	public double[] fitting(double[] orgX, double[] orgY, double[] time, int m, boolean SorL, String data_path, String id, String task, String both) throws FileNotFoundException {
 		int n = m;
 		double[] objX = new double[n] ;      double[] objY = new double[n];       double[] t = new double[n]  ;
 		baseline base = bring(objX, objY, t);
 		Clinic_ID = id;
 
+		Log.v("이거와", "이거오는데!");
 		base.setting(n);
 		objX = base.getArray1();
 		objY = base.getArray2();
@@ -66,15 +67,15 @@ public class fitting {
 		for(Double d : time)
 			time_array.add(d);
 		/* ******************************** make csv file *************************************/
-
-		File mfolder = Environment.getExternalStorageDirectory();
-		String dataname = data_path.split("/")[3];
+		File mfolder = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
+		Log.v("이거와", "이거오는데2!");
+		String dataname = data_path.replaceAll("/","_");
 		String foldername = "";
 		/* ******************************** 데이터 저장 경로 만들기 *************************************/
 
 		/* ******************************** 데이터 저장 경로 설정 완료 *************************************/
 		File csvfile = new File(mfolder, dataname);
-
+		Log.v("이거와", "이거오는데3!"+data_path);
 		try{
 
 			FileWriter fw = new FileWriter(csvfile);
