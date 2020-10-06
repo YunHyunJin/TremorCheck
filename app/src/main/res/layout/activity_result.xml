@@ -47,8 +47,10 @@
 
                 <ImageView
                     android:id="@+id/pre_result_image"
-                    android:layout_width="277.92dp"
-                    android:layout_height="280dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H280"
+                    android:layout_marginStart="@dimen/imageWeight"
+                    android:layout_marginEnd="@dimen/imageWeight"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:rotation="90"
@@ -88,10 +90,12 @@
 
                 <ImageView
                     android:id="@+id/result_image"
-                    android:layout_width="277.92dp"
-                    android:layout_height="280dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H280"
+                    android:layout_marginStart="@dimen/imageWeight"
+                    android:layout_marginEnd="@dimen/imageWeight"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_weight="20"
                     android:rotation="90"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.1"
+                    android:layout_weight="1"
                     android:text="이번 결과"
                     android:textColor="#545454"
                     android:textSize="20dp"
@@ -113,9 +117,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.1"
+                    android:layout_weight="1"
                     android:textColor="#545454"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

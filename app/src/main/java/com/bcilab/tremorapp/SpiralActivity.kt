@@ -32,10 +32,16 @@ class SpiralActivity : AppCompatActivity() {
     private var currentY: Float = 0.toFloat()
     private var isdraw : Boolean = false
     private var image_path : String = ""
+    private var timer_flag : Boolean = false
+    private var save_timer : Long = 0.toLong()
+    private var saveTimer : Long = 0.toLong()
     private val pathTrace: MutableList<PathTraceData> = mutableListOf()
     private val timer = object : CountDownTimer(Long.MAX_VALUE, 1000 / 60) {
         override fun onTick(millisUntilFinished: Long) {
-            pathTrace.add(PathTraceData(currentX, currentY, (Long.MAX_VALUE - millisUntilFinished).toInt()))
+            if(timer_flag) pathTrace.add(PathTraceData(currentX, currentY, (Long.MAX_VALUE - millisUntilFinished).toInt()))
+            else pathTrace.add(PathTraceData(currentX, currentY, (saveTimer+(Long.MAX_VALUE - millisUntilFinished)).toInt()))
+            save_timer= Long.MAX_VALUE - millisUntilFinished
+            Log.v("SpiralActivity", "ActivityyyySave"+currentX+" "+currentY+" "+(Long.MAX_VALUE - millisUntilFinished).toInt()+" "+saveTimer)
         }
 
         override fun onFinish() {}
@@ -156,11 +162,22 @@ class SpiralActivity : AppCompatActivity() {
             currentX = event.x
             currentY = event.y
             isdraw = true
+            Log.v("SpiralActivity", "Activityyyy_Touch"+currentX+" "+currentY+"Spiral")
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (!flag) {
-                        flag = true
+                        flag=true
+                        timer_flag = true
                         timer.start()
+                    }
+                    else timer.start()
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    if(flag) {
+                        timer.cancel()
+                        timer_flag=false
+                        saveTimer +=save_timer
                     }
                 }
             }
@@ -168,6 +185,7 @@ class SpiralActivity : AppCompatActivity() {
         }
 
         override fun clearLayout() {
+            Log.v("SpiraleActivity", "ClearLLLayout")
             super.clearLayout()
             pathTrace.clear()
             timer.cancel()
@@ -192,9 +210,10 @@ class SpiralActivity : AppCompatActivity() {
 
         override fun onDraw(canvas: Canvas) {
             basePath.moveTo(startX.toFloat(), startY.toFloat())
-            for (t in theta)
+            for (t in theta) {
                 basePath.lineTo((t * Math.cos(2.5 * t) * 60 + startX).toFloat(), (t * Math.sin(2.5 * t) * 60 + startY).toFloat())
-
+                Log.v("LineActivity", "SpiralActivityyyy"+startX+" "+startY+" "+(t * Math.cos(2.5 * t) * 60 + startX)+" "+(t * Math.sin(2.5 * t) * 60 + startY))
+            }
             canvas.drawPath(basePath, basePaint)
         }
 
