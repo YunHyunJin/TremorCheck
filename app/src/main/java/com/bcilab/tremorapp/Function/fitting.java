@@ -74,50 +74,50 @@ public class fitting {
 		/* ******************************** 데이터 저장 경로 만들기 *************************************/
 
 		/* ******************************** 데이터 저장 경로 설정 완료 *************************************/
-		File csvfile = new File(mfolder, dataname);
-		Log.v("이거와", "이거오는데3!"+data_path);
-		try{
-
-			FileWriter fw = new FileWriter(csvfile);
-			fw.append("positionx"+",");
-			for(double posx : orgX)
-			{
-				fw.append(""+posx);
-				fw.append(",");
-			}
-			fw.append("\n");
-			fw.append("positiony"+",");
-			for(double posy: orgY)
-			{
-				fw.append(""+posy);
-				fw.append(",");
-			}
-			fw.append("\n");
-			fw.append("basex"+",");
-			for(double basex : objX)
-			{
-				fw.append(""+basex);
-				fw.append(",");
-			}
-			fw.append("\n");
-			fw.append("basey"+",");
-			for(double basey : objY)
-			{
-				fw.append(""+basey);
-				fw.append(",");
-			}
-			fw.append("\n");
-			fw.append("time"+",");
-			for(double tm : time_array)
-			{
-				fw.append(""+tm);
-				fw.append(",");
-			}
-			fw.close();
-
-		} catch (IOException e){
-			e.printStackTrace();
-		}
+//		File csvfile = new File(mfolder, dataname);
+//		Log.v("이거와", "이거오는데3!"+data_path);
+//		try{
+//
+//			FileWriter fw = new FileWriter(csvfile);
+//			fw.append("positionx"+",");
+//			for(double posx : orgX)
+//			{
+//				fw.append(""+posx);
+//				fw.append(",");
+//			}
+//			fw.append("\n");
+//			fw.append("positiony"+",");
+//			for(double posy: orgY)
+//			{
+//				fw.append(""+posy);
+//				fw.append(",");
+//			}
+//			fw.append("\n");
+//			fw.append("basex"+",");
+//			for(double basex : objX)
+//			{
+//				fw.append(""+basex);
+//				fw.append(",");
+//			}
+//			fw.append("\n");
+//			fw.append("basey"+",");
+//			for(double basey : objY)
+//			{
+//				fw.append(""+basey);
+//				fw.append(",");
+//			}
+//			fw.append("\n");
+//			fw.append("time"+",");
+//			for(double tm : time_array)
+//			{
+//				fw.append(""+tm);
+//				fw.append(",");
+//			}
+//			fw.close();
+//
+//		} catch (IOException e){
+//			e.printStackTrace();
+//		}
 		/* ******************************** Upload csv file *************************************/
 
 
@@ -295,6 +295,7 @@ public class fitting {
 		public baseline setting(int length) {
 			this.t = new double[length];
 			for (int i = 0; i < length; i++) {
+				Log.v("이거와", "이거오는데!base"+"startx" +startX+"starty"+startY+fitting.startX+" "+String.valueOf(finalY - (fitting.startY+i)));
 				this.t[i] = min + i * (max - min) / (length - 1);
 				this.baseX[i] = fitting.startX;
 				this.baseY[i] = finalY - (fitting.startY+i);

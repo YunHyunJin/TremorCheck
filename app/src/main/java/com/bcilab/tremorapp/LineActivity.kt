@@ -16,7 +16,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import com.bcilab.tremorapp.Adapter.RecyclerViewAdapter
 import com.bcilab.tremorapp.Data.PathTraceData
+import com.bcilab.tremorapp.Data.PatientItem
 import com.bcilab.tremorapp.Function.SafeClickListener
 import com.bcilab.tremorapp.Function.fitting
 import com.bcilab.tremorapp.functions.Drawable
@@ -24,10 +26,7 @@ import kotlinx.android.synthetic.main.activity_spiral.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.pm.ActivityInfo
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
+
 
 
 class LineActivity : AppCompatActivity() {
@@ -81,7 +80,7 @@ class LineActivity : AppCompatActivity() {
                 "/TremorApp/$clinicID/$task$both")
         count = readCSV(path,clinicID+"_"+task+both+".csv")
         image_path = "$clinicID/$task/$both/$count.jpg"
-        filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
+        filename = task+"_"+both+"_"+count+"_RowData"
 
         //그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
@@ -120,7 +119,7 @@ class LineActivity : AppCompatActivity() {
                 }finally {
                     captureView.recycle();
                 }
-                val metaData = "$clinicID,$filename"
+                val metaData = "positionX,positionY,time"
                 //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
                 if (!path.exists()) path.mkdirs()
                 val file = File(path, "${clinicID}_$filename.csv")
@@ -137,6 +136,7 @@ class LineActivity : AppCompatActivity() {
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
+                filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
                 intent.putExtra("timestamp", filename)
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
@@ -301,8 +301,28 @@ class LineActivity : AppCompatActivity() {
         override fun onDraw(canvas: Canvas) {
             basePath.moveTo(startX.toFloat(), startY.toFloat())
             basePath.lineTo(finalX.toFloat(), finalY.toFloat())
-            Log.v("LineActivity", "LineActivityyyy"+startX+" "+startY+" "+finalX+" "+finalY)
             canvas.drawPath(basePath, basePaint)
+            val baseData = StringBuilder()
+            baseData.append("baseX,baseY")
+            var baseX = startX.toFloat()
+            var baseY = startY.toFloat()
+            baseData.append("\n$baseX,$baseY")
+            baseX = finalX.toFloat()
+            baseY = finalY.toFloat()
+            baseData.append("\n$baseX,$baseY")
+
+
+            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
+
+            try {
+                val write = FileWriter(baseCsv, false)
+                val csv = PrintWriter(write)
+                csv.println(baseData)
+                csv.close()
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
     @Throws(Exception::class)
@@ -318,10 +338,10 @@ class LineActivity : AppCompatActivity() {
             }
             var imgFile = ""
             if (first==false) {
-                imgFile = "/"+clinicID+"_"+task+both+"_1.jpg"
+                imgFile = "/"+clinicID+"_"+task+"_"+both+"_1.jpg"
             }
             else{
-                imgFile = "/"+clinicID+"_"+task+both+"_"+count+".jpg"
+                imgFile = "/"+clinicID+"_"+task+"_"+both+"_"+count+".jpg"
             }
 
             val imgPath = StringBuffer(path.toString())

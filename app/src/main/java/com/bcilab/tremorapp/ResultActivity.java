@@ -147,7 +147,7 @@ public class ResultActivity extends AppCompatActivity {
                 }
 
             }
-            String pre_image_path = path.toString()+"/"+clinicID+"_"+task+both+"_"+String.valueOf(count-1)+".jpg";
+            String pre_image_path = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+String.valueOf(count-1)+".jpg";
             final ImageView pre_result_image = findViewById(R.id.pre_result_image);
             pre_result_image.post(new Runnable() {
                 @Override

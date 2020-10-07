@@ -32,6 +32,8 @@ class SpiralActivity : AppCompatActivity() {
     private var currentY: Float = 0.toFloat()
     private var isdraw : Boolean = false
     private var image_path : String = ""
+    private var count : Int =0
+    private var path : File =Environment.getExternalStoragePublicDirectory("TremorApp")
     private var timer_flag : Boolean = false
     private var save_timer : Long = 0.toLong()
     private var saveTimer : Long = 0.toLong()
@@ -62,9 +64,9 @@ class SpiralActivity : AppCompatActivity() {
 
         Log.v("SpiralActivity", "SpiralActivity"+task+both)
         Log.v("SpiralActivity", "SSSSSS"+filename)
-        val path = Environment.getExternalStoragePublicDirectory(
+        path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/$clinicID/$task$both")
-        val count = readCSV(path,clinicID+"_"+task+both+".csv")
+        count = readCSV(path,clinicID+"_"+task+both+".csv")
         val layout = writingcanvasLayout
         val view = DrawView(this)
         val baseLine = baseView(this)
@@ -72,7 +74,7 @@ class SpiralActivity : AppCompatActivity() {
         layout.addView(baseLine)
 
         image_path = "$clinicID/$task/$both/$count.jpg"
-        filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
+        filename = task+"_"+both+"_"+count+"_RowData"
 
          //그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
@@ -110,7 +112,7 @@ class SpiralActivity : AppCompatActivity() {
                 }finally {
                     captureView.recycle();
                 }
-                val metaData = "$clinicID,$filename"
+                val metaData = "positionX,positionY,time"
                 //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
                 if (!path.exists()) path.mkdirs()
                 val file = File(path, "${clinicID}_$filename.csv")
@@ -127,6 +129,7 @@ class SpiralActivity : AppCompatActivity() {
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
+                filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
                 intent.putExtra("timestamp", filename)
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
@@ -209,12 +212,32 @@ class SpiralActivity : AppCompatActivity() {
         }
 
         override fun onDraw(canvas: Canvas) {
+            val baseData = StringBuilder()
+            baseData.append("baseX,baseY")
             basePath.moveTo(startX.toFloat(), startY.toFloat())
+            var baseX = startX.toFloat()
+            var baseY = startY.toFloat()
             for (t in theta) {
-                basePath.lineTo((t * Math.cos(2.5 * t) * 60 + startX).toFloat(), (t * Math.sin(2.5 * t) * 60 + startY).toFloat())
-                Log.v("LineActivity", "SpiralActivityyyy"+startX+" "+startY+" "+(t * Math.cos(2.5 * t) * 60 + startX)+" "+(t * Math.sin(2.5 * t) * 60 + startY))
+                baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
+                baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
+                basePath.lineTo(baseX, baseY)
+                baseData.append("\n$baseX,$baseY")
+
             }
             canvas.drawPath(basePath, basePaint)
+
+            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
+
+            try {
+                val write = FileWriter(baseCsv, false)
+                val csv = PrintWriter(write)
+                csv.println(baseData)
+                csv.close()
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
         }
 
     }
@@ -233,11 +256,10 @@ class SpiralActivity : AppCompatActivity() {
             }
             var imgFile = ""
             if (first==false) {
-                imgFile = "/"+clinicID+"_"+task+both+"_1.jpg"
+                imgFile = "/"+clinicID+"_"+task+"_"+both+"_1.jpg"
             }
             else{
-                val count = readCSV(path,clinicID+"_"+task+both+".csv")
-                imgFile = "/"+clinicID+"_"+task+both+"_"+count+".jpg"
+                imgFile = "/"+clinicID+"_"+task+"_"+both+"_"+count+".jpg"
             }
 
             val imgPath = StringBuffer(path.toString())
