@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -49,42 +50,45 @@ public class PatientListActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView ;
     private PatientListFragment patientListFragment ;
     private TextView selectNum ;
+    private Toolbar toolbar ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("환자 목록 : 3명");
-        setSupportActionBar(toolbar);
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
-        bottomNavigationView.setVisibility(View.GONE);
-        patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
         selectNum = (TextView) findViewById(R.id.patient_number) ;
         Fragment fragment = new PatientListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.patientList, fragment);
         transaction.commit();
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
+        bottomNavigationView.setVisibility(View.GONE);
+        patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
+
         checkVerify();
         folderCreate();
 
-        String iconsStoragePath = Environment.getExternalStorageDirectory() + "/Abc/";
-        File sdIconStorageDir = new File(iconsStoragePath);
-
-
-        if(!sdIconStorageDir.exists()){
-            sdIconStorageDir.mkdirs();
-        }
 
         ((Button) findViewById(R.id.button_cancel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (patientListFragment.getdeleteMode() == true) {
-                    patientListFragment.delete_exit();
-                }
+                ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).delete_exit();
             }
         });
+    }
+
+    public void visibleBottom(int visible){
+        Log.v("PatientList", "BottomVisible" +visible) ;
+        bottomNavigationView.setVisibility(visible);
+    }
+    public void selectNum(String size){
+        selectNum.setText(size);
+    }
+    public void patientNum(int size){
+        toolbar.setTitle("환자 목록 : "+size+"명");
+        setSupportActionBar(toolbar);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -93,16 +97,17 @@ public class PatientListActivity extends AppCompatActivity {
 
         return true;
     }
-    public void visibleBottom(int visible){
-        Log.v("PatientList", "BottomVisible" +visible) ;
-        bottomNavigationView.setVisibility(visible);
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default :
+                {
+                    ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).addPatient();
+                    return true;
+                }
+        }
+        //return super.onOptionsItemSelected(item);
     }
-    public void selectNum(int size){
-        if (size > 0)
-            selectNum.setText("총 " + size + " 명의 환자 선택");
-        else
-            selectNum.setText("총 0 명의 환자 선택");
-    }
+
     public void checkVerify() {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)

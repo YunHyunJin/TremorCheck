@@ -12,7 +12,7 @@
         android:layout_height="@dimen/H50"
         android:layout_marginBottom="@dimen/imageWeight"
         android:layout_marginStart="@dimen/patientListMargin"
-        android:background="@drawable/green_down"
+        android:background="@drawable/ic_action_down"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

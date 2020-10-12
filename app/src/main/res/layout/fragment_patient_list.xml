@@ -21,9 +21,10 @@
             android:layout_height="@dimen/patientListSearchH"
             android:layout_marginBottom="@dimen/patientListSearchBottom"
             android:background="@drawable/gray_rounded"
-            android:drawableLeft="@drawable/search"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:paddingStart="@dimen/W10"
             android:drawablePadding="@dimen/patientListSearchPadding"
-            android:hint="Search ClinicID or Name"
+            android:hint="Search by ClinicID or Name"
             android:textColor="#000000"
             android:textColorHint="#838383"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,63 +57,47 @@
                     android:layout_gravity="right|center_vertical" />
 
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/sort_id"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:layout_weight="1"
-                    android:orientation="horizontal" >
-                    <TextView
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:textAllCaps="false"
-                        android:textColor="#545454"
-                        android:background="#0000"
-                        android:textSize="@dimen/textSize4"
-                        android:text="Clinic_ID"
-                        android:drawableRight="@drawable/down"/>
-                </LinearLayout>
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="Clinic_ID"
+                    android:drawableRight="@drawable/down"/>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/sort_name"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:clickable="true"
-                    android:orientation="horizontal" >
-                    <TextView
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:textAllCaps="false"
-                        android:textColor="#545454"
-                        android:background="#0000"
-                        android:textSize="@dimen/textSize4"
-                        android:text="Info"
-                        android:drawableRight="@drawable/down"/>
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="Info"
+                    android:drawableRight="@drawable/down"/>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/sort_date"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:layout_weight="2"
-                    android:orientation="horizontal" >
-                    <TextView
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:textAllCaps="false"
-                        android:textColor="#545454"
-                        android:background="#0000"
-                        android:textSize="@dimen/textSize4"
-                        android:text="Date"
-                        android:drawableRight="@drawable/down"/>
-                </LinearLayout>
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="Date"
+                    android:drawableRight="@drawable/down"/>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/id_전체"
+        android:title="전체"/>
+    <item android:id="@+id/id_1개월"
+        android:title="1개월"/>
+    <item android:id="@+id/id_3개월"
+        android:title="3개월"/>
+    <item android:id="@+id/id_6개월"
+        android:title="6개월"/>
+</menu>

@@ -14,12 +14,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PatientListFragment extends Fragment {
 
@@ -51,6 +55,7 @@ public class PatientListFragment extends Fragment {
     private View view ;
     private TextView patientTotal ;
     private TextView patientNum ;
+    private int patient_num ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +80,24 @@ public class PatientListFragment extends Fragment {
         //patientTotal = (TextView) view.findViewById(R.id.item_count) ;
 
         all_checkBox.setVisibility(View.GONE);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        all_checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (all_checkBox.isChecked()) {
+                    for (int i = 0; i < patientList.size(); i++) {
+                        if (!patientList.get(i).isDeleteBox()) multi_select(i);
+                    }
+                } else {
+                    for (int i = 0; i < patientList.size(); i++) {
+                        if (patientList.get(i).isDeleteBox()) multi_select(i);
+                    }
+                }
+            }
+        });
+
+
         searchPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +110,7 @@ public class PatientListFragment extends Fragment {
                 imm.hideSoftInputFromWindow(searchPatient.getWindowToken(), 0);
             }
         });
+
         searchPatient.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -113,18 +135,100 @@ public class PatientListFragment extends Fragment {
             }
         });
 
-//        ((Button)view.findViewById(R.id.patientAdd)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                addPatient();
-//            }
-//        });
+        ((TextView)view.findViewById(R.id.sort_id)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ArrayList<PatientItem> filteredList = new ArrayList<>();
+                PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_id)));
+                popupMenu.getMenuInflater().inflate(R.menu.menu_clinidid, popupMenu.getMenu());
 
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.id_내림차순:
+                                Collections.sort(patientList, new Comparator<PatientItem>() {
+                                    @Override
+                                    public int compare(PatientItem o1, PatientItem o2) {
+                                        return o2.getClinicID().compareTo(o1.getClinicID());
+                                    }
+                                });
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                return true;
+
+                            case R.id.id_오름차순:
+                                Collections.sort(patientList, new Comparator<PatientItem>() {
+                                    @Override
+                                    public int compare(PatientItem o1, PatientItem o2) {
+                                        return o1.getClinicID().compareTo(o2.getClinicID());
+                                    }
+                                });
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+        ((TextView)view.findViewById(R.id.sort_name)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ArrayList<PatientItem> filteredList = new ArrayList<>();
+                PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_name)));
+                popupMenu.getMenuInflater().inflate(R.menu.menu_clinidid, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.id_내림차순:
+                                Collections.sort(patientList, new Comparator<PatientItem>() {
+                                    @Override
+                                    public int compare(PatientItem o1, PatientItem o2) {
+                                        return o2.getPatientName().compareTo(o1.getClinicID());
+                                    }
+                                });
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                return true;
+
+                            case R.id.id_오름차순:
+                                Collections.sort(patientList, new Comparator<PatientItem>() {
+                                    @Override
+                                    public int compare(PatientItem o1, PatientItem o2) {
+                                        return o1.getPatientName().compareTo(o2.getClinicID());
+                                    }
+                                });
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
 
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                if (isMultiSelect) multi_select(position);
+                if (isMultiSelect) {
+                    multi_select(position);
+                    Log.v("PatientList", "Patient multiselect");
+                }
                 else {
                     Intent intent = new Intent(getActivity(), PersonalPatientActivity.class);
                     intent.putExtra("clinicID", patientList.get(position).getClinicID());//수정
@@ -152,7 +256,7 @@ public class PatientListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        PatientLoad();
+        ((PatientListActivity)getActivity()).patientNum(PatientLoad());
         //patientTotal.setText(String.valueOf("Total "+PatientLoad()));
         Log.v("PatientList", "PatientListTTTTonStart");
 
@@ -215,10 +319,8 @@ public class PatientListFragment extends Fragment {
                             recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
                             recyclerView.setAdapter(recyclerViewAdapter);
 
-                            String total = patientTotal.getText().toString();
-                            int totalNum = Integer.parseInt(total.substring(6, total.length()))+1 ;
-                            patientTotal.setText("Total "+String.valueOf(totalNum)) ;
-
+                            patient_num++;
+                            ((PatientListActivity)getActivity()).patientNum(patient_num);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -241,8 +343,11 @@ public class PatientListFragment extends Fragment {
     }
 
     public boolean getdeleteMode(){
+
+        Log.v("PatientList", "Patient Delete Mode"+deleteMode);
         return deleteMode;
     }
+
     public int PatientLoad() {
         patientList = new ArrayList<PatientItem>() ;
         File path = Environment.getExternalStoragePublicDirectory(
@@ -274,9 +379,11 @@ public class PatientListFragment extends Fragment {
             recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();  // data set changed
+            patient_num = foder.length-1 ;
             return foder.length-1 ;
         }
         else{
+            patient_num = 0;
             return 0 ;
         }
     }
@@ -296,9 +403,17 @@ public class PatientListFragment extends Fragment {
                 selected_patientList.add(patientList.get(position));
                 patientList.get(position).setDeleteBox(true);
             }
-            ((PatientListActivity)getActivity()).selectNum(selected_patientList.size());
+            if (selected_patientList.size() > 0) {
+                ((PatientListActivity)getActivity()).selectNum("총 " + selected_patientList.size() + " 명의 환자 선택");
+            }
+            else
+                ((PatientListActivity)getActivity()).selectNum("총 0 명의 환자 선택");
             recyclerViewAdapter.refreshAdapter(patientList, selected_patientList);
 
+            if(selected_patientList.size()==patientList.size()){
+                all_checkBox.setChecked(true);
+            }
+            else all_checkBox.setChecked(false);
         }
     }
 

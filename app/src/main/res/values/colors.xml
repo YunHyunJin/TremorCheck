@@ -23,9 +23,8 @@
     <color name="survey_header">#1F6A5D</color>
     <color name="red">#EB5757</color>
 
-    <color name="many">#282BE0</color>
+    <color name="many">#3244AC</color>
     <color name="primary">#205CF7</color>
     <color name="small">#1F8FED</color>
     <color name="small2">#2A75F7</color>
-    <color name="small3">#28A4ED</color>
 </resources>

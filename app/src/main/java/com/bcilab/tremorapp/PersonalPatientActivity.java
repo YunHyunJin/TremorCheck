@@ -191,28 +191,21 @@ public class PersonalPatientActivity extends AppCompatActivity {
             case 0 :
                 bundle = new Bundle() ;
                 task = "Spiral";
-//                if(spiral==0) {
-//                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                    fragmentTransaction.replace(R.id.task, nonTaskFragment);
-//                    fragmentTransaction.commit();
-//                }
-//                else{
-//                    bundle.putString("patientName", patientName) ;
-//                    bundle.putString("clinicID", clinicID) ;
-//                    bundle.putString("task", "Spiral") ;
-//                    bundle.putInt("taskNum", spiral) ;
-//                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                    fragmentTransaction.replace(R.id.task, spiralFragment);
-//                    fragmentTransaction.commit();
-//                }
-                bundle.putString("patientName", patientName) ;
-                bundle.putString("clinicID", clinicID) ;
-                bundle.putString("task", task) ;
-                bundle.putInt("taskNum", spiral) ;
-                spiralFragment.setArguments(bundle);
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.task, spiralFragment);
-                fragmentTransaction.commit();
+                if(spiral==0) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.task, nonTaskFragment);
+                    fragmentTransaction.commit();
+                }
+                else{
+                    bundle.putString("patientName", patientName) ;
+                    bundle.putString("clinicID", clinicID) ;
+                    bundle.putString("task", "Spiral") ;
+                    bundle.putInt("taskNum", spiral) ;
+                    spiralFragment.setArguments(bundle);
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.task, spiralFragment);
+                    fragmentTransaction.commit();
+                }
                 break;
             case 1 :
                 bundle = new Bundle() ;
