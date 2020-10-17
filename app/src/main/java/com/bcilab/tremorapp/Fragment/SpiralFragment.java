@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -20,9 +21,13 @@ import com.bcilab.tremorapp.TaskSelectActivity;
 public class SpiralFragment extends Fragment {
 
     private String clinicID ;
+    private TabLayout tabLayout ;
     private String patientName ;
     private String task ;
     private int taskNum ;
+    private String hand ;
+    private SpiralRightFragment spiralRightFragment ;
+    private FragmentTransaction fragmentTransaction ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,10 +44,27 @@ public class SpiralFragment extends Fragment {
         ((TextView)view.findViewById(R.id.client_name)).setText(patientName);
         ((TextView)view.findViewById(R.id.task_count)).setText("총 "+taskNum+"번");
         ((TextView)view.findViewById(R.id.task_name)).setText(task.equals("Spiral")?"나선 그리기 검사" : "선 긋기 검사");
-        Fragment fragment = new SpiralRightFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.handside, fragment);
-        transaction.commit();
+        tabLayout = (TabLayout) view.findViewById(R.id.handTab) ;
+        tabLayout.addTab(tabLayout.newTab().setText("오른손"));
+        tabLayout.addTab(tabLayout.newTab().setText("왼손"));
+        tabLayout.addTab(tabLayout.newTab().setText("양손 모아보기"));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                changeView(tab.getPosition()) ;
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //changeView(0) ;
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         Button addTask = (Button) view.findViewById(R.id.spiral_add);
         addTask.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +77,40 @@ public class SpiralFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        changeView(0);
         return view ;
     }
+
+    public void changeView(int position) {
+        Bundle bundle ;
+        spiralRightFragment = new SpiralRightFragment() ;
+        //nonTaskFragment = new NonTaskFragment() ;
+        switch (position){
+            case 0 :
+                bundle = new Bundle() ;
+                hand = "Right";
+                bundle.putString("patientName", patientName) ;
+                bundle.putString("clinicID", clinicID) ;
+                bundle.putString("task", task) ;
+                bundle.putString("hand", "Right") ;
+                spiralRightFragment.setArguments(bundle);
+                fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.handside, spiralRightFragment);
+                fragmentTransaction.commit();
+                break;
+            case 1 :
+                bundle = new Bundle() ;
+                hand = "Left";
+                bundle.putString("patientName", patientName) ;
+                bundle.putString("clinicID", clinicID) ;
+                bundle.putString("task", task) ;
+                bundle.putString("hand", "Left") ;
+                spiralRightFragment.setArguments(bundle);
+                fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.handside, spiralRightFragment);
+                fragmentTransaction.commit();
+                break ;
+        }
+    }
+
 }

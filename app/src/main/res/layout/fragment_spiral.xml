@@ -108,50 +108,22 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <Button
-            android:id="@+id/right_hand"
-            android:layout_width="@dimen/W220"
-            android:layout_height="@dimen/H50"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/handTab"
+            app:tabTextAppearance="@style/MyCustomTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="@dimen/T150"
-            android:background="@color/list_item_normal_state"
-            android:gravity="center"
-            android:stateListAnimator="@null"
-            android:text="오른손"
-            android:textSize="@dimen/TX20"
-            android:textColor="#545454"
+            android:background="#FFFFFF"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/left_hand"
-            android:layout_width="@dimen/W220"
-            android:layout_height="@dimen/H50"
-            android:layout_marginStart="@dimen/S230"
-            android:layout_marginTop="@dimen/T150"
-            android:background="@color/d"
-            android:stateListAnimator="@null"
-            android:text="왼손"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/TX20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/both_hand"
-            android:layout_width="@dimen/W220"
-            android:layout_height="@dimen/H50"
-            android:layout_marginStart="@dimen/S458"
-            android:layout_marginTop="@dimen/T150"
-            android:stateListAnimator="@null"
-            android:background="@color/d"
-            android:text="양손 모아보기"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/TX20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabTextColor="#545454">
+        </android.support.design.widget.TabLayout>
 
         <FrameLayout
             android:id="@+id/handside"
@@ -165,7 +137,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/right_hand" />
+            app:layout_constraintTop_toBottomOf="@+id/handTab" />
 
 
     </android.support.constraint.ConstraintLayout>

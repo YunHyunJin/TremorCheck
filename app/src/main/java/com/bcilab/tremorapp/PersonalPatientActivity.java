@@ -47,19 +47,18 @@ public class PersonalPatientActivity extends AppCompatActivity {
         String dateFirst, dateFinal ;
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("21600752 20.09.01-20.09.24");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_navigate_before_black_48);
         Intent intent = getIntent() ;
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
         clinicID = intent.getExtras().getString("clinicID");
         patientName = intent.getExtras().getString("patientName");
         task = intent.getExtras().getString("task");
-
+        toolbar.setTitle(clinicID+" "+patientName);
+        PatientLoad(clinicID);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_navigate_before_black_48);
         spiralFragment = new SpiralFragment() ;
         nonTaskFragment = new NonTaskFragment() ;
-
         if(task.equals("Spiral")) changeView(0);
         else changeView(1);
 
@@ -123,7 +122,6 @@ public class PersonalPatientActivity extends AppCompatActivity {
 //        });
         tabLayout.addTab(tabLayout.newTab().setText("Spiral"));
         tabLayout.addTab(tabLayout.newTab().setText("Line"));
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -140,9 +138,6 @@ public class PersonalPatientActivity extends AppCompatActivity {
 
             }
         });
-        //((TextView) findViewById(R.id.patient)).setText(clinicID+" "+patientName) ;
-        //((TextView) findViewById(R.id.date)).setText(PatientLoad(clinicID)) ;
-        PatientLoad(clinicID);
 
 
     }
@@ -153,17 +148,71 @@ public class PersonalPatientActivity extends AppCompatActivity {
 
         return true;
     }
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_patient :
+            {
+                PopupMenu popupMenu = new PopupMenu(PersonalPatientActivity.this, (View) findViewById(R.id.edit_patient));
+                popupMenu.getMenuInflater().inflate(R.menu.patient_edit, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.edit:
+                                //show(Clinic_ID);
+                                return true;
+
+                            case R.id.person_delete:
+                                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PersonalPatientActivity.this);
+                                dialogBuilder.setMessage("삭제 하시겠습니까?");
+                                dialogBuilder.setPositiveButton("예",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                File source = Environment.getExternalStoragePublicDirectory(
+                                                        "/TremorApp/"+clinicID);
+                                                File dest = Environment.getExternalStoragePublicDirectory(
+                                                        "/TremorApp/RemovePatient/"+clinicID);
+                                                try {
+                                                    FileUtils.copyDirectory(source, dest);
+                                                    File[] deleteList = source.listFiles();
+                                                    for(File file : deleteList) file.delete();
+                                                    source.delete();
+                                                    onBackPressed();
+                                                    finish();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                dialogBuilder.setNegativeButton("아니오",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        });
+                                dialogBuilder.create().show();
+                                return true;
+
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public String PatientLoad(String clinic_id) {
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/"+clinic_id);
         spiral = 0 ;
         line = 0 ;
         //File spiralDirectory =new File(String.valueOf(path)+"/SpiralLeft") ;
-        spiral+= new File(String.valueOf(path)+"/SpiralLeft").listFiles().length==0 ? 0 :new File(String.valueOf(path)+"/SpiralLeft").listFiles().length-1 ;
-        spiral+=new File(String.valueOf(path)+"/SpiralRight").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/SpiralRight").listFiles().length-1 ;
 
-        line+=new File(String.valueOf(path)+"/LineLeft").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/LineLeft").listFiles().length-1 ;
-        line+=new File(String.valueOf(path)+"/LineRight").listFiles().length==0 ? 0 : new File(String.valueOf(path)+"/LineRight").listFiles().length-1 ;
+        spiral = taskCount(new File(String.valueOf(path)+"/SpiralLeft").listFiles(), spiral) ;
+        spiral = taskCount(new File(String.valueOf(path)+"/SpiralRight").listFiles(), spiral) ;
+        line = taskCount(new File(String.valueOf(path)+"/LineLeft").listFiles(), line) ;
+        line = taskCount(new File(String.valueOf(path)+"/LineRight").listFiles(), line) ;
 
         String date = null ;
             try {
@@ -182,7 +231,14 @@ public class PersonalPatientActivity extends AppCompatActivity {
             }
             return date ;
     }
-
+    public int taskCount(File[] folder, int task){
+        for(int i = 0 ; i<folder.length ; i++) {
+            if(folder[i].getName().contains(".jpg")){
+                task++ ;
+            }
+        }
+        return task ;
+    }
     public void changeView(int position) {
         Bundle bundle ;
         spiralFragment = new SpiralFragment() ;

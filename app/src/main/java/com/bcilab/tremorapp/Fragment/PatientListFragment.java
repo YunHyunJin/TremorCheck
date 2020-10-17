@@ -153,10 +153,6 @@ public class PatientListFragment extends Fragment {
                                         return o2.getClinicID().compareTo(o1.getClinicID());
                                     }
                                 });
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                                recyclerView.setAdapter(recyclerViewAdapter);
-                                recyclerViewAdapter.notifyDataSetChanged();
                                 return true;
 
                             case R.id.id_오름차순:
@@ -166,12 +162,12 @@ public class PatientListFragment extends Fragment {
                                         return o1.getClinicID().compareTo(o2.getClinicID());
                                     }
                                 });
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                                recyclerView.setAdapter(recyclerViewAdapter);
-                                recyclerViewAdapter.notifyDataSetChanged();
                                 return true;
                         }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                        recyclerView.setAdapter(recyclerViewAdapter);
+                        recyclerViewAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
@@ -181,10 +177,8 @@ public class PatientListFragment extends Fragment {
         ((TextView)view.findViewById(R.id.sort_name)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ArrayList<PatientItem> filteredList = new ArrayList<>();
                 PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_name)));
                 popupMenu.getMenuInflater().inflate(R.menu.menu_clinidid, popupMenu.getMenu());
-
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -196,10 +190,6 @@ public class PatientListFragment extends Fragment {
                                         return o2.getPatientName().compareTo(o1.getClinicID());
                                     }
                                 });
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                                recyclerView.setAdapter(recyclerViewAdapter);
-                                recyclerViewAdapter.notifyDataSetChanged();
                                 return true;
 
                             case R.id.id_오름차순:
@@ -209,10 +199,36 @@ public class PatientListFragment extends Fragment {
                                         return o1.getPatientName().compareTo(o2.getClinicID());
                                     }
                                 });
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                                recyclerView.setAdapter(recyclerViewAdapter);
-                                recyclerViewAdapter.notifyDataSetChanged();
+                                return true;
+                        }
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                        recyclerView.setAdapter(recyclerViewAdapter);
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+        ((TextView)view.findViewById(R.id.sort_date)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ArrayList<PatientItem> filteredList = new ArrayList<>();
+                PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_date)));
+                popupMenu.getMenuInflater().inflate(R.menu.menu_date, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.id_전체:
+                                for (int i = 0; i < patientList.size(); i++) {
+                                    filteredList.add(patientList.get(i));
+                                }
+                                return true;
+
+                            case R.id.id_1개월:
+
                                 return true;
                         }
                         return true;
