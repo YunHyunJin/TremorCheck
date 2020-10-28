@@ -68,7 +68,7 @@ public class fitting {
 			time_array.add(d);
 		/* ******************************** make csv file *************************************/
 		File mfolder = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
-		Log.v("이거와", "이거오는데2!");
+
 		String dataname = data_path.replaceAll("/","_");
 		String foldername = "";
 		/* ******************************** 데이터 저장 경로 만들기 *************************************/
@@ -295,7 +295,6 @@ public class fitting {
 		public baseline setting(int length) {
 			this.t = new double[length];
 			for (int i = 0; i < length; i++) {
-				Log.v("이거와", "이거오는데!base"+"startx" +startX+"starty"+startY+fitting.startX+" "+String.valueOf(finalY - (fitting.startY+i)));
 				this.t[i] = min + i * (max - min) / (length - 1);
 				this.baseX[i] = fitting.startX;
 				this.baseY[i] = finalY - (fitting.startY+i);

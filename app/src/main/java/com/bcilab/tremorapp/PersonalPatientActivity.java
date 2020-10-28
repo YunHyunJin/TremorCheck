@@ -38,7 +38,7 @@ public class PersonalPatientActivity extends AppCompatActivity {
     private SpiralFragment spiralFragment ;
     private FragmentTransaction fragmentTransaction ;
     private String task ;
-    private int spiral, line ;
+    private int spiral_right, spiral_left, line_right, line_left ;
     private String patientName, clinicID ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,79 +49,25 @@ public class PersonalPatientActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         Intent intent = getIntent() ;
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
+        tabLayout.addTab(tabLayout.newTab().setText("Spiral"));
+        tabLayout.addTab(tabLayout.newTab().setText("Line"));
         clinicID = intent.getExtras().getString("clinicID");
         patientName = intent.getExtras().getString("patientName");
         task = intent.getExtras().getString("task");
+        Log.v("PatientList","PPPPPPPPPPP"+clinicID+" "+ patientName+" "+task);
         toolbar.setTitle(clinicID+" "+patientName);
-        PatientLoad(clinicID);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_navigate_before_black_48);
         spiralFragment = new SpiralFragment() ;
         nonTaskFragment = new NonTaskFragment() ;
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        PatientLoad(clinicID);
         if(task.equals("Spiral")) changeView(0);
         else changeView(1);
-
-
-//        ((Button) findViewById(R.id.backButton)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onBackPressed();
-//                finish();
-//            }
-//        });
-//        ((Button) findViewById(R.id.dot)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                PopupMenu popupMenu = new PopupMenu(PersonalPatientActivity.this, ((Button) findViewById(R.id.dot)));
-//                popupMenu.getMenuInflater().inflate(R.menu.patient_edit, popupMenu.getMenu());
-//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        switch (item.getItemId()) {
-//                            case R.id.edit:
-//                                //show(Clinic_ID);
-//                                return true;
-//
-//                            case R.id.person_delete:
-//                                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PersonalPatientActivity.this);
-//                                dialogBuilder.setMessage("삭제 하시겠습니까?");
-//                                dialogBuilder.setPositiveButton("예",
-//                                        new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                File source = Environment.getExternalStoragePublicDirectory(
-//                                                        "/TremorApp/"+clinicID);
-//                                                File dest = Environment.getExternalStoragePublicDirectory(
-//                                                        "/TremorApp/RemovePatient/"+clinicID);
-//                                                try {
-//                                                    FileUtils.copyDirectory(source, dest);
-//                                                    File[] deleteList = source.listFiles();
-//                                                    for(File file : deleteList) file.delete();
-//                                                    source.delete();
-//                                                    onBackPressed();
-//                                                    finish();
-//                                                } catch (IOException e) {
-//                                                    e.printStackTrace();
-//                                                }
-//                                            }
-//                                        });
-//                                dialogBuilder.setNegativeButton("아니오",
-//                                        new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                            }
-//                                        });
-//                                dialogBuilder.create().show();
-//                                return true;
-//
-//                        }
-//                        return true;
-//                    }
-//                });
-//                popupMenu.show();
-//            }
-//        });
-        tabLayout.addTab(tabLayout.newTab().setText("Spiral"));
-        tabLayout.addTab(tabLayout.newTab().setText("Line"));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -138,8 +84,6 @@ public class PersonalPatientActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -158,10 +102,6 @@ public class PersonalPatientActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.edit:
-                                //show(Clinic_ID);
-                                return true;
-
                             case R.id.person_delete:
                                 final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PersonalPatientActivity.this);
                                 dialogBuilder.setMessage("삭제 하시겠습니까?");
@@ -199,20 +139,27 @@ public class PersonalPatientActivity extends AppCompatActivity {
                 popupMenu.show();
                 return true;
             }
+            case android.R.id.home: {
+                onBackPressed();
+                finish();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
     public String PatientLoad(String clinic_id) {
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/"+clinic_id);
-        spiral = 0 ;
-        line = 0 ;
+        spiral_left = 0 ;
+        spiral_right = 0 ;
+        line_left = 0 ;
+        line_right = 0 ;
         //File spiralDirectory =new File(String.valueOf(path)+"/SpiralLeft") ;
 
-        spiral = taskCount(new File(String.valueOf(path)+"/SpiralLeft").listFiles(), spiral) ;
-        spiral = taskCount(new File(String.valueOf(path)+"/SpiralRight").listFiles(), spiral) ;
-        line = taskCount(new File(String.valueOf(path)+"/LineLeft").listFiles(), line) ;
-        line = taskCount(new File(String.valueOf(path)+"/LineRight").listFiles(), line) ;
+        spiral_left = taskCount(new File(String.valueOf(path)+"/SpiralLeft").listFiles()) ;
+        spiral_right = taskCount(new File(String.valueOf(path)+"/SpiralRight").listFiles()) ;
+        line_left = taskCount(new File(String.valueOf(path)+"/LineLeft").listFiles()) ;
+        line_right = taskCount(new File(String.valueOf(path)+"/LineRight").listFiles()) ;
 
         String date = null ;
             try {
@@ -231,7 +178,8 @@ public class PersonalPatientActivity extends AppCompatActivity {
             }
             return date ;
     }
-    public int taskCount(File[] folder, int task){
+    public int taskCount(File[] folder){
+        int task = 0;
         for(int i = 0 ; i<folder.length ; i++) {
             if(folder[i].getName().contains(".jpg")){
                 task++ ;
@@ -247,16 +195,18 @@ public class PersonalPatientActivity extends AppCompatActivity {
             case 0 :
                 bundle = new Bundle() ;
                 task = "Spiral";
-                if(spiral==0) {
+                bundle.putString("patientName", patientName) ;
+                bundle.putString("clinicID", clinicID) ;
+                bundle.putString("task", "Spiral") ;
+                bundle.putInt("left", spiral_left) ;
+                bundle.putInt("right", spiral_right) ;
+                if((spiral_left+spiral_right)==0) {
+                    nonTaskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, nonTaskFragment);
                     fragmentTransaction.commit();
                 }
                 else{
-                    bundle.putString("patientName", patientName) ;
-                    bundle.putString("clinicID", clinicID) ;
-                    bundle.putString("task", "Spiral") ;
-                    bundle.putInt("taskNum", spiral) ;
                     spiralFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, spiralFragment);
@@ -266,15 +216,24 @@ public class PersonalPatientActivity extends AppCompatActivity {
             case 1 :
                 bundle = new Bundle() ;
                 task="Line";
-                bundle.putString("patientName", patientName) ;
-                bundle.putString("clinicID", clinicID) ;
-                bundle.putString("task", task) ;
-                bundle.putInt("taskNum", line) ;
-                spiralFragment.setArguments(bundle);
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.task, spiralFragment);
-                fragmentTransaction.commit();
-                break ;
+                bundle.putString("patientName", patientName);
+                bundle.putString("clinicID", clinicID);
+                bundle.putString("task", task);
+                bundle.putInt("left", line_left);
+                bundle.putInt("right", line_right);
+                if((line_left+line_right)==0) {
+                    nonTaskFragment.setArguments(bundle);
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.task, nonTaskFragment);
+                    fragmentTransaction.commit();
+                }
+                else {
+                    spiralFragment.setArguments(bundle);
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.task, spiralFragment);
+                    fragmentTransaction.commit();
+                }
+                break;
         }
     }
 }

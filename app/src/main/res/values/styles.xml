@@ -22,7 +22,9 @@
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#009688</item>
     </style>
-
+    <style name="TabLayoutSelectStyle">
+        <item name="tabBackground">@drawable/tab_background</item>
+    </style>
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#009688</item>
     </style>

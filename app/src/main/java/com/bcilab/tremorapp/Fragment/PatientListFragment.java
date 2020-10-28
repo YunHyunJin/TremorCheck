@@ -33,15 +33,19 @@ import com.bcilab.tremorapp.PatientListActivity;
 import com.bcilab.tremorapp.PersonalPatientActivity;
 import com.bcilab.tremorapp.R;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 public class PatientListFragment extends Fragment {
 
@@ -56,7 +60,7 @@ public class PatientListFragment extends Fragment {
     private TextView patientTotal ;
     private TextView patientNum ;
     private int patient_num ;
-
+    int year, month, year2, month2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +100,7 @@ public class PatientListFragment extends Fragment {
                 }
             }
         });
-
-
+        ((PatientListActivity)getActivity()).patientNum(PatientLoad());
         searchPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +156,11 @@ public class PatientListFragment extends Fragment {
                                         return o2.getClinicID().compareTo(o1.getClinicID());
                                     }
                                 });
-                                return true;
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                break;
 
                             case R.id.id_오름차순:
                                 Collections.sort(patientList, new Comparator<PatientItem>() {
@@ -162,12 +169,12 @@ public class PatientListFragment extends Fragment {
                                         return o1.getClinicID().compareTo(o2.getClinicID());
                                     }
                                 });
-                                return true;
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                break;
                         }
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                        recyclerView.setAdapter(recyclerViewAdapter);
-                        recyclerViewAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
@@ -187,24 +194,28 @@ public class PatientListFragment extends Fragment {
                                 Collections.sort(patientList, new Comparator<PatientItem>() {
                                     @Override
                                     public int compare(PatientItem o1, PatientItem o2) {
-                                        return o2.getPatientName().compareTo(o1.getClinicID());
+                                        return o2.getPatientName().compareTo(o1.getPatientName());
                                     }
                                 });
-                                return true;
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                break;
 
                             case R.id.id_오름차순:
                                 Collections.sort(patientList, new Comparator<PatientItem>() {
                                     @Override
                                     public int compare(PatientItem o1, PatientItem o2) {
-                                        return o1.getPatientName().compareTo(o2.getClinicID());
+                                        return o1.getPatientName().compareTo(o2.getPatientName());
                                     }
                                 });
-                                return true;
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                break;
                         }
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-                        recyclerView.setAdapter(recyclerViewAdapter);
-                        recyclerViewAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
@@ -215,8 +226,12 @@ public class PatientListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final ArrayList<PatientItem> filteredList = new ArrayList<>();
+
                 PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_date)));
-                popupMenu.getMenuInflater().inflate(R.menu.menu_date, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.menu_date, popupMenu.getMenu());SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+                Date day = new Date();
+                String today = date.format(day);
+                final String[] array = today.split("/");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -225,11 +240,127 @@ public class PatientListFragment extends Fragment {
                                 for (int i = 0; i < patientList.size(); i++) {
                                     filteredList.add(patientList.get(i));
                                 }
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), filteredList, selected_patientList);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerViewAdapter.notifyDataSetChanged();
                                 return true;
 
                             case R.id.id_1개월:
-
+                                for (int i = 0; i < patientList.size(); i++) {
+                                    if (patientList.get(i).getDateFinal()==null)  {
+                                        filteredList.add(patientList.get(i));
+                                    } else {
+                                        String[] array2 = patientList.get(i).getDateFinal().split("[.]");
+                                        if (array[1].equals("10") || array[1].equals("11") || array[1].equals("12")) {
+                                            month = Integer.parseInt(array[1]);
+                                        } else {
+                                            month = Integer.parseInt(array[1].substring(1, 2));
+                                        }
+                                        if (array2[1].equals("10") || array2[1].equals("11") || array2[1].equals("12")) {
+                                            month2 = Integer.parseInt(array2[1]);
+                                        } else {
+                                            month2 = Integer.parseInt(array2[1].substring(1, 2));
+                                        }
+                                        if (month == 1) {
+                                            year = Integer.parseInt(array[0].substring(2, 4)) - 1;
+                                            month = 12;
+                                        } else {
+                                            year = Integer.parseInt(array[0].substring(2, 4));
+                                            month--;
+                                        }
+                                        year2 = Integer.parseInt(array2[0]);
+                                        if (Integer.parseInt(array2[0]) > year) {
+                                            filteredList.add(patientList.get(i));
+                                        } else if (Integer.parseInt(array2[0]) == year) {
+                                            if (month2 >= month) {
+                                                filteredList.add(patientList.get(i));
+                                            }
+                                        }
+                                    }
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), filteredList, selected_patientList);
+                                    recyclerView.setAdapter(recyclerViewAdapter);
+                                    recyclerViewAdapter.notifyDataSetChanged();
+                                }
                                 return true;
+                            case R.id.id_3개월 :
+                                for (int i = 0; i < patientList.size(); i++) {
+                                    if (patientList.get(i).getDateFinal()==null) {
+                                        filteredList.add(patientList.get(i));
+                                    } else {
+                                        String[] array2 = patientList.get(i).getDateFinal().split("[.]");
+                                        if (array[1].equals("10") || array[1].equals("11") || array[1].equals("12")) {
+                                            month = Integer.parseInt(array[1]);
+                                        } else {
+                                            month = Integer.parseInt(array[1].substring(1, 2));
+                                        }
+                                        if (array2[1].equals("10") || array2[1].equals("11") || array2[1].equals("12")) {
+                                            month2 = Integer.parseInt(array2[1]);
+                                        } else {
+                                            month2 = Integer.parseInt(array2[1].substring(1, 2));
+                                        }
+                                        if (month <= 3) {
+                                            year = Integer.parseInt(array[0].substring(2, 4)) - 1;
+                                            month = 12 + (month - 3);
+                                        } else {
+                                            year = Integer.parseInt(array[0].substring(2, 4));
+                                            month = month - 3;
+                                        }
+                                        year2 = Integer.parseInt(array2[0]);
+                                        if (Integer.parseInt(array2[0]) > year) {
+                                            filteredList.add(patientList.get(i));
+                                        } else if (Integer.parseInt(array2[0]) == year) {
+                                            if (month2 >= month) {
+                                                filteredList.add(patientList.get(i));
+                                            }
+                                        }
+                                    }
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), filteredList, selected_patientList);
+                                    recyclerView.setAdapter(recyclerViewAdapter);
+                                    recyclerViewAdapter.notifyDataSetChanged();
+
+                                }
+                                break;
+                            case R.id.id_6개월 :
+                                for (int i = 0; i < patientList.size(); i++) {
+                                    if (patientList.get(i).getDateFinal().equals("")) {
+
+                                    } else {
+                                        String[] array2 = patientList.get(i).getDateFinal().split("[.]");
+                                        if (array[1].equals("10") || array[1].equals("11") || array[1].equals("12")) {
+                                            month = Integer.parseInt(array[1]);
+                                        } else {
+                                            month = Integer.parseInt(array[1].substring(1, 2));
+                                        }
+                                        if (array2[1].equals("10") || array2[1].equals("11") || array2[1].equals("12")) {
+                                            month2 = Integer.parseInt(array2[1]);
+                                        } else {
+                                            month2 = Integer.parseInt(array2[1].substring(1, 2));
+                                        }
+                                        if (month <= 6) {
+                                            year = Integer.parseInt(array[0].substring(2, 4)) - 1;
+                                            month = 12 + (month - 6);
+                                        } else {
+                                            year = Integer.parseInt(array[0].substring(2, 4));
+                                            month = month - 6;
+                                        }
+                                        year2 = Integer.parseInt(array2[0]);
+                                        if (Integer.parseInt(array2[0]) > year) {
+                                            filteredList.add(patientList.get(i));
+                                        } else if (Integer.parseInt(array2[0]) == year) {
+                                            if (month2 >= month) {
+                                                filteredList.add(patientList.get(i));
+                                            }
+                                        }
+                                    }
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), filteredList, selected_patientList);
+                                    recyclerView.setAdapter(recyclerViewAdapter);
+                                    recyclerViewAdapter.notifyDataSetChanged();
+                                }
+                                break ;
                         }
                         return true;
                     }
@@ -247,10 +378,12 @@ public class PatientListFragment extends Fragment {
                 }
                 else {
                     Intent intent = new Intent(getActivity(), PersonalPatientActivity.class);
-                    intent.putExtra("clinicID", patientList.get(position).getClinicID());//수정
-                    intent.putExtra("patientName", patientList.get(position).getPatientName());
+                    intent.putExtra("clinicID", recyclerViewAdapter.getPatientList().get(position).getClinicID());//수정
+                    intent.putExtra("patientName", recyclerViewAdapter.getPatientList().get(position).getPatientName());
                     intent.putExtra("task", "Spiral");
+                    Log.v("PatientList","PPPPPPPPPPP"+recyclerViewAdapter.getPatientList().get(position).getClinicID()+" "+ patientList.get(position).getPatientName());
                     startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -272,7 +405,7 @@ public class PatientListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((PatientListActivity)getActivity()).patientNum(PatientLoad());
+
         //patientTotal.setText(String.valueOf("Total "+PatientLoad()));
         Log.v("PatientList", "PatientListTTTTonStart");
 
@@ -382,8 +515,7 @@ public class PatientListFragment extends Fragment {
                     while (str!=null) {
                         str = buffer.readLine();
                         String[] patientStr= str.split(",");
-                        patientList.add(new PatientItem(patientStr[0], patientStr[1], patientStr[3].equals("null")? null:DateAdd(patientStr[3]), patientStr[3].equals("null")? null:DateAdd(patientStr[3]), false));
-                        Log.v("PatientList", "PatientListTTadd가 되는가");
+                        patientList.add(new PatientItem(patientStr[0].replaceAll("\\\"", ""), patientStr[1].replaceAll("\\\"", ""), (patientStr[3].equals("null")? null:patientStr[3].replaceAll("\\\"", "")), (patientStr[4].equals("null")? null:patientStr[4].replaceAll("\\\"", "")), false));
                     }
                     buffer.close();
                 } catch (Exception e) {
@@ -391,7 +523,6 @@ public class PatientListFragment extends Fragment {
                 }
 
             }
-
             recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();  // data set changed
@@ -432,7 +563,9 @@ public class PatientListFragment extends Fragment {
             else all_checkBox.setChecked(false);
         }
     }
-
+    public boolean getDeleteMode(){
+        return deleteMode;
+    }
     public void delete_exit() {
         if(isMultiSelect==true){
             deleteMode = false;
@@ -457,7 +590,26 @@ public class PatientListFragment extends Fragment {
             deleteMode = true;
         }
     }
+    public void patient_delete(){
+        for (int i = 0 ; i<selected_patientList.size() ;i++) {
+            File source = Environment.getExternalStoragePublicDirectory(
+                    "/TremorApp/"+selected_patientList.get(i).getClinicID());
+            File dest = Environment.getExternalStoragePublicDirectory(
+                    "/TremorApp/RemovePatient/"+selected_patientList.get(i).getClinicID());
+            try {
+                FileUtils.copyDirectory(source, dest);
+                File[] deleteList = source.listFiles();
+                for(File file : deleteList) file.delete();
+                source.delete();
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        delete_exit();
+        ((PatientListActivity)getActivity()).patientNum(PatientLoad());
+    }
     public void removeList(String clinicID) {
 
     }

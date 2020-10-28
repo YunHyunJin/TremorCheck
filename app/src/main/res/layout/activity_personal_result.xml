@@ -57,17 +57,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.1"
-                    android:text="직전 결과"
-                    android:textColor="#545454"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/pre_result_date"
@@ -76,50 +65,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="0.1"
                     android:textColor="#545454"
-                    android:textSize="14dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/result_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/H280"
-                    android:layout_marginStart="@dimen/imageWeight"
-                    android:layout_marginEnd="@dimen/imageWeight"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="20"
-                    android:rotation="90"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:text="이번 결과"
-                    android:textColor="#545454"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/result_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:textColor="#545454"
-                    android:textSize="14sp"
+                    android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,66 +76,9 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/T30"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/imageLayout">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
-                android:layout_weight="1"
-
-                android:background="@drawable/bottom_blackline">
-
-                <TextView
-                    android:id="@+id/text"
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1.5"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:text="직전결과"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/text"
-                    app:layout_constraintRight_toLeftOf="@id/pre_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/pre_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:text="이번결과"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/result"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -210,21 +99,6 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/hz_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/hz_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/hz"
                     app:layout_constraintRight_toLeftOf="@id/pre_hz_result"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -239,7 +113,7 @@
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/hz_result"
+                    app:layout_constraintLeft_toRightOf="@id/hz"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -264,21 +138,6 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/mag_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/mag_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/mag"
                     app:layout_constraintRight_toLeftOf="@id/pre_mag_result"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -293,7 +152,7 @@
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/mag_result"
+                    app:layout_constraintLeft_toRightOf="@id/mag"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -318,24 +177,8 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/distance_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/distance_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/distance"
                     app:layout_constraintRight_toLeftOf="@id/pre_distance_result"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/pre_distance_result"
                     android:layout_width="0dp"
@@ -347,7 +190,7 @@
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/distance_result"
+                    app:layout_constraintLeft_toRightOf="@id/distance"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -372,21 +215,6 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/time_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/time_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/time"
                     app:layout_constraintRight_toLeftOf="@id/pre_time_result"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -401,7 +229,7 @@
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/time_result"
+                    app:layout_constraintLeft_toRightOf="@id/time"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -426,21 +254,6 @@
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/speed_result"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/speed_result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/speed"
                     app:layout_constraintRight_toLeftOf="@id/pre_speed_result"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -455,7 +268,7 @@
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/speed_result"
+                    app:layout_constraintLeft_toRightOf="@id/speed"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

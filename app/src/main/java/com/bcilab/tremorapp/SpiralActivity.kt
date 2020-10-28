@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Environment
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -37,7 +38,7 @@ class SpiralActivity : AppCompatActivity() {
     private var timer_flag : Boolean = false
     private var save_timer : Long = 0.toLong()
     private var saveTimer : Long = 0.toLong()
-    private val pathTrace: MutableList<PathTraceData> = mutableListOf()
+    private var pathTrace: MutableList<PathTraceData> = mutableListOf()
     private val timer = object : CountDownTimer(Long.MAX_VALUE, 1000 / 60) {
         override fun onTick(millisUntilFinished: Long) {
             if(timer_flag) pathTrace.add(PathTraceData(currentX, currentY, (Long.MAX_VALUE - millisUntilFinished).toInt()))
@@ -74,8 +75,24 @@ class SpiralActivity : AppCompatActivity() {
         layout.addView(baseLine)
 
         image_path = "$clinicID/$task/$both/$count.jpg"
-        filename = task+"_"+both+"_"+count+"_RowData"
-
+        filename = task+"_"+both+"_"+count+"_RawData"
+        writingagain.setOnClickListener {
+            timer_flag = false
+            save_timer = 0.toLong()
+            saveTimer = 0.toLong()
+            view.clearLayout()
+        }
+        backButton.setOnClickListener {
+            val dlg = AlertDialog.Builder(this@SpiralActivity)
+            dlg.setTitle("종료")
+                    .setMessage("이전 화면으로 되돌아가시겠습니까?")
+                    .setPositiveButton("돌아가기") { dialogInterface, i ->
+                        onBackPressed()
+                        finish()
+                    }
+                    .setNegativeButton("취소") { dialogInterface, i -> }
+                    .show()
+        }
          //그림 그리고 나서, 다음으로 넘어가는 버튼
         writingfinish.setSafeOnClickListener {
             timer.cancel()
@@ -192,6 +209,7 @@ class SpiralActivity : AppCompatActivity() {
             super.clearLayout()
             pathTrace.clear()
             timer.cancel()
+            flag = false
         }
     }
     inner class baseView(context: Context) : View(context) {
@@ -301,7 +319,9 @@ class SpiralActivity : AppCompatActivity() {
         }
         setOnClickListener(safeClickListener)
     }
-
+    override fun onBackPressed() {
+        Toast.makeText(this, "검사 종료를 원하시면 ' < ' 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show()
+    }
     fun readCSV(path: File, file: String): Int {
         var line_length = 0
         var br: BufferedReader? = null

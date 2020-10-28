@@ -24,7 +24,7 @@
             android:drawableLeft="@drawable/ic_action_search"
             android:paddingStart="@dimen/W10"
             android:drawablePadding="@dimen/patientListSearchPadding"
-            android:hint="Search by ClinicID or Name"
+            android:hint="Search by ClinicID or Info"
             android:textColor="#000000"
             android:textColorHint="#838383"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/patientListHeaderH"
                 android:layout_marginStart="@dimen/patientListMargin3"
-                android:layout_marginTop="@dimen/patientListMargin2"
                 android:layout_marginEnd="@dimen/patientListMargin3"
                 android:background="@drawable/white_rounded"
                 android:paddingLeft="@dimen/patientListHeaderP"
@@ -68,7 +67,7 @@
                     android:textColor="#545454"
                     android:background="#0000"
                     android:textSize="@dimen/textSize4"
-                    android:text="Clinic_ID"
+                    android:text="ClinicID"
                     android:drawableRight="@drawable/down"/>
 
                 <TextView

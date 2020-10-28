@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
@@ -77,6 +78,12 @@ public class PatientListActivity extends AppCompatActivity {
                 ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).delete_exit();
             }
         });
+        ((Button) findViewById(R.id.button_delete)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).patient_delete();
+            }
+        });
     }
 
     public void visibleBottom(int visible){
@@ -101,7 +108,7 @@ public class PatientListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             default :
                 {
-                    ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).addPatient();
+                    if(((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).getDeleteMode()==false) ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).addPatient();
                     return true;
                 }
         }

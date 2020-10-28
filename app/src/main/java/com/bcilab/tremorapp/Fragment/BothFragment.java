@@ -1,5 +1,4 @@
 package com.bcilab.tremorapp.Fragment;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,16 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.bcilab.tremorapp.Adapter.ItemClickSupport;
 import com.bcilab.tremorapp.Adapter.ItemDecoration;
-import com.bcilab.tremorapp.Adapter.RecyclerItemClickListener;
 import com.bcilab.tremorapp.Adapter.TaskListViewAdapter;
 import com.bcilab.tremorapp.Data.PatientItem;
 import com.bcilab.tremorapp.Data.ResultData;
 import com.bcilab.tremorapp.Data.TaskItem;
-import com.bcilab.tremorapp.PersonalPatientActivity;
 import com.bcilab.tremorapp.PersonalResultActivity;
 import com.bcilab.tremorapp.R;
 import com.jjoe64.graphview.GraphView;
@@ -36,23 +32,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-public class SpiralRightFragment extends Fragment {
-
+public class BothFragment extends Fragment {
     private String clinicID ;
     private TabLayout tabLayout ;
     private String patientName ;
     private String task ;
     private String both ;
-    private int taskNum ;
-    private GraphView graphView ;
-    private LineGraphSeries<DataPoint> series ;
     private ArrayList<ResultData> resultData = new ArrayList<>() ;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager recyclerViewLayoutManager;
     TaskListViewAdapter taskListViewAdapter;
     ArrayList<TaskItem> tasks = new ArrayList<>();
     ArrayList<TaskItem> selected_tasks = new ArrayList<>();
+
+    RecyclerView recyclerView2;
+    RecyclerView.LayoutManager recyclerViewLayoutManager2;
+    TaskListViewAdapter taskListViewAdapter2;
+    ArrayList<TaskItem> tasks2 = new ArrayList<>();
+    ArrayList<TaskItem> selected_tasks2 = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,53 +60,25 @@ public class SpiralRightFragment extends Fragment {
             task = getArguments().getString("task");
             both = getArguments().getString("both");
         }
-
-        view = inflater.inflate(R.layout.fragment_spiral_right, container, false);
+        String right = "Right";
+        String left = "Left";
+        view = inflater.inflate(R.layout.fragment_both, container, false);
         File path = Environment.getExternalStoragePublicDirectory(
-                "/TremorApp/"+clinicID+"/"+task+both);
-        String filename = clinicID+"_"+task+both+".csv";
+                "/TremorApp/"+clinicID+"/"+task+right);
+        String filename = clinicID+"_"+task+right+".csv";
         readCSV(path, filename);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.measure) ;
-        tabLayout.addTab(tabLayout.newTab().setText("떨림의 주파"));
-        tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
-        tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
-        tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));
-        tabLayout.addTab(tabLayout.newTab().setText("검사 평균 속도"));
-        graphView = (GraphView) view.findViewById(R.id.graph);
-        graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMinX(0);
-        changegGraph(0);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                changegGraph(tab.getPosition()) ;
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                //changeView(0) ;
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        recyclerView = (RecyclerView) view.findViewById(R.id.personal_taskList);
+        recyclerView = (RecyclerView) view.findViewById(R.id.spiral_RightRectangle);
         taskListViewAdapter = new TaskListViewAdapter(getActivity(), tasks, selected_tasks);
         recyclerView.addItemDecoration(new ItemDecoration(view.getContext()));
-        recyclerViewLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerViewLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(taskListViewAdapter);
         for (int i = 0 ; i<resultData.size() ; i++){
-            String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+resultData.get(i).getCount()+".jpg" ;
-            Log.v("SSSSSSSSS","SSSSSSS"+resultData.get(i).getTimestamp());
-            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf(i + 1), taskImage, both.substring(0,1)));
+            String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+right+"_"+resultData.get(i).getCount()+".jpg" ;
+            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i+1)*2), taskImage, right.substring(0,1)));
         }
         taskListViewAdapter.notifyDataSetChanged();
-
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
 
             @Override
@@ -119,10 +88,45 @@ public class SpiralRightFragment extends Fragment {
                 intent.putExtra("clinicID", clinicID) ;
                 intent.putExtra("patientName", patientName) ;
                 intent.putExtra("task", task) ;
-                intent.putExtra("both", both) ;
-                Log.v("PPPPPPPPP","PPPPPPPPPP"+tasks.get(position).getTaskNum());
+                intent.putExtra("both", right) ;
+                int taskNum = (Integer.parseInt(tasks.get(position).getTaskNum())/2);
                 intent.putExtra("taskDate", tasks.get(position).getTaskDate());
-                intent.putExtra("taskNum", tasks.get(position).getTaskNum());
+                Log.v("DDDDDDDDDDDDDDDss", "EEEEEEE"+taskNum);
+                intent.putExtra("taskNum", String.valueOf(taskNum));
+                startActivity(intent);
+            }
+        });
+        resultData = new ArrayList<>() ;
+        path = Environment.getExternalStoragePublicDirectory(
+                "/TremorApp/"+clinicID+"/"+task+left);
+        filename = clinicID+"_"+task+left+".csv";
+        readCSV(path, filename);
+
+        recyclerView2 = (RecyclerView) view.findViewById(R.id.spiral_LeftRectangle);
+        taskListViewAdapter2 = new TaskListViewAdapter(getActivity(), tasks2, selected_tasks2);
+        recyclerView2.addItemDecoration(new ItemDecoration(view.getContext()));
+        recyclerViewLayoutManager2 = new GridLayoutManager(getActivity(), 1);
+        recyclerView2.setLayoutManager(recyclerViewLayoutManager2);
+        recyclerView2.setAdapter(taskListViewAdapter2);
+        for (int i = 0 ; i<resultData.size() ; i++){
+            String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+left+"_"+resultData.get(i).getCount()+".jpg" ;
+            tasks2.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i*2)+1), taskImage, left.substring(0,1)));
+        }
+        taskListViewAdapter2.notifyDataSetChanged();
+        ItemClickSupport.addTo(recyclerView2).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
+
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent intent ;
+                intent = new Intent(getActivity(), PersonalResultActivity.class);
+                intent.putExtra("clinicID", clinicID) ;
+                intent.putExtra("patientName", patientName) ;
+                intent.putExtra("task", task) ;
+                intent.putExtra("both", left) ;
+                int taskNum = Integer.parseInt(tasks.get(position).getTaskNum())/2;
+                Log.v("DDDDDDDDDDDDDDDss", "EEEEEEE"+taskNum+Integer.parseInt(tasks.get(position).getTaskNum())/2);
+                intent.putExtra("taskDate", tasks.get(position).getTaskDate());
+                intent.putExtra("taskNum", String.valueOf(taskNum));
                 startActivity(intent);
             }
         });
@@ -157,58 +161,5 @@ public class SpiralRightFragment extends Fragment {
         }
         return line_length;
     }
-    public void changegGraph(int position){
-        graphView.removeAllSeries();
-        series = new LineGraphSeries<>();
-        series.setColor(Color.parseColor("#285E9F"));
-        switch (position){
-            case 0 :
-            {
-                series.appendData(new DataPoint(0,0), true, 100);
-                for (int i = 0 ; i<resultData.size() ;i++) {
-                    series.appendData(new DataPoint(resultData.get(i).getCount(), resultData.get(i).getHz()), true, 100);
 
-                }
-                graphView.addSeries(series);
-                break;
-            }
-            case 1 :
-            {
-                series.appendData(new DataPoint(0,0), true, 100);
-                for (int i = 0 ; i<resultData.size() ;i++) {
-                    series.appendData(new DataPoint(resultData.get(i).getCount(), resultData.get(i).getMagnitude()), true, 100);
-
-                }
-                graphView.addSeries(series);
-                break;
-            }
-            case 2 :
-            {
-                series.appendData(new DataPoint(0,0), true, 100);
-                for (int i = 0 ; i<resultData.size() ;i++) {
-                    series.appendData(new DataPoint(resultData.get(i).getCount(), resultData.get(i).getDistance()), true, 100);
-                    graphView.addSeries(series);
-                }
-                break;
-            }
-            case 3 :
-            {
-                series.appendData(new DataPoint(0,0), true, 100);
-                for (int i = 0 ; i<resultData.size() ;i++) {
-                    series.appendData(new DataPoint(resultData.get(i).getCount(), resultData.get(i).getTime()), true, 100);
-                    graphView.addSeries(series);
-                }
-                break;
-            }
-            case 4 :
-            {
-                series.appendData(new DataPoint(0,0), true, 100);
-                for (int i = 0 ; i<resultData.size() ;i++) {
-                    series.appendData(new DataPoint(resultData.get(i).getCount(), resultData.get(i).getSpeed()), true, 100);
-                    graphView.addSeries(series);
-                }
-                break;
-            }
-        }
-    }
 }

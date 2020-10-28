@@ -110,19 +110,20 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/handTab"
-            app:tabTextAppearance="@style/MyCustomTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="@dimen/T150"
-            android:background="#FFFFFF"
             app:tabGravity="fill"
             app:tabMaxWidth="0dp"
             app:tabMode="fixed"
+            app:tabRippleColor="@null"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabTextColor="#545454">
+            app:tabTextColor="#FFFFFF"
+            app:tabSelectedTextColor="#545454"
+            style="@style/TabLayoutSelectStyle">
         </android.support.design.widget.TabLayout>
 
         <FrameLayout

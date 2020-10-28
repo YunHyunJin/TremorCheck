@@ -1,34 +1,29 @@
-package com.bcilab.tremorapp.Fragment;
+package com.bcilab.tremorapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bcilab.tremorapp.Adapter.ItemClickSupport;
-import com.bcilab.tremorapp.Adapter.ItemDecoration;
-import com.bcilab.tremorapp.Adapter.RecyclerItemClickListener;
-import com.bcilab.tremorapp.Adapter.TaskListViewAdapter;
-import com.bcilab.tremorapp.Data.PatientItem;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bcilab.tremorapp.Data.ResultData;
-import com.bcilab.tremorapp.Data.TaskItem;
-import com.bcilab.tremorapp.PersonalPatientActivity;
-import com.bcilab.tremorapp.PersonalResultActivity;
-import com.bcilab.tremorapp.R;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,46 +32,54 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SpiralRightFragment extends Fragment {
-
-    private String clinicID ;
-    private TabLayout tabLayout ;
+public class PersonalResultActivity extends AppCompatActivity {
+    private String clinicID;
     private String patientName ;
     private String task ;
     private String both ;
+    private String timestamp ;
     private int taskNum ;
+    private String[] spiralStr;
+    private TabLayout tabLayout ;
+    private AlertDialog.Builder builder ;
+    private AlertDialog dialog ;
     private GraphView graphView ;
     private LineGraphSeries<DataPoint> series ;
     private ArrayList<ResultData> resultData = new ArrayList<>() ;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager recyclerViewLayoutManager;
-    TaskListViewAdapter taskListViewAdapter;
-    ArrayList<TaskItem> tasks = new ArrayList<>();
-    ArrayList<TaskItem> selected_tasks = new ArrayList<>();
-    @Nullable
+    private String image_path ;
+    private String rawdata ;
+    private File path ;
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view ;
-        if (getArguments() != null) {
-            clinicID = getArguments().getString("clinicID");
-            patientName = getArguments().getString("patientName");
-            task = getArguments().getString("task");
-            both = getArguments().getString("both");
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_personal_result);
 
-        view = inflater.inflate(R.layout.fragment_spiral_right, container, false);
-        File path = Environment.getExternalStoragePublicDirectory(
+        Intent intent = getIntent() ;
+        clinicID = intent.getExtras().getString("clinicID");
+        patientName = intent.getExtras().getString("patientName");
+        task = intent.getExtras().getString("task");
+        both = intent.getExtras().getString("both");
+        timestamp = intent.getExtras().getString("taskDate");
+        taskNum = Integer.parseInt(intent.getExtras().getString("taskNum"));
+
+        path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/"+clinicID+"/"+task+both);
         String filename = clinicID+"_"+task+both+".csv";
+        rawdata = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+taskNum+"_RawData.csv";
+        image_path = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+taskNum+".jpg";
         readCSV(path, filename);
-
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.measure) ;
+        ImageView result_image = findViewById(R.id.pre_result_image);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") +(task.equals("Spiral") ? "나선 그리기 검사" : "선 긋기 검사"));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.measure) ;
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 주파"));
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
         tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 평균 속도"));
-        graphView = (GraphView) view.findViewById(R.id.graph);
+        graphView = (GraphView) findViewById(R.id.graph);
         graphView.getViewport().setMinY(0);
         graphView.getViewport().setMinX(0);
         changegGraph(0);
@@ -96,51 +99,50 @@ public class SpiralRightFragment extends Fragment {
 
             }
         });
-        recyclerView = (RecyclerView) view.findViewById(R.id.personal_taskList);
-        taskListViewAdapter = new TaskListViewAdapter(getActivity(), tasks, selected_tasks);
-        recyclerView.addItemDecoration(new ItemDecoration(view.getContext()));
-        recyclerViewLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(taskListViewAdapter);
-        for (int i = 0 ; i<resultData.size() ; i++){
-            String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+resultData.get(i).getCount()+".jpg" ;
-            Log.v("SSSSSSSSS","SSSSSSS"+resultData.get(i).getTimestamp());
-            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf(i + 1), taskImage, both.substring(0,1)));
-        }
-        taskListViewAdapter.notifyDataSetChanged();
-
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
-
+        result_image.post(new Runnable() {
             @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent intent ;
-                intent = new Intent(getActivity(), PersonalResultActivity.class);
-                intent.putExtra("clinicID", clinicID) ;
-                intent.putExtra("patientName", patientName) ;
-                intent.putExtra("task", task) ;
-                intent.putExtra("both", both) ;
-                Log.v("PPPPPPPPP","PPPPPPPPPP"+tasks.get(position).getTaskNum());
-                intent.putExtra("taskDate", tasks.get(position).getTaskDate());
-                intent.putExtra("taskNum", tasks.get(position).getTaskNum());
-                startActivity(intent);
+            public void run() {
+                Glide.with(getApplicationContext()).load(image_path)
+                        .into(result_image);
             }
         });
-        return view ;
+        ((TextView) findViewById(R.id.pre_result_date)).setText(timestamp);
+        if(resultData.get(taskNum-1).getHz() == -1) {
+            ((TextView) findViewById(R.id.pre_hz_result)).setText("떨림 횟수가 적음");
+        }
+        else {
+            ((TextView) findViewById(R.id.pre_hz_result)).setText(String.format("%.2f",resultData.get(taskNum-1).getHz())+" Hz") ;
+        }
+        ((TextView) findViewById(R.id.pre_mag_result)).setText(String.format("%.2f",resultData.get(taskNum-1).getMagnitude())+" cm") ;
+        ((TextView) findViewById(R.id.pre_distance_result)).setText(String.format("%.2f",resultData.get(taskNum-1).getDistance())+" cm") ;
+        ((TextView) findViewById(R.id.pre_time_result)).setText(String.format("%.2f",resultData.get(taskNum-1).getTime())+" sec") ;
+        ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",resultData.get(taskNum-1).getSpeed())+" cm/sec") ;
+
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                onBackPressed();
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
     public int readCSV(File path, String file) {
         int line_length = 0 ;
-        String[] resultArr;
         BufferedReader br = null;
         File spiralCSV = new File(path, file);
         try{
             br = new BufferedReader(new FileReader(spiralCSV));
             String line = "";
-            line=br.readLine();
             while((line = br.readLine()) != null){
-                resultArr=line.split(",");
-                resultData.add(new ResultData(Integer.parseInt(resultArr[0]),Double.parseDouble(resultArr[1]), Double.parseDouble(resultArr[2]),Double.parseDouble(resultArr[3]),Double.parseDouble(resultArr[4]),Double.parseDouble(resultArr[5]), resultArr[6].substring(2,4)+"."+resultArr[6].substring(4,6)+"."+resultArr[6].substring(6,8)+" "
-                        +resultArr[6].substring(9,11)+":"+resultArr[6].substring(12, 14)));
+                line_length++;
+                spiralStr=line.split(",");
+                if (!spiralStr[0].equals("Count")) {
+                    resultData.add(new ResultData(Integer.parseInt(spiralStr[0]),Double.parseDouble(spiralStr[1]), Double.parseDouble(spiralStr[2]),Double.parseDouble(spiralStr[3]),Double.parseDouble(spiralStr[4]),Double.parseDouble(spiralStr[5]), spiralStr[6].substring(2,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)));
+                }
             }
         }catch(FileNotFoundException e){
             e.printStackTrace();

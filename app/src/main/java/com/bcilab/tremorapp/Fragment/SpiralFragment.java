@@ -1,5 +1,7 @@
 package com.bcilab.tremorapp.Fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,15 +10,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bcilab.tremorapp.PersonalPatientActivity;
+import com.bcilab.tremorapp.LineActivity;
 import com.bcilab.tremorapp.R;
-import com.bcilab.tremorapp.TaskSelectActivity;
+import com.bcilab.tremorapp.SpiralActivity;
 
 public class SpiralFragment extends Fragment {
 
@@ -24,9 +28,10 @@ public class SpiralFragment extends Fragment {
     private TabLayout tabLayout ;
     private String patientName ;
     private String task ;
-    private int taskNum ;
-    private String hand ;
+    private int right, left, taskNum ;
+    private String both ;
     private SpiralRightFragment spiralRightFragment ;
+    private BothFragment bothFragment ;
     private FragmentTransaction fragmentTransaction ;
     @Nullable
     @Override
@@ -36,18 +41,20 @@ public class SpiralFragment extends Fragment {
             clinicID = getArguments().getString("clinicID");
             patientName = getArguments().getString("patientName");
             task = getArguments().getString("task");
-            taskNum = getArguments().getInt("taskNum",0);
+            right = getArguments().getInt("right",0);
+            left = getArguments().getInt("left",0);
+            taskNum = right+left ;
         }
-
         view = inflater.inflate(R.layout.fragment_spiral, container, false);
         Log.v("SpiralFragment", "TaskName"+task) ;
         ((TextView)view.findViewById(R.id.client_name)).setText(patientName);
         ((TextView)view.findViewById(R.id.task_count)).setText("총 "+taskNum+"번");
         ((TextView)view.findViewById(R.id.task_name)).setText(task.equals("Spiral")?"나선 그리기 검사" : "선 긋기 검사");
         tabLayout = (TabLayout) view.findViewById(R.id.handTab) ;
-        tabLayout.addTab(tabLayout.newTab().setText("오른손"));
-        tabLayout.addTab(tabLayout.newTab().setText("왼손"));
+        tabLayout.addTab(tabLayout.newTab().setText("오른손 ("+right+")"));
+        tabLayout.addTab(tabLayout.newTab().setText("왼손 ("+left+")"));
         tabLayout.addTab(tabLayout.newTab().setText("양손 모아보기"));
+        tabLayout.setSelectedTabIndicatorHeight(0);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -70,11 +77,56 @@ public class SpiralFragment extends Fragment {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TaskSelectActivity.class);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                LayoutInflater inflater = getLayoutInflater();
+                View dialog_view = inflater.inflate(R.layout.activity_popup, null);
+                builder.setView(dialog_view);
+                final Button select_right = (Button) dialog_view.findViewById(R.id.right);
+                final Button select_left = (Button) dialog_view.findViewById(R.id.left);
+                builder.setTitle(task.equals("Spiral") ? "나선 그리기 검사" : "선 긋기 검사");
+                final AlertDialog dialog = builder.create() ;
+                dialog.show() ;
+                Intent intent ;
+                if(task.equals("Spiral"))
+                    intent = new Intent(getActivity(), SpiralActivity.class) ;
+                else intent = new Intent(getActivity(), LineActivity.class) ;
                 intent.putExtra("clinicID", clinicID);
                 intent.putExtra("patientName", patientName);
                 intent.putExtra("task", task) ;
-                startActivity(intent);
+                select_right.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intent.putExtra("both","Right") ;
+                        Context context = getActivity();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View customToast = inflater.inflate(R.layout.toast_custom, null);
+                        Toast customtoast = new Toast(context);
+                        customtoast.setView(customToast);
+                        customtoast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        customtoast.setDuration(Toast.LENGTH_LONG);
+                        customtoast.show();
+                        startActivity(intent) ;
+                        dialog.dismiss();
+                    }
+                });
+
+                select_left.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intent.putExtra("both","Left") ;
+                        Context context = getActivity();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View customToast = inflater.inflate(R.layout.toast_custom, null);
+                        Toast customtoast = new Toast(context);
+                        customtoast.setView(customToast);
+                        customtoast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+                        customtoast.setDuration(Toast.LENGTH_LONG);
+                        customtoast.show();
+                        startActivity(intent) ;
+                        dialog.dismiss();
+                    }
+                });
+
             }
         });
         changeView(0);
@@ -84,15 +136,15 @@ public class SpiralFragment extends Fragment {
     public void changeView(int position) {
         Bundle bundle ;
         spiralRightFragment = new SpiralRightFragment() ;
-        //nonTaskFragment = new NonTaskFragment() ;
+        bothFragment = new BothFragment();
         switch (position){
             case 0 :
                 bundle = new Bundle() ;
-                hand = "Right";
+                both = "Right";
                 bundle.putString("patientName", patientName) ;
                 bundle.putString("clinicID", clinicID) ;
                 bundle.putString("task", task) ;
-                bundle.putString("hand", "Right") ;
+                bundle.putString("both", "Right") ;
                 spiralRightFragment.setArguments(bundle);
                 fragmentTransaction = getChildFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.handside, spiralRightFragment);
@@ -100,16 +152,28 @@ public class SpiralFragment extends Fragment {
                 break;
             case 1 :
                 bundle = new Bundle() ;
-                hand = "Left";
+                both = "Left";
                 bundle.putString("patientName", patientName) ;
                 bundle.putString("clinicID", clinicID) ;
                 bundle.putString("task", task) ;
-                bundle.putString("hand", "Left") ;
+                bundle.putString("both", "Left") ;
                 spiralRightFragment.setArguments(bundle);
                 fragmentTransaction = getChildFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.handside, spiralRightFragment);
                 fragmentTransaction.commit();
                 break ;
+            case 2:
+                bundle = new Bundle() ;
+                both = "Both";
+                bundle.putString("patientName", patientName) ;
+                bundle.putString("clinicID", clinicID) ;
+                bundle.putString("task", task) ;
+                bundle.putString("both", both) ;
+                bothFragment.setArguments(bundle);
+                fragmentTransaction = getChildFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.handside, bothFragment);
+                fragmentTransaction.commit();
+                break;
         }
     }
 

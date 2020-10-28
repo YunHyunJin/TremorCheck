@@ -95,5 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void novisible(){
         checkboxIsVisible = false ;
     }
-
+    public ArrayList<PatientItem> getPatientList() {
+        return patientList;
+    }
 }
