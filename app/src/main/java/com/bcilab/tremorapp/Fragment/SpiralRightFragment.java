@@ -106,7 +106,7 @@ public class SpiralRightFragment extends Fragment {
         for (int i = 0 ; i<resultData.size() ; i++){
             String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+resultData.get(i).getCount()+".jpg" ;
             Log.v("SSSSSSSSS","SSSSSSS"+resultData.get(i).getTimestamp());
-            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf(i + 1), taskImage, both.substring(0,1)));
+            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf(i + 1), taskImage, null));
         }
         taskListViewAdapter.notifyDataSetChanged();
 

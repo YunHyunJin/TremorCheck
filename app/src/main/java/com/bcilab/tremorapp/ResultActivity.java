@@ -114,7 +114,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
 
-        ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
+        ((TextView) findViewById(R.id.pre_result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
                 +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
 
         final ImageView result_image = findViewById(R.id.result_image);

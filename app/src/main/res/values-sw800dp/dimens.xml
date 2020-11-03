@@ -17,7 +17,6 @@
 
     <dimen name="patientListAddW">180dp</dimen>
     <dimen name="patientListAddH">44dp</dimen>
-    <dimen name="patientListAdhdE">40dp</dimen>
 
     <dimen name="patientListMargin">8dp</dimen>
 
@@ -47,6 +46,7 @@
     <dimen name="textSize5">24sp</dimen>
     <dimen name="personalDotW">36dp</dimen>
 
+    <dimen name="W45">45dp</dimen>
     <dimen name="H110">110dp</dimen>
     <dimen name="S34">34dp</dimen>
     <dimen name="T25">25dp</dimen>
@@ -61,9 +61,10 @@
     <dimen name="S230">230dp</dimen>
     <dimen name="S458">458dp</dimen>
     <dimen name="T30">30dp</dimen>
-    <dimen name="H430">430dp</dimen>
+    <dimen name="H380">380dp</dimen>
 
     <dimen name="W400">400dp</dimen>
+    <dimen name="H420">420dp</dimen>
     <dimen name="H280">280dp</dimen>
     <dimen name="S70">70dp</dimen>
     <dimen name="S80">80dp</dimen>

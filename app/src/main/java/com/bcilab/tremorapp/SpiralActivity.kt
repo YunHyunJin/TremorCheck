@@ -44,7 +44,6 @@ class SpiralActivity : AppCompatActivity() {
             if(timer_flag) pathTrace.add(PathTraceData(currentX, currentY, (Long.MAX_VALUE - millisUntilFinished).toInt()))
             else pathTrace.add(PathTraceData(currentX, currentY, (saveTimer+(Long.MAX_VALUE - millisUntilFinished)).toInt()))
             save_timer= Long.MAX_VALUE - millisUntilFinished
-            Log.v("SpiralActivity", "ActivityyyySave"+currentX+" "+currentY+" "+(Long.MAX_VALUE - millisUntilFinished).toInt()+" "+saveTimer)
         }
 
         override fun onFinish() {}
@@ -182,7 +181,6 @@ class SpiralActivity : AppCompatActivity() {
             currentX = event.x
             currentY = event.y
             isdraw = true
-            Log.v("SpiralActivity", "Activityyyy_Touch"+currentX+" "+currentY+"Spiral")
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (!flag) {

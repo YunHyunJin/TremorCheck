@@ -39,6 +39,7 @@ public class BothFragment extends Fragment {
     private String task ;
     private String both ;
     private ArrayList<ResultData> resultData = new ArrayList<>() ;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager recyclerViewLayoutManager;
     TaskListViewAdapter taskListViewAdapter;
@@ -76,7 +77,7 @@ public class BothFragment extends Fragment {
         recyclerView.setAdapter(taskListViewAdapter);
         for (int i = 0 ; i<resultData.size() ; i++){
             String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+right+"_"+resultData.get(i).getCount()+".jpg" ;
-            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i+1)*2), taskImage, right.substring(0,1)));
+            tasks.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i+1)), taskImage, right.substring(0,1)));
         }
         taskListViewAdapter.notifyDataSetChanged();
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
@@ -89,7 +90,7 @@ public class BothFragment extends Fragment {
                 intent.putExtra("patientName", patientName) ;
                 intent.putExtra("task", task) ;
                 intent.putExtra("both", right) ;
-                int taskNum = (Integer.parseInt(tasks.get(position).getTaskNum())/2);
+                int taskNum = (Integer.parseInt(tasks.get(position).getTaskNum()));
                 intent.putExtra("taskDate", tasks.get(position).getTaskDate());
                 Log.v("DDDDDDDDDDDDDDDss", "EEEEEEE"+taskNum);
                 intent.putExtra("taskNum", String.valueOf(taskNum));
@@ -110,7 +111,7 @@ public class BothFragment extends Fragment {
         recyclerView2.setAdapter(taskListViewAdapter2);
         for (int i = 0 ; i<resultData.size() ; i++){
             String taskImage = path.toString()+"/"+clinicID+"_"+task+"_"+left+"_"+resultData.get(i).getCount()+".jpg" ;
-            tasks2.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i*2)+1), taskImage, left.substring(0,1)));
+            tasks2.add(new TaskItem(resultData.get(i).getTimestamp(), String.valueOf((i+1)), taskImage, left.substring(0,1)));
         }
         taskListViewAdapter2.notifyDataSetChanged();
         ItemClickSupport.addTo(recyclerView2).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
@@ -123,7 +124,7 @@ public class BothFragment extends Fragment {
                 intent.putExtra("patientName", patientName) ;
                 intent.putExtra("task", task) ;
                 intent.putExtra("both", left) ;
-                int taskNum = Integer.parseInt(tasks.get(position).getTaskNum())/2;
+                int taskNum = Integer.parseInt(tasks.get(position).getTaskNum());
                 Log.v("DDDDDDDDDDDDDDDss", "EEEEEEE"+taskNum+Integer.parseInt(tasks.get(position).getTaskNum())/2);
                 intent.putExtra("taskDate", tasks.get(position).getTaskDate());
                 intent.putExtra("taskNum", String.valueOf(taskNum));

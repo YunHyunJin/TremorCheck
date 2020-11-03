@@ -16,23 +16,23 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".PatientListActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalPatientActivity" />
-        <activity android:name=".TaskSelectActivity" />
-        <activity android:name=".SpiralActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".AnalysisActivity" />
-        <activity android:name=".LineActivity" />
-        <activity android:name=".PersonalResultActivity"></activity>
+        <activity android:name=".PersonalPatientActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".TaskSelectActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SpiralActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ResultActivity" android:screenOrientation="portrait" />
+        <activity android:name=".AnalysisActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".LineActivity" android:screenOrientation="portrait" />
+        <activity android:name=".PersonalResultActivity" android:screenOrientation="portrait"></activity>
     </application>
-
 </manifest>

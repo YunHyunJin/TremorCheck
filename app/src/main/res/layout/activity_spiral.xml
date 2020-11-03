@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,28 +37,22 @@
 
     <Button
         android:id="@+id/writingfinish"
-        android:layout_width="@dimen/W150"
-        android:layout_height="@dimen/H50"
-        android:layout_marginEnd="@dimen/W695"
-        android:layout_marginTop="@dimen/personalBack"
-        android:text="다음"
-        android:rotation="270"
-        android:textColor="@color/list_item_normal_state"
-        android:background="@drawable/green_rounded"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="@dimen/H50"
+        android:layout_height="@dimen/W150"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/writingagain"
-        android:layout_width="@dimen/W150"
-        android:layout_height="@dimen/H50"
-        android:layout_marginTop="@dimen/H120"
-        android:layout_marginEnd="@dimen/W695"
-        android:background="@drawable/green_rounded"
-        android:rotation="270"
-        android:text="다시"
-        android:textColor="@color/list_item_normal_state"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="@dimen/H50"
+        android:layout_height="@dimen/W150"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        android:background="@drawable/re_button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/writingfinish" />
 
 

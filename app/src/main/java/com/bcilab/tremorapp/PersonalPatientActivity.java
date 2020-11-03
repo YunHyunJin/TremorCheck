@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bcilab.tremorapp.Data.PatientItem;
 import com.bcilab.tremorapp.Fragment.NonTaskFragment;
@@ -49,8 +51,8 @@ public class PersonalPatientActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         Intent intent = getIntent() ;
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
-        tabLayout.addTab(tabLayout.newTab().setText("Spiral"));
-        tabLayout.addTab(tabLayout.newTab().setText("Line"));
+        tabLayout.addTab(tabLayout.newTab().setText("나선 그리기"));
+        tabLayout.addTab(tabLayout.newTab().setText("선 긋기"));
         clinicID = intent.getExtras().getString("clinicID");
         patientName = intent.getExtras().getString("patientName");
         task = intent.getExtras().getString("task");
@@ -117,7 +119,8 @@ public class PersonalPatientActivity extends AppCompatActivity {
                                                     File[] deleteList = source.listFiles();
                                                     for(File file : deleteList) file.delete();
                                                     source.delete();
-                                                    onBackPressed();
+                                                    Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
+                                                    startActivity(intent);
                                                     finish();
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
@@ -140,12 +143,19 @@ public class PersonalPatientActivity extends AppCompatActivity {
                 return true;
             }
             case android.R.id.home: {
-                onBackPressed();
+                Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
+                startActivity(intent);
                 finish();
                 return true;
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
+        startActivity(intent);
+        finish();
     }
     public String PatientLoad(String clinic_id) {
         File path = Environment.getExternalStoragePublicDirectory(

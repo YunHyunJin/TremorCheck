@@ -22,11 +22,11 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="@dimen/S34"
+            android:layout_marginTop="40px"
             android:text="직전 결과 비교"
             android:textColor="#545454"
-            android:textSize="20sp"
+            android:textSize="@dimen/TX20"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40px"
             app:layout_constraintTop_toBottomOf="@id/textView5">
 
             <LinearLayout
@@ -65,7 +65,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="0.1"
                     android:textColor="#545454"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,9 +82,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
                 android:layout_weight="1"
                 android:background="@drawable/bottom_blackline">
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="1초당 떨림의 횟수"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
@@ -110,7 +110,7 @@
                     android:gravity="center_horizontal"
                     android:text="이번결과"
                     android:textAlignment="center"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/textSize5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@id/hz"
@@ -121,9 +121,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
                 android:layout_weight="1"
                 android:background="@drawable/bottom_blackline">
 
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="떨림의 세기"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
@@ -149,7 +149,7 @@
                     android:gravity="center_horizontal"
                     android:text="이번결과"
                     android:textAlignment="center"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/textSize5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@id/mag"
@@ -160,9 +160,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
                 android:layout_weight="1"
                 android:background="@drawable/bottom_blackline">
 
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="목표선에 벗어난 거리"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
@@ -187,7 +187,7 @@
                     android:gravity="center_horizontal"
                     android:text="이번결과"
                     android:textAlignment="center"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/textSize5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@id/distance"
@@ -198,9 +198,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
                 android:layout_weight="1"
                 android:background="@drawable/bottom_blackline">
 
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="검사 수행 시간"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
@@ -226,7 +226,7 @@
                     android:gravity="center_horizontal"
                     android:text="이번결과"
                     android:textAlignment="center"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/textSize5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@id/time"
@@ -237,9 +237,9 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
                 android:layout_weight="1"
                 android:background="@drawable/bottom_blackline">
 
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="검사 평균 속도"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/TX20"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintHorizontal_weight="1.5"
@@ -265,7 +265,7 @@
                     android:gravity="center_horizontal"
                     android:text="이번결과"
                     android:textAlignment="center"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/textSize5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@id/speed"
@@ -279,25 +279,25 @@
             android:id="@+id/result_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="@dimen/T30"
+            android:layout_marginStart="@dimen/H50"
+            android:layout_marginEnd="@dimen/H50"
             android:gravity="left|center_vertical"
             android:text="이전 결과 추이"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
+            android:paddingEnd="@dimen/T25"
+            android:paddingStart="@dimen/T25"
             android:drawableRight="@drawable/down"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="@dimen/TX20"
             android:background="@drawable/white_rounded"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/spiral_graph"
             android:layout_width="match_parent"
-            android:layout_height="430dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
+            android:layout_height="@dimen/H420"
+            android:layout_marginEnd="@dimen/H50"
+            android:layout_marginStart="@dimen/H50"
             app:layout_constraintTop_toBottomOf="@+id/result_button" >
 
             <android.support.design.widget.TabLayout
@@ -312,14 +312,13 @@
             <com.jjoe64.graphview.GraphView
                 android:id="@+id/graph"
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
+                android:layout_height="@dimen/H380"
                 app:layout_constraintTop_toBottomOf="@+id/measure" >
             </com.jjoe64.graphview.GraphView>
-
         </android.support.constraint.ConstraintLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/S34"
             app:layout_constraintTop_toBottomOf="@+id/spiral_graph"/>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
