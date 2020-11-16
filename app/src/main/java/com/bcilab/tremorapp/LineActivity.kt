@@ -82,12 +82,15 @@ class LineActivity : AppCompatActivity() {
         count = readCSV(path,clinicID+"_"+task+both+".csv")
         image_path = "$clinicID/$task/$both/$count.jpg"
         filename = task+"_"+both+"_"+count+"_RawData"
+
         writingagain.setOnClickListener {
             timer_flag = false
             save_timer = 0.toLong()
             saveTimer = 0.toLong()
+            isdraw = false
             view.clearLayout()
         }
+
         backButton.setOnClickListener {
             val dlg = AlertDialog.Builder(this@LineActivity)
             dlg.setTitle("종료")

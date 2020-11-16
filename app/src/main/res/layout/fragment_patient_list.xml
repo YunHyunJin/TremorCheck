@@ -24,7 +24,7 @@
             android:drawableLeft="@drawable/ic_action_search"
             android:paddingStart="@dimen/W10"
             android:drawablePadding="@dimen/patientListSearchPadding"
-            android:hint="Search by ClinicID or Info"
+            android:hint="Search by UserID or Info"
             android:textColor="#000000"
             android:textColorHint="#838383"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
                     android:textColor="#545454"
                     android:background="#0000"
                     android:textSize="@dimen/textSize4"
-                    android:text="ClinicID"
+                    android:text="UserID"
                     android:drawableRight="@drawable/down"/>
 
                 <TextView

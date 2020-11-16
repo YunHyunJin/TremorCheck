@@ -17,6 +17,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import com.bcilab.tremorapp.Data.BaseData
+import com.bcilab.tremorapp.Data.BaseTraceData
 import com.bcilab.tremorapp.Data.PathTraceData
 import com.bcilab.tremorapp.Function.SafeClickListener
 import com.bcilab.tremorapp.Function.fitting
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_spiral.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.ArrayList
 
 class SpiralActivity : AppCompatActivity() {
     private var filename: String = ""
@@ -38,7 +41,10 @@ class SpiralActivity : AppCompatActivity() {
     private var timer_flag : Boolean = false
     private var save_timer : Long = 0.toLong()
     private var saveTimer : Long = 0.toLong()
+    private var rotate : Int = 0
+    private val rotate_size : Int = 750
     private var pathTrace: MutableList<PathTraceData> = mutableListOf()
+    private var baseTrace : MutableList<BaseTraceData> = mutableListOf()
     private val timer = object : CountDownTimer(Long.MAX_VALUE, 1000 / 60) {
         override fun onTick(millisUntilFinished: Long) {
             if(timer_flag) pathTrace.add(PathTraceData(currentX, currentY, (Long.MAX_VALUE - millisUntilFinished).toInt()))
@@ -80,6 +86,7 @@ class SpiralActivity : AppCompatActivity() {
             save_timer = 0.toLong()
             saveTimer = 0.toLong()
             view.clearLayout()
+            isdraw = false
         }
         backButton.setOnClickListener {
             val dlg = AlertDialog.Builder(this@SpiralActivity)
@@ -128,10 +135,10 @@ class SpiralActivity : AppCompatActivity() {
                 }finally {
                     captureView.recycle();
                 }
-                val metaData = "positionX,positionY,time"
+                var metaData = "positionX,positionY,time"
                 //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
                 if (!path.exists()) path.mkdirs()
-                val file = File(path, "${clinicID}_$filename.csv")
+                var file = File(path, "${clinicID}_$filename.csv")
                 try {
                     PrintWriter(file).use { out ->
                         out.println(metaData)
@@ -142,10 +149,41 @@ class SpiralActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
                     println(e.message)
                 }
+                var remove_num = baseTrace.size-pathTrace.size
+                var last = remove_num%10
+                var first = 0
+                var plus = (rotate_size/10).toInt()
+                for (i in 0..9) {
+                    var first_num = first-rotate
+                    var last_num = first_num+plus-1
+                    var random_num = (remove_num/10).toInt()
+                    if (last!=0){
+                        random_num+=1
+                        last-=1
+                    }
+                    list_remove(random_num,first_num,last_num)
+                    first+=plus
+                }
+                val baseCsv = task+"_"+both+"_"+count+"_BaseData"
+                metaData = "baseX,baseY"
+                //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
+                file = File(path, "${clinicID}_$baseCsv.csv")
+                try {
+                    PrintWriter(file).use { out ->
+                        out.println(metaData)
+                        for (item in baseTrace)
+                            out.println(item.joinToString(","))
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
+                    println(e.message)
+                }
+                Log.v("pathTrace","PathTTraceint"+pathTrace.size+" "+baseTrace.size)
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
                 filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
+
                 intent.putExtra("timestamp", filename)
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
@@ -154,7 +192,6 @@ class SpiralActivity : AppCompatActivity() {
                 intent.putExtra("image_path", resut_image_path)
                 intent.putExtra("data_path", data_path)
                 startActivity(intent)
-                Toast.makeText(this, "Wait...", Toast.LENGTH_LONG).show()
                 loadingEnd()
                 finish()
 
@@ -162,6 +199,7 @@ class SpiralActivity : AppCompatActivity() {
             /* ******************************** processing image file *************************************/
 
             if (pathTrace.size > 2) {
+                Log.v("pathTrace","PathTTrace")
                 prevData = pathTrace[pathTrace.size - 1]
                 for (i in (pathTrace.size - 2) downTo 0) {
                     if (prevData.isSamePosition(pathTrace[i]))
@@ -214,7 +252,7 @@ class SpiralActivity : AppCompatActivity() {
         private val startX = (this.resources.displayMetrics.widthPixels / 2.1).toInt()
         private val startY = (this.resources.displayMetrics.heightPixels / 2.0).toInt()
 
-        private val theta = FloatArray(750) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
+        private val theta = FloatArray(rotate_size) { (((it * (Math.PI / 180)) / 3) * 2).toFloat() }
         private val basePath = Path()
         private val basePaint = Paint()
 
@@ -233,26 +271,31 @@ class SpiralActivity : AppCompatActivity() {
             basePath.moveTo(startX.toFloat(), startY.toFloat())
             var baseX = startX.toFloat()
             var baseY = startY.toFloat()
+            var i = 0
+            baseTrace = arrayListOf()
             for (t in theta) {
                 baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
                 baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
                 basePath.lineTo(baseX, baseY)
+                baseTrace.add(BaseTraceData(baseX,baseY))
+                Log.v("spiralActivity", "spiralll  "+baseY+"  "+baseX)
                 baseData.append("\n$baseX,$baseY")
-
+                i++
             }
+            Log.v("spiralActivity", "spiralll  "+i+baseTrace.size)
             canvas.drawPath(basePath, basePaint)
 
-            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
-
-            try {
-                val write = FileWriter(baseCsv, false)
-                val csv = PrintWriter(write)
-                csv.println(baseData)
-                csv.close()
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+//            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
+//
+//            try {
+//                val write = FileWriter(baseCsv, false)
+//                val csv = PrintWriter(write)
+//                csv.println(baseData)
+//                csv.close()
+//
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
 
         }
 
@@ -294,6 +337,16 @@ class SpiralActivity : AppCompatActivity() {
             if (System.out != null)
                 System.out.close()
             // saveFile = null
+        }
+    }
+    fun list_remove(random_num : Int, first : Int, last : Int) {
+        var last_num : Int
+        for (i in 0..random_num-1){
+            last_num=last-i+1
+            val num = Random().nextInt(last_num-first)+first
+            baseTrace.removeAt(num)
+            Log.v("Spiral","for_rotate"+i+" "+rotate+" "+num)
+            rotate+=1
         }
     }
     fun loading() {

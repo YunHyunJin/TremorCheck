@@ -84,6 +84,8 @@ public class PatientListActivity extends AppCompatActivity {
                 ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).patient_delete();
             }
         });
+
+
     }
 
     public void visibleBottom(int visible){
@@ -94,7 +96,7 @@ public class PatientListActivity extends AppCompatActivity {
         selectNum.setText(size);
     }
     public void patientNum(int size){
-        toolbar.setTitle("환자 목록 : "+size+"명");
+        toolbar.setTitle("사용자 목록 : "+size+"명");
         setSupportActionBar(toolbar);
     }
     @Override

@@ -10,7 +10,7 @@
         android:id="@+id/textviewLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Patient"
+        android:text="Add User"
         android:textSize="28sp" />
 
     <EditText
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textviewLogo"
         android:ems="10"
-        android:hint="Clinical_ID"
+        android:hint="User ID"
         android:inputType="textMultiLine|textNoSuggestions">
 
     </EditText>

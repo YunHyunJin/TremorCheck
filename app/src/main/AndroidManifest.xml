@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,8 +16,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".PatientListActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
@@ -27,12 +27,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalPatientActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".TaskSelectActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SpiralActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ResultActivity" android:screenOrientation="portrait" />
-        <activity android:name=".AnalysisActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".LineActivity" android:screenOrientation="portrait" />
-        <activity android:name=".PersonalResultActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".PersonalPatientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TaskSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SpiralActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AnalysisActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PersonalResultActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".example"></activity>
     </application>
+
 </manifest>

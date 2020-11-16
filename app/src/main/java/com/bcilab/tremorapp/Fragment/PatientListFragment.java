@@ -439,7 +439,7 @@ public class PatientListFragment extends Fragment {
                             "/TremorApp/"+clinic_id);
                     Log.v("PatintList", "환자 id"+clinic_id);
                     if (!path.mkdirs()) {
-                        Toast.makeText(getActivity(), "동일한 Clinic ID가 존재합니다.\nid나 이름을 변경하여 등록하세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "동일한 User ID가 존재합니다.\nid나 info를 변경하여 등록하세요.", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Log.v("PatintList", "환자 추가"+clinic_id);
@@ -473,7 +473,7 @@ public class PatientListFragment extends Fragment {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getActivity(), "환자 추가", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "사용자 추가", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -551,10 +551,10 @@ public class PatientListFragment extends Fragment {
                 patientList.get(position).setDeleteBox(true);
             }
             if (selected_patientList.size() > 0) {
-                ((PatientListActivity)getActivity()).selectNum("총 " + selected_patientList.size() + " 명의 환자 선택");
+                ((PatientListActivity)getActivity()).selectNum("총 " + selected_patientList.size() + " 명의 사용자 선택");
             }
             else
-                ((PatientListActivity)getActivity()).selectNum("총 0 명의 환자 선택");
+                ((PatientListActivity)getActivity()).selectNum("총 0 명의 사용자 선택");
             recyclerViewAdapter.refreshAdapter(patientList, selected_patientList);
 
             if(selected_patientList.size()==patientList.size()){
