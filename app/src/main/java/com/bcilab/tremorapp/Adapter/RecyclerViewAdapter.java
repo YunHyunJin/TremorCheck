@@ -5,13 +5,16 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bcilab.tremorapp.Data.PatientItem;
+import com.bcilab.tremorapp.Fragment.PatientListFragment;
 import com.bcilab.tremorapp.R;
 
 import java.util.ArrayList;
@@ -67,6 +70,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.checkBox.setChecked(data.isDeleteBox());
         holder.checkBox.setVisibility(checkboxIsVisible? View.VISIBLE: View.GONE);
 
+        PatientListFragment patientListFragment = new PatientListFragment();
+
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //set your object's last status
+                Log.v("RecyclerView","RRRRRss");
+                if(patientListFragment.getDeleteMode()==true){
+                    Log.v("RecyclerView","RRRRR");
+                    patientListFragment.multi_select(position);
+                }
+                else{
+                    Log.v("RecyclerView","RRRRRs"+patientListFragment.getDeleteMode());
+                    patientListFragment.multi_select(position);
+                }
+            }
+        });
     }
 
 

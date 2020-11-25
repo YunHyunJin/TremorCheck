@@ -325,8 +325,8 @@ public class PatientListFragment extends Fragment {
                                 break;
                             case R.id.id_6개월 :
                                 for (int i = 0; i < patientList.size(); i++) {
-                                    if (patientList.get(i).getDateFinal().equals("")) {
-
+                                    if (patientList.get(i).getDateFinal()==null) {
+                                        filteredList.add(patientList.get(i));
                                     } else {
                                         String[] array2 = patientList.get(i).getDateFinal().split("[.]");
                                         if (array[1].equals("10") || array[1].equals("11") || array[1].equals("12")) {
@@ -505,29 +505,34 @@ public class PatientListFragment extends Fragment {
         File directory = new File(String.valueOf(path)) ;
         File[] foder = directory.listFiles() ;
         if (foder!=null) {
-            for (int i=0; i< foder.length; i++) {
-                try {
-                    String patientPath = String.valueOf(path)+"/"+foder[i].getName() ;
-                    File patientCSV = new File(patientPath, "patient.csv");
+            if(foder.length>1) {
+                for (int i = 0; i < foder.length; i++) {
+                    try {
+                        String patientPath = String.valueOf(path) + "/" + foder[i].getName();
+                        File patientCSV = new File(patientPath, "patient.csv");
 
-                    BufferedReader buffer = new BufferedReader(new FileReader(patientCSV));
-                    String str = buffer.readLine();
-                    while (str!=null) {
-                        str = buffer.readLine();
-                        String[] patientStr= str.split(",");
-                        patientList.add(new PatientItem(patientStr[0].replaceAll("\\\"", ""), patientStr[1].replaceAll("\\\"", ""), (patientStr[3].equals("null")? null:patientStr[3].replaceAll("\\\"", "")), (patientStr[4].equals("null")? null:patientStr[4].replaceAll("\\\"", "")), false));
+                        BufferedReader buffer = new BufferedReader(new FileReader(patientCSV));
+                        String str = buffer.readLine();
+                        while (str != null) {
+                            str = buffer.readLine();
+                            String[] patientStr = str.split(",");
+                            patientList.add(new PatientItem(patientStr[0].replaceAll("\\\"", ""), patientStr[1].replaceAll("\\\"", ""), (patientStr[3].equals("null") ? null : patientStr[3].replaceAll("\\\"", "")), (patientStr[4].equals("null") ? null : patientStr[4].replaceAll("\\\"", "")), false));
+                        }
+                        buffer.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    buffer.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
+                }
+                recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
+                recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter.notifyDataSetChanged();  // data set changed
+                patient_num = foder.length - 1;
+                return foder.length - 1;
             }
-            recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), patientList, selected_patientList);
-            recyclerView.setAdapter(recyclerViewAdapter);
-            recyclerViewAdapter.notifyDataSetChanged();  // data set changed
-            patient_num = foder.length-1 ;
-            return foder.length-1 ;
+            else{
+                return 0;
+            }
         }
         else{
             patient_num = 0;
@@ -541,6 +546,7 @@ public class PatientListFragment extends Fragment {
     }
 
     public void multi_select(int position) {
+        Log.v("RecyclerView","RRRRRssmullti_select"+deleteMode);
         if (deleteMode == true) {
             if (selected_patientList.contains(patientList.get(position))) {
                 selected_patientList.remove(patientList.get(position));

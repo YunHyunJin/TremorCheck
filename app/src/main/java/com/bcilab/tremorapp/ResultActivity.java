@@ -125,7 +125,6 @@ public class ResultActivity extends AppCompatActivity {
                         .into(result_image);
             }
         });
-        Log.v("ㅇㅇㅇ", "ㅇㅇㅇㅇㅇㅇㅇ"+spiral_result[1]);
         if(spiral_result[1] == -1) {
             ((TextView) findViewById(R.id.pre_hz_result)).setText("떨림 횟수가 적음");
         }
@@ -284,6 +283,7 @@ public class ResultActivity extends AppCompatActivity {
                 customtoast.show();
                 startActivity(intent) ;
                 dialog.dismiss();
+                finish();
             }
         });
 

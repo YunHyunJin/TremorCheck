@@ -145,7 +145,7 @@ public class PatientListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         PatientListFragment patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
-        if (System.currentTimeMillis() - lastTimeBackPressed < 2000) {
+        if (System.currentTimeMillis() - lastTimeBackPressed < 2200) {
             ActivityCompat.finishAffinity(this);
             return;
         }

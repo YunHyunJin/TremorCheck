@@ -1,6 +1,7 @@
 package com.bcilab.tremorapp.Data
 
-data class PathTraceData(val x: Float, val y: Float, val t: Int) {
+class PathTraceData(val x: Float, val y: Float, val t: Int) {
+
     val joinToString = { del: String -> "${this.x}$del${this.y}$del${this.t}"}
 
     fun isSame(otherData: PathTraceData): Boolean {
@@ -16,4 +17,5 @@ data class PathTraceData(val x: Float, val y: Float, val t: Int) {
             flag = true
         return flag
     }
+
 }

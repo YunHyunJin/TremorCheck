@@ -17,7 +17,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import com.bcilab.tremorapp.Data.BaseData
 import com.bcilab.tremorapp.Data.BaseTraceData
 import com.bcilab.tremorapp.Data.PathTraceData
 import com.bcilab.tremorapp.Function.SafeClickListener
@@ -27,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_spiral.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.ArrayList
 
 class SpiralActivity : AppCompatActivity() {
     private var filename: String = ""
@@ -149,36 +147,76 @@ class SpiralActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
                     println(e.message)
                 }
-                var remove_num = baseTrace.size-pathTrace.size
-                var last = remove_num%10
-                var first = 0
-                var plus = (rotate_size/10).toInt()
-                for (i in 0..9) {
-                    var first_num = first-rotate
-                    var last_num = first_num+plus-1
-                    var random_num = (remove_num/10).toInt()
-                    if (last!=0){
-                        random_num+=1
-                        last-=1
+                metaData = "baseX,baseY,positionX,positionY,time"
+                file = File(path,"${clinicID}_${task}_${both}_${count}_Data.csv")
+                if (pathTrace.size<baseTrace.size) {
+                    try {
+                        PrintWriter(file).use { out ->
+                            out.println(metaData)
+                            for (item in 0 until pathTrace.size){
+                                val joinToString = { del: String -> "${baseTrace[item].x}$del${baseTrace[item].y}$del${pathTrace[item].x}$del${pathTrace[item].y}$del${pathTrace[item].t}"}
+                                out.println(joinToString(","))
+                            }
+                            for (item in pathTrace.size until baseTrace.size){
+                                val joinToString = { del: String -> "${baseTrace[item].x}$del${baseTrace[item].y}"}
+                                out.println(joinToString(","))
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
+                        println(e.message)
                     }
-                    list_remove(random_num,first_num,last_num)
-                    first+=plus
                 }
-                val baseCsv = task+"_"+both+"_"+count+"_BaseData"
-                metaData = "baseX,baseY"
-                //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
-                file = File(path, "${clinicID}_$baseCsv.csv")
-                try {
-                    PrintWriter(file).use { out ->
-                        out.println(metaData)
-                        for (item in baseTrace)
-                            out.println(item.joinToString(","))
+                else{
+                    try {
+                        PrintWriter(file).use { out ->
+                            out.println(metaData)
+                            for (item in 0 until baseTrace.size){
+                                val joinToString = { del: String -> "${baseTrace[item].x}$del${baseTrace[item].y}$del${pathTrace[item].x}$del${pathTrace[item].y}$del${pathTrace[item].t}"}
+                                out.println(joinToString(","))
+                            }
+                            for (item in baseTrace.size until pathTrace.size){
+                                val null_string = ""
+                                val joinToString = { del: String -> "$null_string$del$null_string$del${pathTrace[item].x}$del${pathTrace[item].y}$del${pathTrace[item].t}"}
+                                out.println(joinToString(","))
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
+                        println(e.message)
                     }
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
-                    println(e.message)
                 }
-                Log.v("pathTrace","PathTTraceint"+pathTrace.size+" "+baseTrace.size)
+
+//                var remove_num = baseTrace.size-pathTrace.size
+//                var last = remove_num%10
+//                var first = 0
+//                var plus = (rotate_size/10).toInt()
+//                for (i in 0..9) {
+//                    var first_num = first-rotate
+//                    var last_num = first_num+plus-1
+//                    var random_num = (remove_num/10).toInt()
+//                    if (last!=0){
+//                        random_num+=1
+//                        last-=1
+//                    }
+//                    list_remove(random_num,first_num,last_num)
+//                    first+=plus
+//                }
+//                val baseCsv = task+"_"+both+"_"+count+"_BaseData"
+//                metaData = "baseX,baseY"
+//                //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
+//                file = File(path, "${clinicID}_$baseCsv.csv")
+//                try {
+//                    PrintWriter(file).use { out ->
+//                        out.println(metaData)
+//                        for (item in baseTrace)
+//                            out.println(item.joinToString(","))
+//                    }
+//                } catch (e: Exception) {
+//                    Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
+//                    println(e.message)
+//                }
+//                Log.v("pathTrace","PathTTraceint"+pathTrace.size+" "+baseTrace.size)
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
@@ -284,7 +322,7 @@ class SpiralActivity : AppCompatActivity() {
             }
             Log.v("spiralActivity", "spiralll  "+i+baseTrace.size)
             canvas.drawPath(basePath, basePaint)
-
+//
 //            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
 //
 //            try {
