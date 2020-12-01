@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -74,7 +75,7 @@ public class PersonalResultActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.measure) ;
-        tabLayout.addTab(tabLayout.newTab().setText("떨림의 주파"));
+        tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수"));
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
         tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));
@@ -104,6 +105,14 @@ public class PersonalResultActivity extends AppCompatActivity {
             public void run() {
                 Glide.with(getApplicationContext()).load(image_path)
                         .into(result_image);
+            }
+        });
+        result_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PersonalResultActivity.this, ImageViewActivity.class);
+                intent.putExtra("path",image_path);
+                startActivity(intent);
             }
         });
         ((TextView) findViewById(R.id.pre_result_date)).setText(timestamp);

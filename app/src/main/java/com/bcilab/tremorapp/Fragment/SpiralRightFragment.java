@@ -71,7 +71,7 @@ public class SpiralRightFragment extends Fragment {
         readCSV(path, filename);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.measure) ;
-        tabLayout.addTab(tabLayout.newTab().setText("떨림의 주파"));
+        tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수"));
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
         tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));

@@ -278,11 +278,12 @@ public class LineTaskAnalyze {
 
         for (int i = 0; i < x.length; i++)
         {
-            Log.v("LineTaskAnalyze", "LineTaskAnalyzeeee"+pair_pos_x[i]+" "+pair_pos_y[i]);
+
             if(i == 0)
             {
                 pair_pos_x[i] = r*Math.cos(angle_pos[i]);
                 pair_pos_y[i] = r*Math.sin(angle_pos[i]);
+
             }
 
             else
@@ -294,6 +295,9 @@ public class LineTaskAnalyze {
 
 
             }
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz position x "+x[i]+" y "+y[i]);
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz angleee angle_atan : "+angle_atan[i]+" angle_pos : "+angle_pos[i]);
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz pairpos x "+pair_pos_x[i]+" pairpos y "+pair_pos_y[i]);
         }
         //calculate error distance
         double sum = 0;

@@ -24,6 +24,7 @@ import com.bcilab.tremorapp.Adapter.RecyclerViewAdapter;
 import com.bcilab.tremorapp.Data.PatientItem;
 
 import com.bcilab.tremorapp.Data.ResultData;
+import com.bcilab.tremorapp.Fragment.PatientListFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
@@ -82,7 +83,7 @@ public class ResultActivity extends AppCompatActivity {
         timestamp = intent.getExtras().getString("timestamp");
         image_path = intent.getExtras().getString("image_path");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") +(task.equals("Spiral") ? "나선 그리기 검사" : "선 긋기 검사"));
+        toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") +(task.equals("Spiral") ? "나선 검사" : "선 검사"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final double[] spiral_result = intent.getDoubleArrayExtra("spiral_result");
@@ -114,8 +115,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
 
-        ((TextView) findViewById(R.id.pre_result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
-                +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
+
 
         final ImageView result_image = findViewById(R.id.result_image);
         result_image.post(new Runnable() {
@@ -123,6 +123,14 @@ public class ResultActivity extends AppCompatActivity {
             public void run() {
                 mGlideRequestManager.load(image_path)
                         .into(result_image);
+            }
+        });
+        result_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ResultActivity.this, ImageViewActivity.class);
+                intent.putExtra("path",image_path);
+                startActivity(intent);
             }
         });
         if(spiral_result[1] == -1) {
@@ -136,6 +144,8 @@ public class ResultActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.pre_time_result)).setText(String.format("%.2f",spiral_result[2])+" sec") ;
         ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",spiral_result[4])+" cm/sec") ;
         if(first==false){
+            ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
+                    +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
             StringBuilder result = new StringBuilder();
             result.append("Count,Hz,Magnitude,Distance,Time,Speed, TimeStamp");
             result.append("\n"+1+","+spiral_result[1]+","+spiral_result[0]+","+spiral_result[3]+","+spiral_result[2]+","+spiral_result[4]+","+timestamp);
@@ -194,6 +204,14 @@ public class ResultActivity extends AppCompatActivity {
                             .into(pre_result_image);
                 }
             });
+            pre_result_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ResultActivity.this, ImageViewActivity.class);
+                    intent.putExtra("path",pre_image_path);
+                    startActivity(intent);
+                }
+            });
             if(Double.parseDouble(spiralStr[1])==-1) {
                 ((TextView) findViewById(R.id.hz_result)).setText("떨림 횟수가 적음");
             }
@@ -204,7 +222,7 @@ public class ResultActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.distance_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[3]))+" cm") ;
             ((TextView) findViewById(R.id.time_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[4]))+" sec") ;
             ((TextView) findViewById(R.id.speed_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[5]))+" cm/sec") ;
-            ((TextView) findViewById(R.id.result_date)).setText(spiralStr[6].substring(0,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)+" "
+            ((TextView) findViewById(R.id.pre_result_date)).setText(spiralStr[6].substring(0,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)+" "
                     +spiralStr[6].substring(9,11)+":"+spiralStr[6].substring(12, 14)) ;
 
         }
@@ -243,11 +261,18 @@ public class ResultActivity extends AppCompatActivity {
                 add_test();
                 return true;
             }
+            case R.id.list: {
+                Intent intent = new Intent(getApplicationContext(), PatientListActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
             case android.R.id.home: {
                 onBackPressed();
                 finish();
                 return true;
             }
+
         }
         return super.onOptionsItemSelected(item);
     }
