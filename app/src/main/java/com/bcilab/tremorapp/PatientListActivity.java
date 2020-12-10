@@ -136,14 +136,15 @@ public class PatientListActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "저장 권한을 허용해야 앱을 사용하실 수 있습니다..", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, PatientListActivity.class));
+                    finish();
+
 
                 } else {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    startActivity(new Intent(this, PatientListActivity.class));
-                    finish();
+                    Toast.makeText(this, "저장 권한을 허용해야 앱을 사용하실 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
