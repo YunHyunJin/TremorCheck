@@ -47,6 +47,7 @@ import java.util.Map;
 
 public class PatientListActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1 ;
     private long lastTimeBackPressed;
     private BottomNavigationView bottomNavigationView ;
     private PatientListFragment patientListFragment ;
@@ -127,6 +128,30 @@ public class PatientListActivity extends AppCompatActivity {
                     1);
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "저장 권한을 허용해야 앱을 사용하실 수 있습니다..", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    startActivity(new Intent(this, PatientListActivity.class));
+                    finish();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
     public void folderCreate(){
 
@@ -138,7 +163,7 @@ public class PatientListActivity extends AppCompatActivity {
         if (!path.mkdirs()&&!deleteFolder.mkdirs()) {
             Log.e("FILE", "Directory not created");
         }else{
-            Toast.makeText(this, "폴더 저장", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "내부 저장소 생성", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -90,7 +90,7 @@ public class ResultActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.measure) ;
         //[0]: TM , [1]: TF , [2]:time , [3]: ED , [4]:velocity
         //[0]: 떨림규모 , [1]: 떨림 , [2]:time , [3]: 거리 , [4]:속도
-        tabLayout.addTab(tabLayout.newTab().setText("떨림의 주파"));
+        tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수"));
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
         tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));
@@ -143,9 +143,9 @@ public class ResultActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.pre_distance_result)).setText(String.format("%.2f",spiral_result[3])+" cm") ;
         ((TextView) findViewById(R.id.pre_time_result)).setText(String.format("%.2f",spiral_result[2])+" sec") ;
         ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",spiral_result[4])+" cm/sec") ;
+        ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
+                +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
         if(first==false){
-            ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
-                    +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
             StringBuilder result = new StringBuilder();
             result.append("Count,Hz,Magnitude,Distance,Time,Speed, TimeStamp");
             result.append("\n"+1+","+spiral_result[1]+","+spiral_result[0]+","+spiral_result[3]+","+spiral_result[2]+","+spiral_result[4]+","+timestamp);

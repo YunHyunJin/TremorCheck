@@ -331,7 +331,6 @@ class LineActivity : AppCompatActivity() {
             baseY = finalY.toFloat()
             baseData.append("\n$baseX,$baseY")
 
-
             val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
 
             try {
