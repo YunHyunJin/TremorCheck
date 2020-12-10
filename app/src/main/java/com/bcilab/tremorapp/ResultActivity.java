@@ -65,6 +65,7 @@ public class ResultActivity extends AppCompatActivity {
     private AlertDialog dialog ;
     private GraphView graphView ;
     private LineGraphSeries<DataPoint> series ;
+    private boolean firstdate ;
     private ArrayList<ResultData> resultData = new ArrayList<>() ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class ResultActivity extends AppCompatActivity {
         both = intent.getExtras().getString("both");
         timestamp = intent.getExtras().getString("timestamp");
         image_path = intent.getExtras().getString("image_path");
+        firstdate = intent.getExtras().getBoolean("firstdate");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") +(task.equals("Spiral") ? "나선 검사" : "선 검사"));
         setSupportActionBar(toolbar);
@@ -114,8 +116,6 @@ public class ResultActivity extends AppCompatActivity {
                 first = true ;
             }
         }
-
-
 
         final ImageView result_image = findViewById(R.id.result_image);
         result_image.post(new Runnable() {
@@ -156,8 +156,12 @@ public class ResultActivity extends AppCompatActivity {
                 csv.println(result);
                 csv.close();
                 String date = timestamp.substring(2,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8);
+
                 try {
-                    updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,3);
+                    if(firstdate==true) {
+
+                        updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,3);
+                    }
                     updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,4);
                 } catch (CsvException e) {
                     e.printStackTrace();

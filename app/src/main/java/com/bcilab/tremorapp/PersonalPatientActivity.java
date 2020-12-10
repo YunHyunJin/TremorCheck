@@ -70,6 +70,7 @@ public class PersonalPatientActivity extends AppCompatActivity {
         PatientLoad(clinicID);
         if(task.equals("Spiral")) changeView(0);
         else changeView(1);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -117,7 +118,17 @@ public class PersonalPatientActivity extends AppCompatActivity {
                                                 try {
                                                     FileUtils.copyDirectory(source, dest);
                                                     File[] deleteList = source.listFiles();
-                                                    for(File file : deleteList) file.delete();
+
+                                                    for(File file : deleteList) {
+                                                        if(file.listFiles()!=null && file.listFiles().length!=0) {
+                                                            for (File inner_file : file.listFiles()) {
+                                                                inner_file.delete();
+                                                            }
+
+                                                        }
+                                                        file.delete();
+                                                    }
+
                                                     source.delete();
                                                     Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
                                                     startActivity(intent);

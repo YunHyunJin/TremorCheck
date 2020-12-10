@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import com.bcilab.tremorapp.Function.main
 import com.bcilab.tremorapp.Function.main1
 
@@ -15,9 +16,9 @@ class AnalysisActivity : AppCompatActivity() {
     var clinicID : String = ""
     var patientName : String = ""
     var task: String = ""
-    var both : String = ""  ;
+    var both : String = ""
     var data_path : String = ""
-
+    var firstdate : Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analysis)
@@ -29,6 +30,8 @@ class AnalysisActivity : AppCompatActivity() {
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
         data_path = intent.getStringExtra("data_path")
+        firstdate = intent.getBooleanExtra("firstdate",true)
+
         val path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/$clinicID/$task$both")
         val dialog = ProgressDialog(this)
@@ -48,6 +51,7 @@ class AnalysisActivity : AppCompatActivity() {
         val intent1 = Intent(this, ResultActivity::class.java)
         intent1.putExtra("spiral_result", result)
         intent1.putExtra("clinicID", clinicID)
+        intent1.putExtra("firstdate",firstdate)
         intent1.putExtra("patientName", patientName)
         intent1.putExtra("task", task)
         intent1.putExtra("both", both)

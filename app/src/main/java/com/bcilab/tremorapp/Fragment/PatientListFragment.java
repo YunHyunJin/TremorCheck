@@ -381,7 +381,6 @@ public class PatientListFragment extends Fragment {
                     intent.putExtra("clinicID", recyclerViewAdapter.getPatientList().get(position).getClinicID());//수정
                     intent.putExtra("patientName", recyclerViewAdapter.getPatientList().get(position).getPatientName());
                     intent.putExtra("task", "Spiral");
-                    Log.v("PatientList","PPPPPPPPPPP"+recyclerViewAdapter.getPatientList().get(position).getClinicID()+" "+ patientList.get(position).getPatientName());
                     startActivity(intent);
                     getActivity().finish();
                 }
@@ -407,7 +406,7 @@ public class PatientListFragment extends Fragment {
         super.onStart();
 
         //patientTotal.setText(String.valueOf("Total "+PatientLoad()));
-        Log.v("PatientList", "PatientListTTTTonStart");
+
 
     }
 
@@ -605,7 +604,15 @@ public class PatientListFragment extends Fragment {
             try {
                 FileUtils.copyDirectory(source, dest);
                 File[] deleteList = source.listFiles();
-                for(File file : deleteList) file.delete();
+                for(File file : deleteList) {
+                    if(file.listFiles()!=null && file.listFiles().length!=0) {
+                        for (File inner_file : file.listFiles()) {
+                            inner_file.delete();
+                        }
+
+                    }
+                    file.delete();
+                }
                 source.delete();
 
             } catch (IOException e) {

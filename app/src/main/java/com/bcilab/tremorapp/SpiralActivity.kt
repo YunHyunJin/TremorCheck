@@ -57,7 +57,7 @@ class SpiralActivity : AppCompatActivity() {
     private var task :String = ""
     private var both : String = ""
     private var resut_image_path : String = ""
-
+    private var firstdate : Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spiral)
@@ -65,7 +65,6 @@ class SpiralActivity : AppCompatActivity() {
         patientName = intent.getStringExtra("patientName")
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
-
         Log.v("SpiralActivity", "SpiralActivity"+task+both)
         Log.v("SpiralActivity", "SSSSSS"+filename)
         path = Environment.getExternalStoragePublicDirectory(
@@ -86,12 +85,25 @@ class SpiralActivity : AppCompatActivity() {
             view.clearLayout()
             isdraw = false
         }
+        if (Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/SpiralLeft").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/SpiralRight").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/LineLeft").listFiles().size==0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/LineRight").listFiles().size==0 ) {
+            firstdate = true
+        } else {
+            firstdate = false
+        }
         backButton.setOnClickListener {
             val dlg = AlertDialog.Builder(this@SpiralActivity)
             dlg.setTitle("종료")
                     .setMessage("이전 화면으로 되돌아가시겠습니까?")
                     .setPositiveButton("돌아가기") { dialogInterface, i ->
-                        onBackPressed()
+                        val back_intent = Intent(this, PersonalPatientActivity::class.java)
+                        back_intent.putExtra("clinicID", clinicID)
+                        back_intent.putExtra("patientName", patientName)
+                        back_intent.putExtra("task", task)
+                        startActivity(back_intent)
                         finish()
                     }
                     .setNegativeButton("취소") { dialogInterface, i -> }
@@ -227,6 +239,7 @@ class SpiralActivity : AppCompatActivity() {
                 intent.putExtra("patientName", patientName)
                 intent.putExtra("task", task)
                 intent.putExtra("both", both)
+                intent.putExtra("firstdate", firstdate)
                 intent.putExtra("image_path", resut_image_path)
                 intent.putExtra("data_path", data_path)
                 startActivity(intent)

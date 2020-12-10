@@ -42,6 +42,7 @@ class LineActivity : AppCompatActivity() {
     private lateinit var progressDialog : ProgressDialog
     private var save_timer : Long = 0.toLong()
     private var saveTimer : Long = 0.toLong()
+    private var firstdate : Boolean = true
     private val pathTrace: MutableList<PathTraceData> = mutableListOf()
     private val timer = object : CountDownTimer(Long.MAX_VALUE, 1000 / 60) {
 
@@ -90,13 +91,25 @@ class LineActivity : AppCompatActivity() {
             isdraw = false
             view.clearLayout()
         }
-
+        if (Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/SpiralLeft").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/SpiralRight").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/LineLeft").listFiles().size==0 && Environment.getExternalStoragePublicDirectory(
+                        "/TremorApp/$clinicID/LineRight").listFiles().size==0 ) {
+            firstdate = true
+        } else {
+            firstdate = false
+        }
         backButton.setOnClickListener {
             val dlg = AlertDialog.Builder(this@LineActivity)
             dlg.setTitle("종료")
                     .setMessage("이전 화면으로 되돌아가시겠습니까?")
                     .setPositiveButton("돌아가기") { dialogInterface, i ->
-                        onBackPressed()
+                        val back_intent = Intent(this, PersonalPatientActivity::class.java)
+                        back_intent.putExtra("clinicID", clinicID)
+                        back_intent.putExtra("patientName", patientName)
+                        back_intent.putExtra("task", task)
+                        startActivity(back_intent)
                         finish()
                     }
                     .setNegativeButton("취소") { dialogInterface, i -> }
@@ -164,6 +177,7 @@ class LineActivity : AppCompatActivity() {
                 intent.putExtra("both", both)
                 intent.putExtra("image_path", resut_image_path)
                 intent.putExtra("data_path", data_path)
+                intent.putExtra("firstdate", firstdate)
                 startActivity(intent)
                 Toast.makeText(this, "Wait...", Toast.LENGTH_LONG).show()
                 loadingEnd()
