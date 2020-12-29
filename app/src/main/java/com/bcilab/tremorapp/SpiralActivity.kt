@@ -63,21 +63,19 @@ class SpiralActivity : AppCompatActivity() {
         setContentView(R.layout.activity_spiral)
         clinicID = intent.getStringExtra("clinicID")
         patientName = intent.getStringExtra("patientName")
-        task = intent.getStringExtra("task")
-        both = intent.getStringExtra("both")
-        Log.v("SpiralActivity", "SpiralActivity"+task+both)
-        Log.v("SpiralActivity", "SSSSSS"+filename)
+        task = intent.getStringExtra("task")// * 어떤 task 인지
+        both = intent.getStringExtra("both")// * 오른손 인지 왼손인지
         path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/$clinicID/$task$both")
-        count = readCSV(path,clinicID+"_"+task+both+".csv")
+        count = readCSV(path,clinicID+"_"+task+both+".csv")// * path
         val layout = writingcanvasLayout
         val view = DrawView(this)
         val baseLine = baseView(this)
         layout.addView(view)
         layout.addView(baseLine)
 
-        image_path = "$clinicID/$task/$both/$count.jpg"
-        filename = task+"_"+both+"_"+count+"_RawData"
+        image_path = "$clinicID/$task/$both/$count.jpg"// * 이미지 path
+        filename = task+"_"+both+"_"+count+"_RawData" // * rawdata 파일 name
         writingagain.setOnClickListener {
             timer_flag = false
             save_timer = 0.toLong()
@@ -85,7 +83,7 @@ class SpiralActivity : AppCompatActivity() {
             view.clearLayout()
             isdraw = false
         }
-        if (Environment.getExternalStoragePublicDirectory(
+        if (Environment.getExternalStoragePublicDirectory(// * 첫 검사 인지 아닌지
                         "/TremorApp/$clinicID/SpiralLeft").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
                         "/TremorApp/$clinicID/SpiralRight").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
                         "/TremorApp/$clinicID/LineLeft").listFiles().size==0 && Environment.getExternalStoragePublicDirectory(
@@ -159,9 +157,9 @@ class SpiralActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error on writing file", Toast.LENGTH_LONG).show()
                     println(e.message)
                 }
-                metaData = "baseX,baseY,positionX,positionY,time"
+                metaData = "baseX,baseY,positionX,positionY,time"// * base data와 실제 그린 data 모두 저장.
                 file = File(path,"${clinicID}_${task}_${both}_${count}_Data.csv")
-                if (pathTrace.size<baseTrace.size) {
+                if (pathTrace.size<baseTrace.size) {// * bast data 길이가 더 길때는 base x, y 집어 넣고 실제 그린 data(position x, position y, time에 아무값 안 집어 넣기)
                     try {
                         PrintWriter(file).use { out ->
                             out.println(metaData)
@@ -179,7 +177,7 @@ class SpiralActivity : AppCompatActivity() {
                         println(e.message)
                     }
                 }
-                else{
+                else{// * 실제 그린 data 길이가 더 길때 base x, y raw에 null 데이터를 넣고 실제 그린 data 집어 넣기
                     try {
                         PrintWriter(file).use { out ->
                             out.println(metaData)
@@ -352,7 +350,7 @@ class SpiralActivity : AppCompatActivity() {
 
     }
     @Throws(Exception::class)
-    private fun onCap(bm: Bitmap, path: File, count: Int) {
+    private fun onCap(bm: Bitmap, path: File, count: Int) {// * 이미지 저장
         try {
             val path = Environment.getExternalStoragePublicDirectory(
                     "/TremorApp/$clinicID/$task$both")
@@ -424,7 +422,7 @@ class SpiralActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Toast.makeText(this, "검사 종료를 원하시면 ' < ' 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show()
     }
-    fun readCSV(path: File, file: String): Int {
+    fun readCSV(path: File, file: String): Int {// * csv 파일 읽기
         var line_length = 0
         var br: BufferedReader? = null
         val spiralCSV = File(path, file)

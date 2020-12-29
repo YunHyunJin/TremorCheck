@@ -106,14 +106,14 @@ public class ResultActivity extends AppCompatActivity {
 //                +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
 
 
-        File path = Environment.getExternalStoragePublicDirectory(
+        File path = Environment.getExternalStoragePublicDirectory(// path
                 "/TremorApp/"+clinicID+"/"+task+both);
-        String filename = clinicID+"_"+task+both+".csv";
+        String filename = clinicID+"_"+task+both+".csv";// 파일 이름
         File[] foder = path.listFiles() ;
-        boolean first = false ;
+        boolean no_first = false ;
         for (File name : foder) {
-            if(name.getName().equals(filename)) {
-                first = true ;
+            if(name.getName().equals(filename)) {// * 첫번째가 아님
+                no_first = true ;
             }
         }
 
@@ -125,7 +125,7 @@ public class ResultActivity extends AppCompatActivity {
                         .into(result_image);
             }
         });
-        result_image.setOnClickListener(new View.OnClickListener() {
+        result_image.setOnClickListener(new View.OnClickListener() {// 현재 결과 이미지
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ResultActivity.this, ImageViewActivity.class);
@@ -133,7 +133,7 @@ public class ResultActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if(spiral_result[1] == -1) {
+        if(spiral_result[1] == -1) {// 현재 결과값
             ((TextView) findViewById(R.id.pre_hz_result)).setText("떨림 횟수가 적음");
         }
         else {
@@ -145,9 +145,9 @@ public class ResultActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",spiral_result[4])+" cm/sec") ;
         ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
                 +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
-        if(first==false){
+        if(no_first==false){// 해당 검사에서 처음일 때
             StringBuilder result = new StringBuilder();
-            result.append("Count,Hz,Magnitude,Distance,Time,Speed, TimeStamp");
+            result.append("Count,Hz,Magnitude,Distance,Time,Speed, TimeStamp");// * 결과 값 csv 파일에 저장
             result.append("\n"+1+","+spiral_result[1]+","+spiral_result[0]+","+spiral_result[3]+","+spiral_result[2]+","+spiral_result[4]+","+timestamp);
             File spiralCSV = new File(path, filename) ;
             try{
@@ -158,8 +158,8 @@ public class ResultActivity extends AppCompatActivity {
                 String date = timestamp.substring(2,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8);
 
                 try {
-                    if(firstdate==true) {
-
+                    if(firstdate==true) {// 모든 검사 중에 처음
+                        // * 모든 검샂 중에 처음이니까 환자 처음 검사에 해당 날짜 등록(patient.csv 파일에 first date 항목)
                         updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,3);
                     }
                     updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,4);
@@ -176,12 +176,12 @@ public class ResultActivity extends AppCompatActivity {
         else {
             File spiralCSV = new File(path, filename) ;
             BufferedWriter bufWriter = null;
-            int count = readCSV(path, filename) ;
+            int count = readCSV(path, filename) ;// 처음 검사가 아니니까 이전에 데이터 가져오기
             try{
                 bufWriter = new BufferedWriter(new FileWriter(spiralCSV, true));
                 bufWriter.append(count+","+spiral_result[1]+","+spiral_result[0]+","+spiral_result[3]+","+spiral_result[2]+","+spiral_result[4]+","+timestamp);
                 bufWriter.newLine();
-                String date = spiralStr[6].substring(2,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8);
+                String date = spiralStr[6].substring(2,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8);// 바로 직전 데이터
                 updateCSV(String.valueOf(Environment.getExternalStoragePublicDirectory("/TremorApp/"+clinicID)),date,1,4);
             }catch(FileNotFoundException e){
                 e.printStackTrace();
@@ -200,7 +200,7 @@ public class ResultActivity extends AppCompatActivity {
 
             }
             String pre_image_path = path.toString()+"/"+clinicID+"_"+task+"_"+both+"_"+String.valueOf(count-1)+".jpg";
-            final ImageView pre_result_image = findViewById(R.id.pre_result_image);
+            final ImageView pre_result_image = findViewById(R.id.pre_result_image);// 직전 데이터
             pre_result_image.post(new Runnable() {
                 @Override
                 public void run() {
@@ -216,7 +216,7 @@ public class ResultActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            if(Double.parseDouble(spiralStr[1])==-1) {
+            if(Double.parseDouble(spiralStr[1])==-1) {// 직전 데이터
                 ((TextView) findViewById(R.id.hz_result)).setText("떨림 횟수가 적음");
             }
             else {
@@ -231,7 +231,7 @@ public class ResultActivity extends AppCompatActivity {
 
         }
         resultData = new ArrayList<>() ;
-        readCSV(path, filename);
+        readCSV(path, filename);// * 현재 결과값을 저장한 csv 파일을 모든 데이터를 가져와서 measure graph에 적용하기
         changegGraph(0);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -260,18 +260,18 @@ public class ResultActivity extends AppCompatActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add :
+            case R.id.add :// * add test
             {
                 add_test();
                 return true;
             }
-            case R.id.list: {
+            case R.id.list: {// * 환자 리스트로 바로 이동
                 Intent intent = new Intent(getApplicationContext(), PatientListActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
             }
-            case android.R.id.home: {
+            case android.R.id.home: {// * 해당 환자 상세 정보로 이동
                 onBackPressed();
                 finish();
                 return true;
@@ -335,7 +335,7 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
-    public static void updateCSV(String fileToUpdate, String replace, int row, int col) throws IOException, CsvException {
+    public static void updateCSV(String fileToUpdate, String replace, int row, int col) throws IOException, CsvException {// * csv 파일에 지정한 raw와 column 수정
 
         File inputFile = new File(fileToUpdate, "patient.csv");
         // Read existing file
@@ -351,7 +351,7 @@ public class ResultActivity extends AppCompatActivity {
         writer.flush();
         writer.close();
     }
-    public int readCSV(File path, String file) {
+    public int readCSV(File path, String file) {// * 파일 읽기
         int line_length = 0 ;
         BufferedReader br = null;
         File spiralCSV = new File(path, file);
@@ -381,7 +381,7 @@ public class ResultActivity extends AppCompatActivity {
         return line_length;
     }
 
-    public void changegGraph(int position){
+    public void changegGraph(int position){// * change graph
         graphView.removeAllSeries();
         series = new LineGraphSeries<>();
         series.setColor(Color.parseColor("#285E9F"));

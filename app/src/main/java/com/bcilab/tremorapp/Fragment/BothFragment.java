@@ -32,7 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-public class BothFragment extends Fragment {
+public class BothFragment extends Fragment {// * 양손 모아보기 tab
     private String clinicID ;
     private TabLayout tabLayout ;
     private String patientName ;
@@ -92,7 +92,6 @@ public class BothFragment extends Fragment {
                 intent.putExtra("both", right) ;
                 int taskNum = (Integer.parseInt(tasks.get(position).getTaskNum()));
                 intent.putExtra("taskDate", tasks.get(position).getTaskDate());
-                Log.v("DDDDDDDDDDDDDDDss", "EEEEEEE"+taskNum);
                 intent.putExtra("taskNum", String.valueOf(taskNum));
                 startActivity(intent);
             }

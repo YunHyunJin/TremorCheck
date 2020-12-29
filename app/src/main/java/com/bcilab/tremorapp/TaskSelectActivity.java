@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class TaskSelectActivity extends AppCompatActivity {
+public class TaskSelectActivity extends AppCompatActivity {// * 이거 사용안함
 
     private String clinicID;
     private String patientName ;

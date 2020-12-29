@@ -37,7 +37,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SpiralRightFragment extends Fragment {
+public class TaskDetailFragment extends Fragment {
 
     private String clinicID ;
     private TabLayout tabLayout ;
@@ -65,10 +65,10 @@ public class SpiralRightFragment extends Fragment {
         }
 
         view = inflater.inflate(R.layout.fragment_spiral_right, container, false);
-        File path = Environment.getExternalStoragePublicDirectory(
+        File path = Environment.getExternalStoragePublicDirectory(// * path
                 "/TremorApp/"+clinicID+"/"+task+both);
         String filename = clinicID+"_"+task+both+".csv";
-        readCSV(path, filename);
+        readCSV(path, filename);// * data 값 가져오기
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.measure) ;
         tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수"));
@@ -109,7 +109,7 @@ public class SpiralRightFragment extends Fragment {
         }
         taskListViewAdapter.notifyDataSetChanged();
 
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){// * 그림 list 선택 시 result activity로 이동
 
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -119,7 +119,6 @@ public class SpiralRightFragment extends Fragment {
                 intent.putExtra("patientName", patientName) ;
                 intent.putExtra("task", task) ;
                 intent.putExtra("both", both) ;
-                Log.v("PPPPPPPPP","PPPPPPPPPP"+tasks.get(position).getTaskNum());
                 intent.putExtra("taskDate", tasks.get(position).getTaskDate());
                 intent.putExtra("taskNum", tasks.get(position).getTaskNum());
                 startActivity(intent);
@@ -127,7 +126,7 @@ public class SpiralRightFragment extends Fragment {
         });
         return view ;
     }
-    public int readCSV(File path, String file) {
+    public int readCSV(File path, String file) {// * csv 파일 읽기
         int line_length = 0 ;
         String[] resultArr;
         BufferedReader br = null;
@@ -156,7 +155,7 @@ public class SpiralRightFragment extends Fragment {
         }
         return line_length;
     }
-    public void changegGraph(int position){
+    public void changegGraph(int position){// * measure tab 선택 시에 그래프 바뀌기
         graphView.removeAllSeries();
         series = new LineGraphSeries<>();
         series.setColor(Color.parseColor("#285E9F"));

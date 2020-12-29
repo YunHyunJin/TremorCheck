@@ -22,7 +22,7 @@ import com.bcilab.tremorapp.LineActivity;
 import com.bcilab.tremorapp.R;
 import com.bcilab.tremorapp.SpiralActivity;
 
-public class SpiralFragment extends Fragment {
+public class TaskFragment extends Fragment {
 
     private String clinicID ;
     private TabLayout tabLayout ;
@@ -30,7 +30,7 @@ public class SpiralFragment extends Fragment {
     private String task ;
     private int right, left, taskNum ;
     private String both ;
-    private SpiralRightFragment spiralRightFragment ;
+    private TaskDetailFragment taskDetailFragment;
     private BothFragment bothFragment ;
     private FragmentTransaction fragmentTransaction ;
     @Nullable
@@ -46,7 +46,7 @@ public class SpiralFragment extends Fragment {
             taskNum = right+left ;
         }
         view = inflater.inflate(R.layout.fragment_spiral, container, false);
-        Log.v("SpiralFragment", "TaskName"+task) ;
+        Log.v("TaskFragment", "TaskName"+task) ;
         ((TextView)view.findViewById(R.id.client_name)).setText(patientName);
         ((TextView)view.findViewById(R.id.task_count)).setText("총 "+taskNum+"번");
         ((TextView)view.findViewById(R.id.task_name)).setText(task.equals("Spiral")?"나선 그리기 검사" : "선 긋기 검사");
@@ -133,9 +133,9 @@ public class SpiralFragment extends Fragment {
         return view ;
     }
 
-    public void changeView(int position) {
+    public void changeView(int position) {// * 오른손, 왼손, 양손 모아보기 탭 실시
         Bundle bundle ;
-        spiralRightFragment = new SpiralRightFragment() ;
+        taskDetailFragment = new TaskDetailFragment() ;
         bothFragment = new BothFragment();
         switch (position){
             case 0 :
@@ -145,9 +145,9 @@ public class SpiralFragment extends Fragment {
                 bundle.putString("clinicID", clinicID) ;
                 bundle.putString("task", task) ;
                 bundle.putString("both", "Right") ;
-                spiralRightFragment.setArguments(bundle);
+                taskDetailFragment.setArguments(bundle);
                 fragmentTransaction = getChildFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.handside, spiralRightFragment);
+                fragmentTransaction.replace(R.id.handside, taskDetailFragment);
                 fragmentTransaction.commit();
                 break;
             case 1 :
@@ -157,9 +157,9 @@ public class SpiralFragment extends Fragment {
                 bundle.putString("clinicID", clinicID) ;
                 bundle.putString("task", task) ;
                 bundle.putString("both", "Left") ;
-                spiralRightFragment.setArguments(bundle);
+                taskDetailFragment.setArguments(bundle);
                 fragmentTransaction = getChildFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.handside, spiralRightFragment);
+                fragmentTransaction.replace(R.id.handside, taskDetailFragment);
                 fragmentTransaction.commit();
                 break ;
             case 2:

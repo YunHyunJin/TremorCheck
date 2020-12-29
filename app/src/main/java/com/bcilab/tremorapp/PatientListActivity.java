@@ -45,14 +45,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PatientListActivity extends AppCompatActivity {
+public class PatientListActivity extends AppCompatActivity {// * 환자 페이지
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1 ;
-    private long lastTimeBackPressed;
-    private BottomNavigationView bottomNavigationView ;
-    private PatientListFragment patientListFragment ;
-    private TextView selectNum ;
-    private Toolbar toolbar ;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1 ; // * 저장소 권한 요청에 대한 응답 코드
+    private long lastTimeBackPressed;// * 뒤로 가기 종료 시간
+    private BottomNavigationView bottomNavigationView ;//  * 삭제 모드 일 때 취소 삭제 navigation view
+    private PatientListFragment patientListFragment ;// * fragment
+    private TextView selectNum ;// * 삭제 모드 일때 선택한 삭제 사용자 수
+    private Toolbar toolbar ;// * toolbar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,26 +60,26 @@ public class PatientListActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         selectNum = (TextView) findViewById(R.id.patient_number) ;
-        Fragment fragment = new PatientListFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = new PatientListFragment();// * 환자 프레그먼트
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();// * 작동
         transaction.replace(R.id.patientList, fragment);
         transaction.commit();
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation) ;
-        bottomNavigationView.setVisibility(View.GONE);
+        bottomNavigationView.setVisibility(View.GONE);// * 삭제 모드일 때만 보여지도록.
         patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
 
         checkVerify();
         folderCreate();
 
 
-        ((Button) findViewById(R.id.button_cancel)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.button_cancel)).setOnClickListener(new View.OnClickListener() {// * 삭제 모드 일때 삭제 navigation view에서 취소 버튼 누를 시에 삭제 모드 취소
             @Override
             public void onClick(View view) {
                 ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).delete_exit();
             }
         });
-        ((Button) findViewById(R.id.button_delete)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.button_delete)).setOnClickListener(new View.OnClickListener() {// * 삭제 모드 일때 삭제 navigation view에서 삭제 버튼 누를 시에 선택한 사용자 삭제.
             @Override
             public void onClick(View view) {
                 ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).patient_delete();
@@ -89,14 +89,14 @@ public class PatientListActivity extends AppCompatActivity {
 
     }
 
-    public void visibleBottom(int visible){
+    public void visibleBottom(int visible){// * 삭제 navigation view hide or visible
         Log.v("PatientList", "BottomVisible" +visible) ;
         bottomNavigationView.setVisibility(visible);
     }
     public void selectNum(String size){
         selectNum.setText(size);
-    }
-    public void patientNum(int size){
+    }// * 선택한 만큼 삭제 사용자 수가 변경
+    public void patientNum(int size){// * 툴바에 총 사용자 수 반영
         toolbar.setTitle("사용자 목록 : "+size+"명");
         setSupportActionBar(toolbar);
     }
@@ -107,7 +107,7 @@ public class PatientListActivity extends AppCompatActivity {
 
         return true;
     }
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {// * 툴바에서 오른쪽 사용자 추가 버튼 누를시에 사용자 추가 다이어로그 생성
         switch (item.getItemId()) {
             default :
                 {
@@ -118,7 +118,7 @@ public class PatientListActivity extends AppCompatActivity {
         //return super.onOptionsItemSelected(item);
     }
 
-    public void checkVerify() {
+    public void checkVerify() {// * 권한 요청 메세지 띄우기
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
@@ -130,22 +130,23 @@ public class PatientListActivity extends AppCompatActivity {
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String permissions[], int[] grantResults) {// * 권한 요청에 대한 응답 event
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(new Intent(this, PatientListActivity.class));
-                    finish();
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {// * 권한 허용했다면 창 다시 시작.
 
 
-                } else {
+
+                } else {// * 권한 허용해야 앱을 사용할 수 있다고 전달.
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(this, "저장 권한을 허용해야 앱을 사용하실 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
+                startActivity(new Intent(this, PatientListActivity.class));
+                finish();
                 return;
             }
 
@@ -154,7 +155,7 @@ public class PatientListActivity extends AppCompatActivity {
         }
     }
 
-    public void folderCreate(){
+    public void folderCreate(){// * 내부 저장소에 폴더 생성
 
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp");
@@ -169,7 +170,7 @@ public class PatientListActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {// * 뒤로 가기
         PatientListFragment patientListFragment = (PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList);
         if (System.currentTimeMillis() - lastTimeBackPressed < 2200) {
             ActivityCompat.finishAffinity(this);

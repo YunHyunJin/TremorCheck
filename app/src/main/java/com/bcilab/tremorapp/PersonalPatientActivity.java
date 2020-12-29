@@ -4,26 +4,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bcilab.tremorapp.Data.PatientItem;
 import com.bcilab.tremorapp.Fragment.NonTaskFragment;
-import com.bcilab.tremorapp.Fragment.PatientListFragment;
-import com.bcilab.tremorapp.Fragment.SpiralFragment;
+import com.bcilab.tremorapp.Fragment.TaskFragment;
 
 import org.apache.commons.io.FileUtils;
 
@@ -31,23 +23,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class PersonalPatientActivity extends AppCompatActivity {
+public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정보 페이지
 
-    private TabLayout tabLayout ;
-    private NonTaskFragment nonTaskFragment ;
-    private SpiralFragment spiralFragment ;
+    private TabLayout tabLayout ;// * 나선 그리기, 선 긋기 tab
+    private NonTaskFragment nonTaskFragment ;// * 검사 안했을 시에 띄워지는 fragment
+    private TaskFragment taskFragment;// * 나선, 선 긋기 fragment (선택한 tab에 따라 변수가 다르게 적용되어 하나의 fragment에서도 나선, 선긋기 분리 될 수 있도록 함
     private FragmentTransaction fragmentTransaction ;
-    private String task ;
-    private int spiral_right, spiral_left, line_right, line_left ;
+    private String task ;// * 선택한 task 가 나선 그리기 인지, 선 긋기 인지 알려주는 변수
+    private int spiral_right, spiral_left, line_right, line_left ;// * 각 항목별 검사 수
     private String patientName, clinicID ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_patient);
-        String dateFirst, dateFinal ;
-
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         Intent intent = getIntent() ;
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
@@ -56,11 +45,11 @@ public class PersonalPatientActivity extends AppCompatActivity {
         clinicID = intent.getExtras().getString("clinicID");
         patientName = intent.getExtras().getString("patientName");
         task = intent.getExtras().getString("task");
-        Log.v("PatientList","PPPPPPPPPPP"+clinicID+" "+ patientName+" "+task);
+
         toolbar.setTitle(clinicID+" "+patientName);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spiralFragment = new SpiralFragment() ;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// * 툴바 왼쪽에 뒤로가기 버튼
+        taskFragment = new TaskFragment() ;
         nonTaskFragment = new NonTaskFragment() ;
 
     }
@@ -68,10 +57,10 @@ public class PersonalPatientActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         PatientLoad(clinicID);
-        if(task.equals("Spiral")) changeView(0);
-        else changeView(1);
+        if(task.equals("Spiral")) changeView(0);// * task 이름에 따라 나선 그리기 탭 실행
+        else changeView(1);// * task 이름에 따라 선 긋기 탭 실행
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {// * tab 선택시 fragment 적용
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 changeView(tab.getPosition()) ;
@@ -89,16 +78,16 @@ public class PersonalPatientActivity extends AppCompatActivity {
         });
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public boolean onCreateOptionsMenu(Menu menu)// * toolbar 에 menu 적용
     {
         getMenuInflater().inflate(R.menu.personal_patient_toolbar, menu);
 
         return true;
     }
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {//
         switch (item.getItemId()) {
             case R.id.edit_patient :
-            {
+            {// * 삭제 하기.
                 PopupMenu popupMenu = new PopupMenu(PersonalPatientActivity.this, (View) findViewById(R.id.edit_patient));
                 popupMenu.getMenuInflater().inflate(R.menu.patient_edit, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -177,7 +166,7 @@ public class PersonalPatientActivity extends AppCompatActivity {
         line_right = 0 ;
         //File spiralDirectory =new File(String.valueOf(path)+"/SpiralLeft") ;
 
-        spiral_left = taskCount(new File(String.valueOf(path)+"/SpiralLeft").listFiles()) ;
+        spiral_left = taskCount(new File(String.valueOf(path)+"/SpiralLeft").listFiles()) ;// * 검사 수 가져오기
         spiral_right = taskCount(new File(String.valueOf(path)+"/SpiralRight").listFiles()) ;
         line_left = taskCount(new File(String.valueOf(path)+"/LineLeft").listFiles()) ;
         line_right = taskCount(new File(String.valueOf(path)+"/LineRight").listFiles()) ;
@@ -197,9 +186,9 @@ public class PersonalPatientActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return date ;
+            return date ;// * 이제 가져올 필요 없음 date 안쓰임
     }
-    public int taskCount(File[] folder){
+    public int taskCount(File[] folder){// * .jpg 파일을 읽어서 검사 횟수 가져오기
         int task = 0;
         for(int i = 0 ; i<folder.length ; i++) {
             if(folder[i].getName().contains(".jpg")){
@@ -210,12 +199,12 @@ public class PersonalPatientActivity extends AppCompatActivity {
     }
     public void changeView(int position) {
         Bundle bundle ;
-        spiralFragment = new SpiralFragment() ;
+        taskFragment = new TaskFragment() ;
         nonTaskFragment = new NonTaskFragment() ;
         switch (position){
             case 0 :
                 bundle = new Bundle() ;
-                task = "Spiral";
+                task = "Spiral";// * task name에 따라 적용
                 bundle.putString("patientName", patientName) ;
                 bundle.putString("clinicID", clinicID) ;
                 bundle.putString("task", "Spiral") ;
@@ -228,9 +217,9 @@ public class PersonalPatientActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }
                 else{
-                    spiralFragment.setArguments(bundle);
+                    taskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.task, spiralFragment);
+                    fragmentTransaction.replace(R.id.task, taskFragment);
                     fragmentTransaction.commit();
                 }
                 break;
@@ -242,16 +231,16 @@ public class PersonalPatientActivity extends AppCompatActivity {
                 bundle.putString("task", task);
                 bundle.putInt("left", line_left);
                 bundle.putInt("right", line_right);
-                if((line_left+line_right)==0) {
+                if((line_left+line_right)==0) {// * 아무것도 안했을 시
                     nonTaskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, nonTaskFragment);
                     fragmentTransaction.commit();
                 }
                 else {
-                    spiralFragment.setArguments(bundle);
+                    taskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.task, spiralFragment);
+                    fragmentTransaction.replace(R.id.task, taskFragment);
                     fragmentTransaction.commit();
                 }
                 break;

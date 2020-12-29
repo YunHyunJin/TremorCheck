@@ -78,11 +78,11 @@ class LineActivity : AppCompatActivity() {
         val baseLine = baseView(this)
         layout.addView(view)
         layout.addView(baseLine)
-        path = Environment.getExternalStoragePublicDirectory(
+        path = Environment.getExternalStoragePublicDirectory(// * 파일 path
                 "/TremorApp/$clinicID/$task$both")
-        count = readCSV(path,clinicID+"_"+task+both+".csv")
-        image_path = "$clinicID/$task/$both/$count.jpg"
-        filename = task+"_"+both+"_"+count+"_RawData"
+        count = readCSV(path,clinicID+"_"+task+both+".csv") // * csv 파일 읽어서 총 검사 횟수 가져오기
+        image_path = "$clinicID/$task/$both/$count.jpg"// * image path
+        filename = task+"_"+both+"_"+count+"_RawData"// * rawdata filename
 
         writingagain.setOnClickListener {
             timer_flag = false
@@ -91,7 +91,7 @@ class LineActivity : AppCompatActivity() {
             isdraw = false
             view.clearLayout()
         }
-        if (Environment.getExternalStoragePublicDirectory(
+        if (Environment.getExternalStoragePublicDirectory( // * 처음 검사인지 아닌 지 확인 하기
                         "/TremorApp/$clinicID/SpiralLeft").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
                         "/TremorApp/$clinicID/SpiralRight").listFiles().size == 0 && Environment.getExternalStoragePublicDirectory(
                         "/TremorApp/$clinicID/LineLeft").listFiles().size==0 && Environment.getExternalStoragePublicDirectory(
@@ -170,7 +170,7 @@ class LineActivity : AppCompatActivity() {
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
                 filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
-                intent.putExtra("timestamp", filename)
+                intent.putExtra("timestamp", filename)// * timestamp 전달
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
                 intent.putExtra("task", task)
@@ -332,7 +332,7 @@ class LineActivity : AppCompatActivity() {
             fitting.startY = startY
         }
 
-        override fun onDraw(canvas: Canvas) {
+        override fun onDraw(canvas: Canvas) {// * 그릴 때 base 데이터 저장.
             basePath.moveTo(startX.toFloat(), startY.toFloat())
             basePath.lineTo(finalX.toFloat(), finalY.toFloat())
             canvas.drawPath(basePath, basePaint)
@@ -359,7 +359,7 @@ class LineActivity : AppCompatActivity() {
         }
     }
     @Throws(Exception::class)
-    private fun onCap(bm: Bitmap, path: File, count: Int) {
+    private fun onCap(bm: Bitmap, path: File, count: Int) {// * 이미지 파일 저장
         try {
             var first = false
             val file_name = clinicID + "_" + task + both + ".csv"
@@ -419,7 +419,7 @@ class LineActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Toast.makeText(this, "검사 종료를 원하시면 ' < ' 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show()
     }
-    fun readCSV(path: File, file: String): Int {
+    fun readCSV(path: File, file: String): Int {// * csv 파일 읽어오기
         var line_length = 0
         var br: BufferedReader? = null
         val spiralCSV = File(path, file)

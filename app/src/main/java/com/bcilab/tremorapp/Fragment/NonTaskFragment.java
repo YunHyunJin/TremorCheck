@@ -50,7 +50,7 @@ public class NonTaskFragment extends Fragment {
                 LayoutInflater inflater = getLayoutInflater();
                 View dialog_view = inflater.inflate(R.layout.activity_popup, null);
                 builder.setView(dialog_view);
-                final Button select_right = (Button) dialog_view.findViewById(R.id.right);
+                final Button select_right = (Button) dialog_view.findViewById(R.id.right);// * 오른손, 왼손 검사 선택
                 final Button select_left = (Button) dialog_view.findViewById(R.id.left);
                 builder.setTitle(task.equals("Spiral") ? "나선 그리기 검사" : "선 긋기 검사");
                 final AlertDialog dialog = builder.create() ;
@@ -79,7 +79,7 @@ public class NonTaskFragment extends Fragment {
                     }
                 });
 
-                select_left.setOnClickListener(new View.OnClickListener() {
+                select_left.setOnClickListener(new View.OnClickListener() {// * 안내문
                     @Override
                     public void onClick(View view) {
                         intent.putExtra("both","Left") ;

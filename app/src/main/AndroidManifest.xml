@@ -48,7 +48,6 @@
         <activity
             android:name=".PersonalResultActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".example" />
         <activity android:name=".ImageViewActivity"></activity>
     </application>
 

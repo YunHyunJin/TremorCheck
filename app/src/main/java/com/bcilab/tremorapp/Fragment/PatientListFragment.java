@@ -49,8 +49,8 @@ import java.util.Date;
 
 public class PatientListFragment extends Fragment {
 
-    private ArrayList<PatientItem> patientList = new ArrayList<>();
-    private ArrayList<PatientItem> selected_patientList = new ArrayList<>();
+    private ArrayList<PatientItem> patientList = new ArrayList<>();// * 사용자 담는 리스트
+    private ArrayList<PatientItem> selected_patientList = new ArrayList<>();// * 삭제할 때나 검색할 때 사용되는 리스트
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
     private CheckBox all_checkBox;
@@ -101,20 +101,20 @@ public class PatientListFragment extends Fragment {
             }
         });
         ((PatientListActivity)getActivity()).patientNum(PatientLoad());
-        searchPatient.setOnClickListener(new View.OnClickListener() {
+        searchPatient.setOnClickListener(new View.OnClickListener() {// * 화면에서 검색창(edittext) 때문에 바로 키패드 실행되는 것 방지
             @Override
             public void onClick(View v) {
                 imm.showSoftInput(searchPatient, 0);
             }
         });
-        patientListL.setOnClickListener(new View.OnClickListener() {
+        patientListL.setOnClickListener(new View.OnClickListener() {// * 검색 창 제외하고 다른 화면 누를 시에 키패드 내려가기
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(searchPatient.getWindowToken(), 0);
             }
         });
 
-        searchPatient.addTextChangedListener(new TextWatcher() {
+        searchPatient.addTextChangedListener(new TextWatcher() {// * 검색 이벤트
             public void afterTextChanged(Editable s) {
             }
 
@@ -138,7 +138,7 @@ public class PatientListFragment extends Fragment {
             }
         });
 
-        ((TextView)view.findViewById(R.id.sort_id)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)view.findViewById(R.id.sort_id)).setOnClickListener(new View.OnClickListener() {// * id로 정렬
             @Override
             public void onClick(View view) {
                 final ArrayList<PatientItem> filteredList = new ArrayList<>();
@@ -181,7 +181,7 @@ public class PatientListFragment extends Fragment {
                 popupMenu.show();
             }
         });
-        ((TextView)view.findViewById(R.id.sort_name)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)view.findViewById(R.id.sort_name)).setOnClickListener(new View.OnClickListener() {// * name으로 정렬
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(getActivity(), ((TextView)view.findViewById(R.id.sort_name)));
@@ -222,7 +222,7 @@ public class PatientListFragment extends Fragment {
                 popupMenu.show();
             }
         });
-        ((TextView)view.findViewById(R.id.sort_date)).setOnClickListener(new View.OnClickListener() {
+        ((TextView)view.findViewById(R.id.sort_date)).setOnClickListener(new View.OnClickListener() {// * date로 정렬
             @Override
             public void onClick(View view) {
                 final ArrayList<PatientItem> filteredList = new ArrayList<>();
@@ -368,7 +368,7 @@ public class PatientListFragment extends Fragment {
                 popupMenu.show();
             }
         });
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){// * 리스트 클릭 event
 
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -416,7 +416,7 @@ public class PatientListFragment extends Fragment {
 
     }
 
-    public void addPatient(){
+    public void addPatient(){// * 환자 추가
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.addpatient, null);
@@ -434,28 +434,28 @@ public class PatientListFragment extends Fragment {
                     String clinic_id = clinicID.getText().toString();
                     String patient_name = patientName.getText().toString();
 
-                    File path = Environment.getExternalStoragePublicDirectory(
+                    File path = Environment.getExternalStoragePublicDirectory(// * 입력한 id로 폴더 생성
                             "/TremorApp/"+clinic_id);
                     Log.v("PatintList", "환자 id"+clinic_id);
-                    if (!path.mkdirs()) {
-                        Toast.makeText(getActivity(), "동일한 User ID가 존재합니다.\nid나 info를 변경하여 등록하세요.", Toast.LENGTH_SHORT).show();
+                    if (!path.mkdirs()) {// * 같은 폴더 있을 시에 다시 등록 요청.
+                        Toast.makeText(getActivity(), "동일한 User ID가 존재합니다.\nid를 변경하여 등록하세요.", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Log.v("PatintList", "환자 추가"+clinic_id);
-                        StringBuilder patient = new StringBuilder();
-                        patient.append("Clinic_ID,Name,Count,FirstDate,FinalDate");
-                        patient.append("\n"+clinic_id+","+patient_name+","+null+","+null+","+null);
+                        StringBuilder patient = new StringBuilder();// * 파일 내용 저장하기 위한 변수
+                        patient.append("Clinic_ID,Name,Count,FirstDate,FinalDate");// * 파일 내용 첫 줄
+                        patient.append("\n"+clinic_id+","+patient_name+","+null+","+null+","+null);// * 두번 째 줄에 정보 들어가도록
 
-                        File patientcsv = new File(path, "patient.csv") ;
+                        File patientcsv = new File(path, "patient.csv") ;// * path에 csv 파일 생성
 
                         try{
-                            FileWriter write = new FileWriter(patientcsv, false);
+                            FileWriter write = new FileWriter(patientcsv, false);// * 생성한 파일에 입력한 내용 입력되도록
                             PrintWriter csv = new PrintWriter(write);
                             csv.println(patient);
                             csv.close();
-                            patientList.add(new PatientItem(clinic_id, patient_name, null, null, false));
+                            patientList.add(new PatientItem(clinic_id, patient_name, null, null, false));// * list에도 추가
 
-                            Environment.getExternalStoragePublicDirectory(
+                            Environment.getExternalStoragePublicDirectory(// * 생성한 사용자 id 폴더에 각각 test 폴더 추가
                                     "/TremorApp/"+clinic_id+"/SpiralLeft").mkdir();
                             Environment.getExternalStoragePublicDirectory(
                                     "/TremorApp/"+clinic_id+"/SpiralRight").mkdir();
@@ -468,7 +468,7 @@ public class PatientListFragment extends Fragment {
                             recyclerView.setAdapter(recyclerViewAdapter);
 
                             patient_num++;
-                            ((PatientListActivity)getActivity()).patientNum(patient_num);
+                            ((PatientListActivity)getActivity()).patientNum(patient_num);// * toolbar 에 사용자 수 적용
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -490,13 +490,13 @@ public class PatientListFragment extends Fragment {
         dialog.show();
     }
 
-    public boolean getdeleteMode(){
+    public boolean getdeleteMode(){// * 삭제 모드에 대한 값 return
 
         Log.v("PatientList", "Patient Delete Mode"+deleteMode);
         return deleteMode;
     }
 
-    public int PatientLoad() {
+    public int PatientLoad() {// * 폴더에 있는 사용자 가져오기
         patientList = new ArrayList<PatientItem>() ;
         File path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp");
@@ -508,13 +508,13 @@ public class PatientListFragment extends Fragment {
                 for (int i = 0; i < foder.length; i++) {
                     try {
                         String patientPath = String.valueOf(path) + "/" + foder[i].getName();
-                        File patientCSV = new File(patientPath, "patient.csv");
+                        File patientCSV = new File(patientPath, "patient.csv");// * 사용자 id 마다 path를 가지고, patient.csv 파일 읽어서 정보 가져오기
 
                         BufferedReader buffer = new BufferedReader(new FileReader(patientCSV));
                         String str = buffer.readLine();
                         while (str != null) {
                             str = buffer.readLine();
-                            String[] patientStr = str.split(",");
+                            String[] patientStr = str.split(",");// * 정보 array에 입력
                             patientList.add(new PatientItem(patientStr[0].replaceAll("\\\"", ""), patientStr[1].replaceAll("\\\"", ""), (patientStr[3].equals("null") ? null : patientStr[3].replaceAll("\\\"", "")), (patientStr[4].equals("null") ? null : patientStr[4].replaceAll("\\\"", "")), false));
                         }
                         buffer.close();
@@ -539,12 +539,7 @@ public class PatientListFragment extends Fragment {
         }
     }
 
-    private String DateAdd(String date) {
-        String[] array = date.split("/");
-        return array[0].substring(2, 4) + "." + array[1] + "." + array[2];
-    }
-
-    public void multi_select(int position) {
+    public void multi_select(int position) {// * 삭제 사용자 선택했을 시
         Log.v("RecyclerView","RRRRRssmullti_select"+deleteMode);
         if (deleteMode == true) {
             if (selected_patientList.contains(patientList.get(position))) {
@@ -571,7 +566,7 @@ public class PatientListFragment extends Fragment {
     public boolean getDeleteMode(){
         return deleteMode;
     }
-    public void delete_exit() {
+    public void delete_exit() {// * 삭제 모드 시작 or 종료
         if(isMultiSelect==true){
             deleteMode = false;
             isMultiSelect = false;
@@ -595,16 +590,16 @@ public class PatientListFragment extends Fragment {
             deleteMode = true;
         }
     }
-    public void patient_delete(){
+    public void patient_delete(){// * 환자 삭제
         for (int i = 0 ; i<selected_patientList.size() ;i++) {
             File source = Environment.getExternalStoragePublicDirectory(
                     "/TremorApp/"+selected_patientList.get(i).getClinicID());
             File dest = Environment.getExternalStoragePublicDirectory(
                     "/TremorApp/RemovePatient/"+selected_patientList.get(i).getClinicID());
-            try {
-                FileUtils.copyDirectory(source, dest);
+            try {// * 삭제한 환자는 폴더도 삭제 하나, RemovePatient에 해당 환자 폴더가 복사돼서 데이터는 남겨질 수 있도록.
+                FileUtils.copyDirectory(source, dest);// * directory copy
                 File[] deleteList = source.listFiles();
-                for(File file : deleteList) {
+                for(File file : deleteList) {// * 폴더 완전히 삭제
                     if(file.listFiles()!=null && file.listFiles().length!=0) {
                         for (File inner_file : file.listFiles()) {
                             inner_file.delete();

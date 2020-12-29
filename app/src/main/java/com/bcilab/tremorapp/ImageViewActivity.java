@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-public class ImageViewActivity extends AppCompatActivity {
+public class ImageViewActivity extends AppCompatActivity {// * 이미지 클릭시 이미지 창
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
