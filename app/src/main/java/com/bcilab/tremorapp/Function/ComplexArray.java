@@ -19,7 +19,7 @@ public class ComplexArray {
     }
 
     public ComplexArray(double[] realVals, double[] imagVals) {
-        if (realVals != null && imagVals != null && realVals.length == imagVals.length) {
+        if (realVals != null && imagVals != null && (realVals.length == imagVals.length) ) {
             init(realVals.length);
             System.arraycopy(realVals, 0, real, 0, realVals.length);
             System.arraycopy(imagVals, 0, imag, 0, imagVals.length);

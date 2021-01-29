@@ -131,34 +131,38 @@ public class main1 {
 		int size = 0;
 
 
-		for(double temp: orgX)
-		{
+		for(double temp: orgX) {
 			x_position[size++] = temp;
-			if(temp == n)
-				break;
+			if(temp == n) break;
 		}
 		size = 0;
-		for(double temp: orgY)
-		{
+		for(double temp: orgY) {
 			y_position[size++] = temp;
-			if(temp == n)
-				break;
+
+			if(temp == n) break;
 		}
 		size = 0;
-		for(double temp: time)
-		{
+		for(double temp: time) {
 			time_array[size++] = temp;
 			Log.d("test1_time","time"+ temp);
-			if(temp == n)
-				break;
+			//if(size == 4) break;
+
+//			if(temp == n){
+//				Log.d("test1_time","하야"+ size);
+//				Log.d("test1_time","야하야"+ n);
+//
+//				break;
+//			}
+
 		}
 
 		//5가지 결과값 저장용 - 라인 테스트 용
 		Result=new double[5];
+
 		Result = fg.fitting(x_position, y_position,time_array, n, false, data_path, Clinic_ID, task, both);
 
-		for(int i = 0;i<5;i++){
-			Result[i] = Math.round(Result[i]*1000)/1000.0;
+		for(int i = 0 ; i<5 ; i++){
+			Result[i] = Math.round(Result[i]*1000)/1000.0; //소수점 셋째자리까지 반올
 			Log.d("test2","result:" +i+" "+ Result[i] );
 		}
 

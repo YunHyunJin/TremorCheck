@@ -85,8 +85,6 @@ public class PatientListActivity extends AppCompatActivity {// * 환자 페이�
                 ((PatientListFragment) getSupportFragmentManager().findFragmentById(R.id.patientList)).patient_delete();
             }
         });
-
-
     }
 
     public void visibleBottom(int visible){// * 삭제 navigation view hide or visible
@@ -129,8 +127,7 @@ public class PatientListActivity extends AppCompatActivity {// * 환자 페이�
         }
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {// * 권한 요청에 대한 응답 event
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {// * 권한 요청에 대한 응답 event
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.

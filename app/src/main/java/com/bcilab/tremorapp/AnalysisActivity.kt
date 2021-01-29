@@ -44,11 +44,19 @@ class AnalysisActivity : AppCompatActivity() {
             startActivity(cancel_Intent)
         }})
         dialog.show()
-        if(task.equals("Spiral")) result = main.main("$path/$filename", applicationContext, clinicID, data_path, task, both)
-        else result = main1.main1("$path/$filename", applicationContext, clinicID, data_path, task, both)
+
+
+        if(task.equals("Spiral"))
+            result = main.main("$path/$filename", applicationContext, clinicID, data_path, task, both)
+        else
+            result = main1.main1("$path/$filename", applicationContext, clinicID, data_path, task, both)
+
+
         dialog.dismiss()
         dialog.dismiss()
+
         val intent1 = Intent(this, ResultActivity::class.java)
+
         intent1.putExtra("spiral_result", result)
         intent1.putExtra("clinicID", clinicID)
         intent1.putExtra("firstdate",firstdate)

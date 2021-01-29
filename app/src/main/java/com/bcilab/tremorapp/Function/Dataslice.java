@@ -36,7 +36,7 @@ public class Dataslice {
 		    else session.add(i);
 			n = n - value;
 		}
-		
+		// ㅇㅕ기서 의문은 m의 값과 srate값이 달라지지 않는데 반복문이 종료가 되나?
 		return session;
 	}
 

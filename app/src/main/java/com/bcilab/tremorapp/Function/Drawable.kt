@@ -50,9 +50,9 @@ abstract class Drawable(context: Context) : View(context) {
         path.rewind()
         invalidate()
         bitmap.eraseColor(Color.TRANSPARENT)
-    }
+    } // 레이아웃 초기화
 
-    fun saveAsJPG(view: View, path: String, filename:String) {
+    fun saveAsJPG(view: View, path: String, filename:String) {// 이미지 파일로 저장
         canvas.drawColor(Color.WHITE)
         view.draw(canvas)
         val realPath = File(path)

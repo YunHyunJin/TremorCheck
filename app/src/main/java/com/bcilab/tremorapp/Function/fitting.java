@@ -25,10 +25,12 @@ public class fitting {
 	public LineTaskAnalyze lineTaskAnalyze=new LineTaskAnalyze();
 	//갤럭시 탭이 1cm당 가지는 pixel 갯수
 	public final static double DPI =88.18;
+//	public final static double DPI =13.06;
+
 
 	//직선 그리기 할 때, base line의 시작점과 끝점
 	public static int startX = 480;
-	public static int startY = 100;   //finalY -> 1848 ,startY -> 100
+	public static int startY = 100; //finalY -> 1848 ,startY -> 100
 	public static double[] distance;
 	public static int finalY=1848;   //this.resources.displayMetrics.heightPixels
 	public static int count = 0;
@@ -36,12 +38,17 @@ public class fitting {
 
 
 	public static  baseline bring(double[] x, double[] y, double[] t) {
-		return new baseline(x , y, t);}
+
+		return new baseline(x, y, t);
+	}
 
 	//obj = base, org = subject
-	public double[] fitting(double[] orgX, double[] orgY, double[] time, int m, boolean SorL, String data_path, String id, String task, String both) throws FileNotFoundException {
+	public double[] fitting(double[] orgX, double[] orgY, double[] time, int m, boolean SorL,
+							String data_path, String id, String task, String both) throws FileNotFoundException {
 		int n = m;
-		double[] objX = new double[n] ;      double[] objY = new double[n];       double[] t = new double[n]  ;
+		double[] objX = new double[n];
+		double[] objY = new double[n];
+		double[] t = new double[n];
 		baseline base = bring(objX, objY, t);
 		Clinic_ID = id;
 
@@ -58,15 +65,19 @@ public class fitting {
 		//orgX,orgY가 직접 그린 라인의 좌표
 		for(Double d : objX)
 			base_x.add(d);
+
 		for(Double d : orgX)
 			pos_x.add(d);
+
 		for(Double d : objY)
 			base_y.add(d);
+
 		for(Double d : orgY)
 			pos_y.add(d);
+
 		for(Double d : time)
 			time_array.add(d);
-		/* ******************************** make csv file *************************************/
+		/* ******************************** make csv file *************************************/ //로컬 저장
 		File mfolder = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
 
 		String dataname = data_path.replaceAll("/","_");
@@ -175,38 +186,40 @@ public class fitting {
 		re_hil = lineTaskAnalyze.MyHilbert(re_pca);
 
 		//Time , Frequency는 밑에 바로 결과 나오게 함
-		Finish_time = time[orgX.length-1]/1000;
+//		Finish_time = time[orgX.length-1]/1000;
+		//System.out.println("결과~순수 시간"+time[time.length]);
+
+		Finish_time = time[time.length-1]/1000;
 
 		//그린 그림의 길이
-		re_drawing_length = lineTaskAnalyze.myDrawingLength(re_lpf_x);
+		re_drawing_length = lineTaskAnalyze.myDrawingLength(re_lpf_x, orgY);
 		TremorMagnitude = Math.mean(re_hil)/DPI;
-		Velocity = (re_drawing_length/DPI)/Finish_time;
-		Log.v("속도 판정1", String.valueOf(re_drawing_length/DPI));
-		Log.v("속도 판정2", String.valueOf(Finish_time/1000));
-		Log.v("속도 판정3", String.valueOf(Velocity));
+		Velocity = (re_drawing_length)/Finish_time;
+//		Log.v("속도 판정: 길이", String.valueOf(re_drawing_length/DPI));
+//		Log.v("속도 판정: 시간", String.valueOf(Finish_time));
+//		Log.v("속도 판정: 속도", String.valueOf(Velocity));
+
+		System.out.println("결과~선길이:"+re_drawing_length);
+		System.out.println("결과~시간:"+Finish_time);
+		System.out.println("결과~속도:"+Velocity);
+		System.out.println("결과~시간index:"+time.length);
+
 		TremorFrequency = lineTaskAnalyze.myFFT(re_pca);
 
 		if(TremorMagnitude < 0.1 ){
 			TremorFrequency = -1;
 		}
 
-		if (SorL) // Sprial
-		{
+		if (SorL){ //spiral
 			ErrorDistance = lineTaskAnalyze.MyED(re_lpf_x,re_lpf_y)/DPI;
 		}
-		else //Line
-		{
-
+		else{ //Line
 			//매틀랩에서는 480을 빼줘야하지만 java의  LPF 에선 offset을 0으로 만들어줌
-			for(int i=0;i<orgX.length;i++){
-				baseline_x[i] = 0;
+			for(int i=0 ; i<orgX.length ; i++){
+				baseline_x[i] = 480;
 			}
 
-
-			ErrorDistance = lineTaskAnalyze.myEUD(re_lpf_x,baseline_x)/DPI;
-
-
-
+			ErrorDistance = lineTaskAnalyze.myEUD(orgX,baseline_x);
 		}
 		//[0]: TM , [1]: TF , [2]:time , [3]: ED , [4]:velocity
 		double[] result = {TremorMagnitude,TremorFrequency,Finish_time,ErrorDistance,Velocity};

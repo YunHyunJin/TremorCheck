@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class main {
+public class 	main {
 
 	private static fft ft;
 	private static LineTaskAnalyze lineTaskAnalyze;
@@ -38,10 +38,11 @@ public class main {
 	public static double[] main(String args, Context context, String id, String data_path, String task, String both) throws IOException {
 		ctx = context;
 		Clinic_ID = id;
-		double[] resultx = new double[4];      double[] resulty = new double[4];// result of fft
+		double[] resultx = new double[4];
+		double[] resulty = new double[4];// result of fft
 		double[][] fitting;//result of fitting
 		double[][] fildata;// filled null point data
-
+	//
 
 
 
@@ -106,26 +107,27 @@ public class main {
 		double[] x_position = new double[n];
 		double[] y_position = new double[n];
 		double[] time_array = new double[n];
+
 		int size = 0;
-		for(double temp: orgX)
-		{
+
+		for(double temp: orgX) {
 			x_position[size++] = temp;
 			if(temp == n)
 				break;
 		}
 		size = 0;
-		for(double temp: orgY)
-		{
+		for(double temp: orgY) {
 			y_position[size++] = temp;
 			if(temp == n)
 				break;
 		}
 		size = 0;
-		for(double temp: time)
-		{
+		for(double temp: time) {
 			time_array[size++] = temp;
-			if(temp == n)
-				break;
+			//if(size == 4) break;
+			//======================= 시간 0이 되버림
+//			if(temp == n)
+//				break;
 		}
 
 		Result=new double[5];

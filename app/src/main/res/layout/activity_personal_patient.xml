@@ -38,13 +38,14 @@
         android:id="@+id/task"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/T30"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="@dimen/T30"
         android:layout_marginStart="@dimen/T30"
+        android:layout_marginTop="@dimen/T30"
+        android:layout_marginEnd="@dimen/T30"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTab" />
+        app:layout_constraintTop_toBottomOf="@+id/taskTab"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

@@ -18,6 +18,8 @@ public class LineTaskAnalyze {
     private static fft ft;
     // sampling rate : 60
     private static final int srate = 60;
+    public final static double DPI =88.18;
+
     //                                                              3/60(3Hz) ,15/60(15Hz), 다음 값들은 경험적.... 실험으로
     private static BandPassFilter BPF_line =new BandPassFilter(0.05,0.25,0.001,0.0005608);
     private static BandPassFilter LPF_line =new BandPassFilter(0.0012,0.05,0.00001,0.5605);
@@ -38,7 +40,7 @@ public class LineTaskAnalyze {
 
         return return_value;
     }
-
+//================================================================
     public float[] DoubleToFloat(double[] arr) {
         float[] return_value=new float[arr.length];
 
@@ -48,7 +50,7 @@ public class LineTaskAnalyze {
 
         return return_value;
     }
-
+    //================================================================
     public double[] FloatToDouble(float[] arr) {
         double[] return_value=new double[arr.length];
 
@@ -59,7 +61,7 @@ public class LineTaskAnalyze {
         return return_value;
     }
 
-
+//================================================================
 
     //어레이를 어레이리스트롤 바꿔주기
     public ArrayList<Double> ArrayToArraylist(double[] arr){
@@ -84,12 +86,14 @@ public class LineTaskAnalyze {
         //SpiralOrLine :  true일시 스파이럴 테스트 , false 일시 라인 테스트
         if(SpiralOrLine==true){
             BPF_spiral.setExtrapolation(BandPassFilter.Extrapolation.ZERO_SLOPE);
+
             //결과가 float라서 float형으로 써줌
             BPF_spiral.apply(data_float, temp_float);
+
             //firebase는 arraylist를 사용하는데 arraylist에서는 double형 밖에 안들어가는 걸로 기억.
             temp_double = FloatToDouble(temp_float);
 
-            for(int i=0;i<temp_double.length;i++){
+            for(int i=0 ; i<temp_double.length ; i++){
                 BPF_result[i]= temp_double[i];
             }
         }else{
@@ -102,6 +106,8 @@ public class LineTaskAnalyze {
                 BPF_result[i]= temp_double[i];
             }
         }
+        //System.out.println("BPF 결과~~~"+BPF_result);
+
         return BPF_result;
     }
 
@@ -109,6 +115,7 @@ public class LineTaskAnalyze {
     public double[] myLPF(double[] data,boolean SpiralOrLine){
         float [] data_float=new float[data.length];
         float[] temp_float = new float[data.length];
+
         double[] temp_double = new double[data.length];
         double[] LPF_result = new double[data.length];
 
@@ -130,11 +137,12 @@ public class LineTaskAnalyze {
 
             temp_double=FloatToDouble(temp_float);
 
-            for(int i=0;i<temp_double.length;i++){
+            for(int i=0 ; i<temp_double.length ; i++){
                 LPF_result[i]= temp_double[i];
             }
         }
         Log.d("test1","잘돌고있음 LPF" );
+       // System.out.println("LPF 결과~~~"+LPF_result);
         return LPF_result;
     }
 
@@ -222,15 +230,27 @@ public class LineTaskAnalyze {
 
     // ***************************** DrawingLength *****************************
 
-    public double myDrawingLength(double[] x){
+    public double myDrawingLength(double[] x, double[] y){
         double result=0.0;
-        // 실제로 그린 길이 만큼 나옴
-        for (int i = 10; i < x.length-6; i++) {
-            double d = x[i] - x[i-1];
-            result += Math.sqrt(d*d);
+//        // 실제로 그린 길이 만큼 나옴
+//        for (int i = 10; i < x.length-6; i++) {
+////            double d = x[i] - x[i-1];
+////            result += Math.sqrt(d*d);
+//            double d_x = x[i] - x[i - 1];
+//            result += Math.sqrt((d_x * d_x));
+//
+//        }
 
+        for (int i = 10; i < x.length-6; i++) {
+            double d_x = x[i] - x[i-1];
+            double d_y = y[i] - y[i-1];
+            // 변경사항
+
+            result += Math.sqrt((d_x * d_x) + (d_y * d_y));
         }
-        return result;
+       // System.out.println("길이결과~~~"+result/13.06);
+
+        return result/130;////
     }
 
     // ***************************** EUD *****************************
@@ -238,13 +258,27 @@ public class LineTaskAnalyze {
     public double myEUD(double[] x , double[] y){
         double result=0.0;
 
+        for(int i=0; i< y.length ; i++){
+            Log.d("결과~baseX_i: ", String.valueOf(i));
+            Log.d("결과~DrawX: ", String.valueOf(x[i]));
+        }
         //유클리드 거리 측정.
-        for (int i = 10; i < x.length-6; i++) {
+        int count =0;
+        for (int i = 10 ; i < x.length-6 ; i++) {
             double d = x[i] - y[i];
+            Log.d("결과~gap: ", String.valueOf(d));
+
+            if(Math.abs(d) < 65){
+                count++;
+                continue;
+            }
+            d = d/130;
+
             result += Math.sqrt(d * d);
         }
+        Log.d("결과~count: ", String.valueOf(count));
 
-        return result/(x.length-15);
+        return result/(x.length-15-count);
     }
     // ***************************** Spiral ED *****************************
     public double MyED(double[] x, double[] y ){
@@ -255,13 +289,12 @@ public class LineTaskAnalyze {
         double[] angle_pos = new double[x.length];
 
         //get the angle of spiral
-        for (int i = 0; i < x.length; i++)
-        {
+        for (int i = 0; i < x.length; i++) {
             angle_atan[i] = Math.atan2(y[i], x[i]);
+            Log.d("결과~angle", String.valueOf(angle_atan[i]));
         }
 
-        for(int i = 0; i < x.length; i++)
-        {
+        for(int i = 0; i < x.length; i++) {
             if(i == 0)
                 angle_pos[i] = unwrap(0, angle_atan[i]);
             else
@@ -276,35 +309,27 @@ public class LineTaskAnalyze {
         double[] pair_pos_x = new double[x.length];
         double[] pair_pos_y = new double[x.length];
 
-        for (int i = 0; i < x.length; i++)
-        {
-
-            if(i == 0)
-            {
-                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
-                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
-
+        for (int i = 0; i < x.length; i++) {
+            if(i == 0) {
+                pair_pos_x[i] = r*Math.cos(angle_pos[i]); // base_밑변
+                pair_pos_y[i] = r*Math.sin(angle_pos[i]); // base_높이
             }
-
-            else
-            {
+            else {
                 t = angle_pos[i]/w;
                 r = v*t;
                 pair_pos_x[i] = r*Math.cos(angle_pos[i]);
                 pair_pos_y[i] = r*Math.sin(angle_pos[i]);
-
-
             }
-            Log.v("LineTaskAnalyze", "linetaskanalyzzz position x "+x[i]+" y "+y[i]);
-            Log.v("LineTaskAnalyze", "linetaskanalyzzz angleee angle_atan : "+angle_atan[i]+" angle_pos : "+angle_pos[i]);
-            Log.v("LineTaskAnalyze", "linetaskanalyzzz pairpos x "+pair_pos_x[i]+" pairpos y "+pair_pos_y[i]);
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz position x "+ x[i]+" y "+ y[i]);
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz angleee angle_atan : "+ angle_atan[i]+" angle_pos : "+ angle_pos[i]);
+            Log.v("LineTaskAnalyze", "linetaskanalyzzz pairpos x "+ pair_pos_x[i]+" pairpos y "+ pair_pos_y[i]);
         }
         //calculate error distance
         double sum = 0;
-        for(int i = 0; i < x.length; i++)
-        {
-            sum += Math.sqrt(Math.pow((x[i]-pair_pos_x[i]), 2) + Math.pow((y[i]-pair_pos_y[i]), 2));
+        for(int i = 0; i < x.length; i++) {
+            sum += Math.sqrt(Math.pow((x[i]-pair_pos_x[i]),2) + Math.pow((y[i]-pair_pos_y[i]),2));
         }
+
         return sum/x.length;
     }
     //x축을 구하긴 하지만 사용하는거는 y축밖에 없음
@@ -415,8 +440,7 @@ public class LineTaskAnalyze {
         return hz;
     }
 
-    public double rmsValue(double[] arr, int n)
-    {
+    public double rmsValue(double[] arr, int n) {
         double square = 0;
         double mean = 0;
         double root = 0;
@@ -435,24 +459,18 @@ public class LineTaskAnalyze {
         return root;
     }
 
-    public static double unwrap(double reference, double wrapped)
-    {
+    public static double unwrap(double reference, double wrapped) {
         double po = 0.0;
         double dp = wrapped - reference;
 
-        if (dp > Math.PI)
-        {
-            while(dp > Math.PI)
-            {
+        if (dp > Math.PI) {
+            while(dp > Math.PI) {
                 po -= 2*Math.PI;
                 dp -= 2*Math.PI;
             }
         }
-
-        if (dp < -Math.PI)
-        {
-            while(dp < -Math.PI)
-            {
+        if (dp < -Math.PI) {
+            while(dp < -Math.PI) {
                 po += 2*Math.PI;
                 dp += 2*Math.PI;
             }

@@ -11,12 +11,13 @@ import java.util.List;
 public class FillNull {
 
     public double[] FillNull(List<Double> input, int n) {
-        int Nstart = 0; int Nend = 0;
+        int Nstart = 0;
+        int Nend = 0;
         double[] Fdata = new double[n];
         int flag = 1;
 
         for(int i = 0; i < n ; i++) {
-            if ( input.get(i) != 0 ) {
+            if ( input.get(i) != 0 ) { // get => 인덱스 값으로 List 불러오기
                 if (flag == 0){
                     Nend = i;
                     double gap = (input.get(Nend) - input.get(Nstart)) / (double)(Nend - Nstart);
@@ -26,11 +27,14 @@ public class FillNull {
                     }
                     flag = 1;
                 }
+
                 Fdata[i] = input.get(i);
-                continue;}
+                continue;
+            }
 
             if( flag == 1 ) {
-                Nstart = i;		flag = 0;
+                Nstart = i;
+                flag = 0;
             }
             // if x is 0, y also 0
         }

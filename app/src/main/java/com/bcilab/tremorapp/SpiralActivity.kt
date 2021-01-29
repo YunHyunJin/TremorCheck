@@ -227,6 +227,7 @@ class SpiralActivity : AppCompatActivity() {
 //                    println(e.message)
 //                }
 //                Log.v("pathTrace","PathTTraceint"+pathTrace.size+" "+baseTrace.size)
+
                 val data_path = image_path.replace("Image", "Data").replace("jpg", "csv")
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
@@ -327,11 +328,11 @@ class SpiralActivity : AppCompatActivity() {
                 baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
                 basePath.lineTo(baseX, baseY)
                 baseTrace.add(BaseTraceData(baseX,baseY))
-                Log.v("spiralActivity", "spiralll  "+baseY+"  "+baseX)
+                Log.v("spiralActivity", "spiral  "+baseY+"  "+baseX)
                 baseData.append("\n$baseX,$baseY")
                 i++
             }
-            Log.v("spiralActivity", "spiralll  "+i+baseTrace.size)
+            Log.v("spiralActivity", "spiral  "+i+baseTrace.size)
             canvas.drawPath(basePath, basePaint)
 //
 //            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")

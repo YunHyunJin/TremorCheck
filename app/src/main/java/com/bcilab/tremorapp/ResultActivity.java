@@ -85,18 +85,20 @@ public class ResultActivity extends AppCompatActivity {
         image_path = intent.getExtras().getString("image_path");
         firstdate = intent.getExtras().getBoolean("firstdate");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") +(task.equals("Spiral") ? "나선 검사" : "선 검사"));
+        toolbar.setTitle(clinicID+" "+ (both.equals("Right") ? "오른손 " : "왼손 ") + (task.equals("Spiral") ? "나선 검사" : "선 검사"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final double[] spiral_result = intent.getDoubleArrayExtra("spiral_result");
         tabLayout = (TabLayout) findViewById(R.id.measure) ;
         //[0]: TM , [1]: TF , [2]:time , [3]: ED , [4]:velocity
         //[0]: 떨림규모 , [1]: 떨림 , [2]:time , [3]: 거리 , [4]:속도
-        tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수"));
+
+        tabLayout.addTab(tabLayout.newTab().setText("1초당 떨림의 횟수")); // 나선 검사 결과 안의 그래프 탭
         tabLayout.addTab(tabLayout.newTab().setText("떨림의 세기"));
         tabLayout.addTab(tabLayout.newTab().setText("벗어난 거리"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 수행 시간"));
         tabLayout.addTab(tabLayout.newTab().setText("검사 평균 속도"));
+
         graphView = (GraphView) findViewById(R.id.graph);
         graphView.getViewport().setMinY(0);
         graphView.getViewport().setMinX(0);
@@ -133,14 +135,21 @@ public class ResultActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         if(spiral_result[1] == -1) {// 현재 결과값
-            ((TextView) findViewById(R.id.pre_hz_result)).setText("떨림 횟수가 적음");
+            ((TextView) findViewById(R.id.pre_hz_result)).setText("정상");
         }
-        else {
+       else {
             ((TextView) findViewById(R.id.pre_hz_result)).setText(String.format("%.2f",spiral_result[1])+" Hz") ;
         }
+        if(spiral_result[3]==0) {// 직전 데이터
+            ((TextView) findViewById(R.id.pre_distance_result)).setText("거의 벗어나지 않음");
+        }
+        else {
+            ((TextView) findViewById(R.id.pre_distance_result)).setText(String.format("%.2f",spiral_result[3])+" cm") ;
+        }
+        // 이번결과
         ((TextView) findViewById(R.id.pre_mag_result)).setText(String.format("%.2f",spiral_result[0])+" cm") ;
-        ((TextView) findViewById(R.id.pre_distance_result)).setText(String.format("%.2f",spiral_result[3])+" cm") ;
         ((TextView) findViewById(R.id.pre_time_result)).setText(String.format("%.2f",spiral_result[2])+" sec") ;
         ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",spiral_result[4])+" cm/sec") ;
         ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
@@ -217,13 +226,18 @@ public class ResultActivity extends AppCompatActivity {
                 }
             });
             if(Double.parseDouble(spiralStr[1])==-1) {// 직전 데이터
-                ((TextView) findViewById(R.id.hz_result)).setText("떨림 횟수가 적음");
+                ((TextView) findViewById(R.id.hz_result)).setText("정상");
             }
             else {
                 ((TextView) findViewById(R.id.hz_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[1]))+" Hz") ;
             }
+            if(Double.parseDouble(spiralStr[3])==0) {// 직전 데이터
+                ((TextView) findViewById(R.id.distance_result)).setText("거의 벗어나지 않음");
+            }
+            else {
+                ((TextView) findViewById(R.id.distance_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[3]))+" cm") ;
+            }
             ((TextView) findViewById(R.id.mag_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[2]))+" cm") ;
-            ((TextView) findViewById(R.id.distance_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[3]))+" cm") ;
             ((TextView) findViewById(R.id.time_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[4]))+" sec") ;
             ((TextView) findViewById(R.id.speed_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[5]))+" cm/sec") ;
             ((TextView) findViewById(R.id.pre_result_date)).setText(spiralStr[6].substring(0,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)+" "
@@ -362,7 +376,15 @@ public class ResultActivity extends AppCompatActivity {
                 line_length++;
                 spiralStr=line.split(",");
                 if (!spiralStr[0].equals("Count")) {
-                    resultData.add(new ResultData(Integer.parseInt(spiralStr[0]),Double.parseDouble(spiralStr[1]), Double.parseDouble(spiralStr[2]),Double.parseDouble(spiralStr[3]),Double.parseDouble(spiralStr[4]),Double.parseDouble(spiralStr[5]), spiralStr[6].substring(2,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)));
+                    resultData.add(
+                            new ResultData(
+                                    Integer.parseInt(spiralStr[0]),
+                                    Double.parseDouble(spiralStr[1]),
+                                    Double.parseDouble(spiralStr[2]),
+                                    Double.parseDouble(spiralStr[3]),
+                                    Double.parseDouble(spiralStr[4]),
+                                    Double.parseDouble(spiralStr[5]),
+                                    spiralStr[6].substring(2,4)+"."+spiralStr[6].substring(4,6)+"."+spiralStr[6].substring(6,8)));
                 }
             }
         }catch(FileNotFoundException e){

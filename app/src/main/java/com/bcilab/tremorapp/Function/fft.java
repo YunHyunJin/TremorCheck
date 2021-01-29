@@ -12,7 +12,7 @@ package com.bcilab.tremorapp.Function;
 
 import com.bcilab.tremorapp.Data.Complex;
 
-public class fft {
+public class fft { //하나의 클래
 
     // compute the FFT of x[], assuming its length is a power of 2
     public static Complex[] fft(Complex[] x) {
@@ -21,7 +21,7 @@ public class fft {
         if (n == 1) return new Complex[] { x[0] };
 
         // radix 2 Cooley-Tukey FFT
-        if (n % 2 != 0 ) {
+        if (n % 2 != 0 ) { //짝수가 아니면
             throw new IllegalArgumentException("n is not a power of 2");
         }
 
@@ -41,6 +41,7 @@ public class fft {
 
         // combine
         Complex[] y = new Complex[n];
+
         for (int k = 0; k < n/2; k++) {
             if (q[k] == null) break;
             else {
@@ -50,9 +51,6 @@ public class fft {
                 y[k + n/2] = q[k].minus(wk.times(r[k]));
             }
         }
-
-
-
         return y;
     }
 
