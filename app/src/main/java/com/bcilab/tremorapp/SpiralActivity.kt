@@ -115,8 +115,7 @@ class SpiralActivity : AppCompatActivity() {
             {
                 Toast.makeText(this, "나선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
             }
-            else
-            {
+            else {
                 loading()
                 Log.v("분석중입니다.","분석중입니다.")
                 var v1 = window.decorView
@@ -135,6 +134,7 @@ class SpiralActivity : AppCompatActivity() {
                 captureView.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 var uri = Uri.fromFile(path)
                 val data = baos.toByteArray()
+
                 /* ******************************** save image local *************************************/
                 try{
                     onCap(captureView, path, count)
@@ -143,6 +143,7 @@ class SpiralActivity : AppCompatActivity() {
                 }finally {
                     captureView.recycle();
                 }
+
                 var metaData = "positionX,positionY,time"
                 //val path = File("${this.filesDir.path}/testData") // raw save to file dir(data/com.bcilab....)
                 if (!path.exists()) path.mkdirs()
@@ -159,6 +160,7 @@ class SpiralActivity : AppCompatActivity() {
                 }
                 metaData = "baseX,baseY,positionX,positionY,time"// * base data와 실제 그린 data 모두 저장.
                 file = File(path,"${clinicID}_${task}_${both}_${count}_Data.csv")
+
                 if (pathTrace.size<baseTrace.size) {// * bast data 길이가 더 길때는 base x, y 집어 넣고 실제 그린 data(position x, position y, time에 아무값 안 집어 넣기)
                     try {
                         PrintWriter(file).use { out ->
@@ -318,23 +320,32 @@ class SpiralActivity : AppCompatActivity() {
         override fun onDraw(canvas: Canvas) {
             val baseData = StringBuilder()
             baseData.append("baseX,baseY")
-            basePath.moveTo(startX.toFloat(), startY.toFloat())
+//            basePath.moveTo(startX.toFloat(), startY.toFloat())
+            basePath.moveTo(571.toFloat(), 810.toFloat())
             var baseX = startX.toFloat()
             var baseY = startY.toFloat()
+
             var i = 0
             baseTrace = arrayListOf()
+
+
             for (t in theta) {
-                baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
-                baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
-                basePath.lineTo(baseX, baseY)
-                baseTrace.add(BaseTraceData(baseX,baseY))
-                Log.v("spiralActivity", "spiral  "+baseY+"  "+baseX)
-                baseData.append("\n$baseX,$baseY")
+                if (i >= 162) {
+                    baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
+                    baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
+                    Log.v("중심", i.toString())
+
+                        basePath.lineTo(baseX, baseY)
+                        baseTrace.add(BaseTraceData(baseX, baseY))
+                        Log.v("spiralActivity", "spiral  " + baseY + "  " + baseX)
+                        baseData.append("\n$baseX,$baseY")
+                }
                 i++
+
             }
             Log.v("spiralActivity", "spiral  "+i+baseTrace.size)
             canvas.drawPath(basePath, basePaint)
-//
+
 //            val baseCsv = File(path, clinicID+"_"+task+"_"+both+"_"+count+"_BaseData.csv")
 //
 //            try {

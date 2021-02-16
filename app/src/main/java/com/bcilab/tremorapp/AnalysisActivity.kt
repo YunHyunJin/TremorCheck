@@ -34,6 +34,8 @@ class AnalysisActivity : AppCompatActivity() {
 
         val path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/$clinicID/$task$both")
+
+
         val dialog = ProgressDialog(this)
         dialog.setMessage("Analysing...")
         dialog.setCancelable(false);

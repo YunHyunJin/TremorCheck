@@ -149,11 +149,14 @@ public class ResultActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.pre_distance_result)).setText(String.format("%.2f",spiral_result[3])+" cm") ;
         }
         // 이번결과
+        Log.d("결과~hz", String.valueOf(spiral_result[1]));
         ((TextView) findViewById(R.id.pre_mag_result)).setText(String.format("%.2f",spiral_result[0])+" cm") ;
         ((TextView) findViewById(R.id.pre_time_result)).setText(String.format("%.2f",spiral_result[2])+" sec") ;
         ((TextView) findViewById(R.id.pre_speed_result)).setText(String.format("%.2f",spiral_result[4])+" cm/sec") ;
         ((TextView) findViewById(R.id.result_date)).setText(timestamp.substring(0,4)+"."+timestamp.substring(4,6)+"."+timestamp.substring(6,8)+" "
                 +timestamp.substring(9,11)+":"+timestamp.substring(12, 14)) ;
+
+
         if(no_first==false){// 해당 검사에서 처음일 때
             StringBuilder result = new StringBuilder();
             result.append("Count,Hz,Magnitude,Distance,Time,Speed, TimeStamp");// * 결과 값 csv 파일에 저장
@@ -179,8 +182,6 @@ public class ResultActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
         else {
             File spiralCSV = new File(path, filename) ;
@@ -237,6 +238,7 @@ public class ResultActivity extends AppCompatActivity {
             else {
                 ((TextView) findViewById(R.id.distance_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[3]))+" cm") ;
             }
+            Log.d("결과~hz아래",spiralStr[1]);
             ((TextView) findViewById(R.id.mag_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[2]))+" cm") ;
             ((TextView) findViewById(R.id.time_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[4]))+" sec") ;
             ((TextView) findViewById(R.id.speed_result)).setText(String.format("%.2f",Double.parseDouble(spiralStr[5]))+" cm/sec") ;

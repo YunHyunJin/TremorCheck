@@ -28,15 +28,16 @@
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <Button
-            android:layout_weight="1"
             android:id="@+id/right"
-            android:text="오른손"
-            android:textSize="@dimen/textSize2"
-            android:textColor="@color/primary"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="오른손"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/textSize2" />
     </LinearLayout>
 
 </LinearLayout>

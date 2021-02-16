@@ -133,6 +133,7 @@ public class fitting {
 
 
 
+
 //		StorageReference spiral_reference = storage.getInstance().getReference();
 //		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //		String uid = user.getUid();
@@ -192,7 +193,11 @@ public class fitting {
 		Finish_time = time[time.length-1]/1000;
 
 		//그린 그림의 길이
-		re_drawing_length = lineTaskAnalyze.myDrawingLength(re_lpf_x, orgY);
+		if(SorL){
+			re_drawing_length = lineTaskAnalyze.myDrawingLength(re_lpf_x, re_lpf_y);
+		}else{
+			re_drawing_length = lineTaskAnalyze.myDrawingLength(re_lpf_x, orgY);
+		}
 		TremorMagnitude = Math.mean(re_hil)/DPI;
 		Velocity = (re_drawing_length)/Finish_time;
 //		Log.v("속도 판정: 길이", String.valueOf(re_drawing_length/DPI));
@@ -205,13 +210,14 @@ public class fitting {
 		System.out.println("결과~시간index:"+time.length);
 
 		TremorFrequency = lineTaskAnalyze.myFFT(re_pca);
+		Log.d("결과~과정4", String.valueOf(TremorFrequency));
 
 		if(TremorMagnitude < 0.1 ){
 			TremorFrequency = -1;
 		}
 
 		if (SorL){ //spiral
-			ErrorDistance = lineTaskAnalyze.MyED(re_lpf_x,re_lpf_y)/DPI;
+			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time);
 		}
 		else{ //Line
 			//매틀랩에서는 480을 빼줘야하지만 java의  LPF 에선 offset을 0으로 만들어줌
@@ -307,11 +313,13 @@ public class fitting {
 
 		public baseline setting(int length) {
 			this.t = new double[length];
-			for (int i = 0; i < length; i++) {
-				this.t[i] = min + i * (max - min) / (length - 1);
-				this.baseX[i] = fitting.startX;
-				this.baseY[i] = finalY - (fitting.startY+i);
-			}
+				for (int i = 0; i < length; i++) {
+					this.t[i] = min + i * (max - min) / (length - 1);
+					this.baseX[i] = fitting.startX;
+					this.baseY[i] = finalY - (fitting.startY+i);
+				}
+
+
 
 			return new baseline(baseX, baseY, t);
 		}
