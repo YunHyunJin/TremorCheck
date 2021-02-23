@@ -259,7 +259,7 @@ class SpiralActivity : AppCompatActivity() {
                     else
                         break
                 }
-            }
+            } 
 
         }
 

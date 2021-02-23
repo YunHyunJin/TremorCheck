@@ -213,7 +213,6 @@ public class LineTaskAnalyze {
 
         }
 
-
         Log.d("test1_pca", cong[0][0] + " " + cong[0][1]);
 
         for (int i = 0; i < x.length; i++) {
@@ -238,6 +237,7 @@ public class LineTaskAnalyze {
         double[] envel = new double[data.length];
         for (int i = 0; i < data.length; i++) {
             temp[i] = Math.sqrt(Math.pow(hilbert_real[i], 2) + Math.pow(hilbert_imag[i], 2));
+            Log.v("test12", String.valueOf(temp[i]));
         }
 
 
@@ -271,9 +271,9 @@ public class LineTaskAnalyze {
 
             result += Math.sqrt((d_x * d_x) + (d_y * d_y));
         }
-        // System.out.println("길이결과~~~"+result/13.06);
+         System.out.println("길이결과~~~"+result/DPI);
 
-        return result / 130;////
+        return result / DPI;////
     }
 
     // ***************************** EUD *****************************
@@ -295,7 +295,7 @@ public class LineTaskAnalyze {
 //                count++;
 //                continue;
 //            }
-            d = d / 130;
+            d = d / DPI;
 
             result += Math.sqrt(d * d);
         }
@@ -407,7 +407,9 @@ public class LineTaskAnalyze {
 //        return sum / x.length;
 //    }
     public double MyED(double[] x, double[] y, double[] time) {
-
+        // 태블릿이 변경되었을때
+        // 1. DPI 변경 - 태블릿 화면에 1cm당 좌표값
+        // 2. 6PI:cm 길이 = radian : x 에서 단위 파이 대비 cm 길이를 구해서 바꿔준다.
         double[] thetax = new double[x.length];
         double[] thetay = new double[x.length];
         double[] theta = new double[x.length];
@@ -448,19 +450,18 @@ public class LineTaskAnalyze {
             Log.v("LineTaskAnalyze", "(x) " + thetax[i] + " (y) " + thetay[i]
                     + " (theta) "+ theta[i] + " (count) " + count + " (base_angle) " + base_angle[i]);
 
-            Log.v("LineTaskAnalyze", "(r)" + length/130+"cm");
+            Log.v("LineTaskAnalyze", "(r)" + length/DPI+"cm");
 
-            ed[i] = ( Math.abs((length/130) - (base_angle[i]* (4/21.99)) ) );
+            ed[i] = ( Math.abs((length/DPI) - (base_angle[i]* (5/(Math.PI*6))) ) );
 
             Log.v("ed: ", String.valueOf(ed[i]));
 
             sum += ed[i];
 
-            base_x[i] = (base_angle[i]*(4/21.99)*130) * Math.cos(base_angle[i])+571;
-            base_y[i] = (base_angle[i]*(4/21.99)*130) * Math.sin(base_angle[i])+924;
+            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+571 ;
+            base_y[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.sin(base_angle[i])+924;
             Log.v("베이스나와라: ", "x: "+base_x[i]+" y: "+base_y[i]);
             Log.v("원래거나와라: ", "x: "+x[i]+" y: "+y[i]);
-            LineTaskAnalyze csvWrite = new LineTaskAnalyze();
 
         }
         File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp");
@@ -675,7 +676,7 @@ public class LineTaskAnalyze {
             hz = -1;
         }
 
-
+        System.out.println("주파수는"+hz);
         return hz;
     }
 

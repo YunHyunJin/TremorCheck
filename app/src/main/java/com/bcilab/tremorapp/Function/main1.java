@@ -165,7 +165,7 @@ public class main1 {
 			Result[i] = Math.round(Result[i]*1000)/1000.0; //소수점 셋째자리까지 반올
 			Log.d("test2","result:" +i+" "+ Result[i] );
 		}
-
+		System.out.println("나와라주파수"+Result[1]);
 
 		//Result [0]: TM , [1]: TF , [2]:time , [3]: ED , [4]:velocity
 		return Result;

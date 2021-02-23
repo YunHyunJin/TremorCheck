@@ -212,7 +212,7 @@ public class fitting {
 		TremorFrequency = lineTaskAnalyze.myFFT(re_pca);
 		Log.d("결과~과정4", String.valueOf(TremorFrequency));
 
-		if(TremorMagnitude < 0.1 ){
+		if(TremorMagnitude < 0.1 || ErrorDistance < 0.1 ){
 			TremorFrequency = -1;
 		}
 
@@ -318,8 +318,6 @@ public class fitting {
 					this.baseX[i] = fitting.startX;
 					this.baseY[i] = finalY - (fitting.startY+i);
 				}
-
-
 
 			return new baseline(baseX, baseY, t);
 		}
