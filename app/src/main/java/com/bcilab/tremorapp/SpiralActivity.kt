@@ -58,6 +58,10 @@ class SpiralActivity : AppCompatActivity() {
     private var both : String = ""
     private var resut_image_path : String = ""
     private var firstdate : Boolean = true
+
+    private  var startXX : String = ""
+    private  var startYY : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spiral)
@@ -234,8 +238,13 @@ class SpiralActivity : AppCompatActivity() {
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
                 filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
+                var counts : String = count.toString()
+                Log.v("하야야ㅇㅇcount: ", "j:1 "+counts);
 
+                intent.putExtra("startXX",startXX)
+                intent.putExtra("startYY",startYY)
                 intent.putExtra("timestamp", filename)
+                intent.putExtra("count", counts)
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)
                 intent.putExtra("task", task)
@@ -259,7 +268,7 @@ class SpiralActivity : AppCompatActivity() {
                     else
                         break
                 }
-            } 
+            }
 
         }
 
@@ -321,13 +330,27 @@ class SpiralActivity : AppCompatActivity() {
             val baseData = StringBuilder()
             baseData.append("baseX,baseY")
 //            basePath.moveTo(startX.toFloat(), startY.toFloat())
-            basePath.moveTo(571.toFloat(), 810.toFloat())
+//            basePath.moveTo(571.toFloat(), 810.toFloat())
+            var baseX_0 = startX.toFloat()
+            var baseY_0 = startY.toFloat()
             var baseX = startX.toFloat()
             var baseY = startY.toFloat()
-
             var i = 0
+            var k = 0
             baseTrace = arrayListOf()
 
+            for (t in theta) {
+                if (k == 162) {
+                    baseX_0 = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
+                    baseY_0 = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
+                    basePath.moveTo(baseX_0, baseY_0)
+
+                    startXX = baseX_0.toString()
+                    startYY = baseY_0.toString()
+                    break
+                }
+                k++
+            }
 
             for (t in theta) {
                 if (i >= 162) {

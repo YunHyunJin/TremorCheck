@@ -77,13 +77,13 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
             }
         });
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)// * toolbar 에 menu 적용
-    {
-        getMenuInflater().inflate(R.menu.personal_patient_toolbar, menu);
-
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu)// * toolbar 에 menu 적용
+//    {
+//        getMenuInflater().inflate(R.menu.personal_patient_toolbar, menu);
+//
+//        return true;
+//    }
     @Override public boolean onOptionsItemSelected(MenuItem item) {//
         switch (item.getItemId()) {
             case R.id.edit_patient :

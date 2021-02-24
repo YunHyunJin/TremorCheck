@@ -18,19 +18,30 @@ class AnalysisActivity : AppCompatActivity() {
     var task: String = ""
     var both : String = ""
     var data_path : String = ""
+    var count : String = ""
     var firstdate : Boolean = true
+
+    var startXX : String = ""
+    var startYY : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analysis)
 
         val intent = intent
         var result: DoubleArray = doubleArrayOf()
+       // count = intent.getIntExtra("count") ;
+        startXX = intent.getStringExtra("startXX")
+        startYY = intent.getStringExtra("startYY")
+
+        count = intent.getStringExtra("count")
         clinicID = intent.getStringExtra("clinicID") ;
         patientName = intent.getStringExtra("patientName")
         task = intent.getStringExtra("task")
         both = intent.getStringExtra("both")
         data_path = intent.getStringExtra("data_path")
         firstdate = intent.getBooleanExtra("firstdate",true)
+        Log.v("하야야ㅇㅇcount: ", "j:2 "+count);
 
         val path = Environment.getExternalStoragePublicDirectory(
                 "/TremorApp/$clinicID/$task$both")
@@ -49,9 +60,9 @@ class AnalysisActivity : AppCompatActivity() {
 
 
         if(task.equals("Spiral"))
-            result = main.main("$path/$filename", applicationContext, clinicID, data_path, task, both)
+            result = main.main("$path/$filename", applicationContext, clinicID, data_path, task, both, count, startXX, startYY)
         else
-            result = main1.main1("$path/$filename", applicationContext, clinicID, data_path, task, both)
+            result = main1.main1("$path/$filename", applicationContext, clinicID, data_path, task, both, count, startXX, startYY)
 
 
         dialog.dismiss()

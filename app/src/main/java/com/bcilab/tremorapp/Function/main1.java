@@ -22,7 +22,6 @@ public class main1 {
 	private static fitting fg;
 	private static double[] Result;
 	private static final int srate = 50;
-	private static int count = 0;
 	static String Clinic_ID;
 
 	//private static DatabaseReference firebaseLine = firebaseDatabase.getReference("Line RowData");
@@ -34,7 +33,9 @@ public class main1 {
 
 
 
-	public static double[] main1(String args, Context context, String id, String data_path, String task, String both) throws IOException {
+	public static double[] main1(String args, Context context, String id, String data_path,
+								 String task, String both, String count, String startXX, String startYY) throws IOException {
+		Log.v("하야야ㅇㅇcount: ", "j:3 "+count);
 
 
 		ctx = context;
@@ -159,7 +160,7 @@ public class main1 {
 		//5가지 결과값 저장용 - 라인 테스트 용
 		Result=new double[5];
 
-		Result = fg.fitting(x_position, y_position,time_array, n, false, data_path, Clinic_ID, task, both);
+		Result = fg.fitting(x_position, y_position,time_array, n, false, data_path, Clinic_ID, task, both,count,startXX, startYY);
 
 		for(int i = 0 ; i<5 ; i++){
 			Result[i] = Math.round(Result[i]*1000)/1000.0; //소수점 셋째자리까지 반올

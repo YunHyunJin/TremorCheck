@@ -41,7 +41,7 @@ public class LineTaskAnalyze {
     private static BandPassFilter LPF_line = new BandPassFilter(0.0012, 0.05, 0.00001, 0.5605);
     private static BandPassFilter BPF_spiral = new BandPassFilter(0.05, 0.25, 0.1, 0.0005608);
     private static BandPassFilter LPF_spiral = new BandPassFilter(0.0012, 0.05, 0.00001, 0.5605);
-    private static int count;
+    private static int counts;
     private static int countup;
     private static int set;
 
@@ -406,7 +406,8 @@ public class LineTaskAnalyze {
 //
 //        return sum / x.length;
 //    }
-    public double MyED(double[] x, double[] y, double[] time) {
+    public double MyED(double[] x, double[] y, double[] time, String Clinic_ID,
+                       String task, String both, String count, String startXX, String startYY) {
         // 태블릿이 변경되었을때
         // 1. DPI 변경 - 태블릿 화면에 1cm당 좌표값
         // 2. 6PI:cm 길이 = radian : x 에서 단위 파이 대비 cm 길이를 구해서 바꿔준다.
@@ -417,18 +418,21 @@ public class LineTaskAnalyze {
         double[] ed = new double[x.length];
         double length = 0.0;
         double sum = 0.0;
-        int count = 0;
         double additional_angle = 0.0;
         double angle_gap = 0.0;
 
         double[] base_x = new double[x.length];
         double[] base_y= new double[x.length];
 
+        double start_X = Double.parseDouble(startXX);
+        double start_Y = Double.parseDouble(startYY);
+
         //get the angle of spiral
         for (int i = 0; i < x.length; i++) {
 
-            thetax[i] = x[i] - 571; //확인용
-            thetay[i] = y[i] - 924;
+            thetax[i] = x[i] - start_X; //확인용
+            thetay[i] = y[i] - start_Y;
+            Log.v("화긴해보자", "X: "+start_X+ "Y: "+start_Y);
 
             theta[i] = Math.atan2(thetay[i], thetax[i]);
 
@@ -437,11 +441,11 @@ public class LineTaskAnalyze {
             }else{
                 angle_gap = theta[i]-theta[i-1];
                 if((angle_gap < -1.5*Math.PI)){ // (+) --> (-) 로 넘어갔을 경우
-                    count++;
-                    additional_angle =  count*(2*Math.PI);
+                    counts++;
+                    additional_angle =  counts*(2*Math.PI);
                 }else if((angle_gap > 1.5*Math.PI)){ // (-) --> (+) 로 넘어갔을 경우
-                    count--;
-                    additional_angle =  count*(2*Math.PI);
+                    counts--;
+                    additional_angle =  counts*(2*Math.PI);
                 }
                 base_angle[i] = theta[i]+ additional_angle+(Math.PI*2);
             }
@@ -458,15 +462,15 @@ public class LineTaskAnalyze {
 
             sum += ed[i];
 
-            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+571 ;
-            base_y[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.sin(base_angle[i])+924;
+            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+start_X ;
+            base_y[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.sin(base_angle[i])+start_Y;
             Log.v("베이스나와라: ", "x: "+base_x[i]+" y: "+base_y[i]);
             Log.v("원래거나와라: ", "x: "+x[i]+" y: "+y[i]);
 
         }
-        File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp");
+        File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
         try {
-            csvmaker(base_x,base_y,x,y, time, filePath);
+            csvmaker(base_x,base_y,x,y, time, filePath, Clinic_ID, task, both, count);
         } catch (IOException e) {
             Log.v("하야야ㅇㅇ: ", "처음오류");
             e.printStackTrace();
@@ -479,7 +483,8 @@ public class LineTaskAnalyze {
     }
 
 
-    public static void csvmaker(double[] base_x, double[] base_y,double[] x, double[] y,double[] time, File filePath) throws IOException {
+    public static void csvmaker(double[] base_x, double[] base_y,double[] x, double[] y,double[] time, File filePath,
+                                String Clinic_ID, String task, String both, String count) throws IOException {
 //        StringBuilder baseData = new StringBuilder();
 //        baseData.append("baseX,baseY");
 //
@@ -502,7 +507,7 @@ public class LineTaskAnalyze {
 //        }catch (IOExcepion e){
 //            e.printStackTrace();
 //        }
-        Log.v("하야야ㅇㅇ: ", "출발");
+        Log.v("하야야ㅇㅇcount: ", "j: "+count);
         StringBuilder baseData = new StringBuilder();
         baseData.append("baseX,baseY,positionX,positionY,time");
 
@@ -510,7 +515,7 @@ public class LineTaskAnalyze {
             baseData.append("\n"+base_x[i]+","+base_y[i]+","+x[i]+","+y[i]+","+time[i]);
         }
 
-        File baseCsv = new File(filePath, "test_SpiralRight.csv");
+        File baseCsv = new File(filePath, Clinic_ID+"_"+task+"_"+both+"_"+count+"_Final"+".csv");
 
         try {
             FileWriter write = new FileWriter(baseCsv,false);

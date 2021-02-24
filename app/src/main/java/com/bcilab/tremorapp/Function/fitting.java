@@ -44,7 +44,8 @@ public class fitting {
 
 	//obj = base, org = subject
 	public double[] fitting(double[] orgX, double[] orgY, double[] time, int m, boolean SorL,
-							String data_path, String id, String task, String both) throws FileNotFoundException {
+							String data_path, String id, String task, String both,
+							String count, String startXX, String startYY) throws FileNotFoundException {
 		int n = m;
 		double[] objX = new double[n];
 		double[] objY = new double[n];
@@ -217,7 +218,7 @@ public class fitting {
 		}
 
 		if (SorL){ //spiral
-			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time);
+			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
 		}
 		else{ //Line
 			//매틀랩에서는 480을 빼줘야하지만 java의  LPF 에선 offset을 0으로 만들어줌
