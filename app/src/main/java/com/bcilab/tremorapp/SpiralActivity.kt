@@ -319,9 +319,9 @@ class SpiralActivity : AppCompatActivity() {
 
         init {
             basePaint.style = Paint.Style.STROKE
-            basePaint.strokeWidth = 2f
-            basePaint.alpha = 50
-            basePaint.isAntiAlias = true
+            basePaint.strokeWidth = 10f
+            basePaint.alpha = 50 // 투명도
+            basePaint.isAntiAlias = true // 가장자리 매끄럽게
             fitting.startX = startX
             fitting.startY = startY
         }
