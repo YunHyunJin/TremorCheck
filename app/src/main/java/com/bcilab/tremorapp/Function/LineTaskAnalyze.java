@@ -425,7 +425,7 @@ public class LineTaskAnalyze {
         double[] base_y= new double[x.length];
 
         double start_X = Double.parseDouble(startXX);
-        double start_Y = Double.parseDouble(startYY);
+        double start_Y = Double.parseDouble(startYY)+114;
 
         //get the angle of spiral
         for (int i = 0; i < x.length; i++) {
