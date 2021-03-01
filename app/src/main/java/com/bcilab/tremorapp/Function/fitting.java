@@ -178,7 +178,7 @@ public class fitting {
 		re_bpf_y= lineTaskAnalyze.myBPF(orgY,SorL);
 
 		//PCA
-		re_pca = lineTaskAnalyze.myPCA(re_bpf_x,re_bpf_y);
+		re_pca = lineTaskAnalyze.myPCA(re_bpf_x,re_bpf_y, time);
 
 		//LPF
 		re_lpf_x=lineTaskAnalyze.myLPF(orgX,SorL);
@@ -210,7 +210,7 @@ public class fitting {
 		System.out.println("결과~속도:"+Velocity);
 		System.out.println("결과~시간index:"+time.length);
 
-		TremorFrequency = lineTaskAnalyze.myFFT(re_pca);
+		TremorFrequency = lineTaskAnalyze.myFFT(re_pca, time);
 		Log.d("결과~과정4", String.valueOf(TremorFrequency));
 
 		if(TremorMagnitude < 0.1 || ErrorDistance < 0.1 ){

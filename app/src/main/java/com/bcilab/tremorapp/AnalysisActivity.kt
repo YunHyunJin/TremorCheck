@@ -31,10 +31,12 @@ class AnalysisActivity : AppCompatActivity() {
         val intent = intent
         var result: DoubleArray = doubleArrayOf()
        // count = intent.getIntExtra("count") ;
+
         startXX = intent.getStringExtra("startXX")
         startYY = intent.getStringExtra("startYY")
 
         count = intent.getStringExtra("count")
+
         clinicID = intent.getStringExtra("clinicID") ;
         patientName = intent.getStringExtra("patientName")
         task = intent.getStringExtra("task")

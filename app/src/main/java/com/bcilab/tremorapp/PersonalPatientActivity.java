@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,12 +58,24 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
     public void onStart() {
         super.onStart();
         PatientLoad(clinicID);
-        if(task.equals("Spiral")) changeView(0);// * task 이름에 따라 나선 그리기 탭 실행
-        else changeView(1);// * task 이름에 따라 선 긋기 탭 실행
+        int position =0;
+        if(task.equals("Spiral")) {
+            position = 0;
+            Log.v("position: ", "ㅇㅇ");
+
+            changeView(position);// * task 이름에 따라 나선 그리기 탭 실행
+        }
+        else {
+            position = 1;
+            Log.v("position: ", "ㄴㄴ");
+            changeView(position);// * task 이름에 따라 선 긋기 탭 실행
+
+        }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {// * tab 선택시 fragment 적용
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                // 여기로 입력들어감
                 changeView(tab.getPosition()) ;
             }
 
@@ -198,11 +211,12 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
         return task ;
     }
     public void changeView(int position) {
+        Log.v("int position: ", String.valueOf(position));
         Bundle bundle ;
         taskFragment = new TaskFragment() ;
         nonTaskFragment = new NonTaskFragment() ;
         switch (position){
-            case 0 :
+            case 0 : // spiral 클릭했을때
                 bundle = new Bundle() ;
                 task = "Spiral";// * task name에 따라 적용
                 bundle.putString("patientName", patientName) ;
@@ -223,7 +237,7 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
                     fragmentTransaction.commit();
                 }
                 break;
-            case 1 :
+            case 1 : // 라인 클릭했을떄
                 bundle = new Bundle() ;
                 task="Line";
                 bundle.putString("patientName", patientName);

@@ -57,7 +57,10 @@ class LineActivity : AppCompatActivity() {
         override fun onFinish() {
 
         }
+
     }
+    private var startXX : String = ""
+    private var startYY : String = "" //의미 없고 나선 그려줄때 필요한건데 fitting에 인자 맞춰주려고
 
     private var clinicID : String=""
     private var patientName :String=""
@@ -119,6 +122,7 @@ class LineActivity : AppCompatActivity() {
         writingfinish.setSafeOnClickListener {
             timer.cancel()
             var prevData: PathTraceData? = null
+
             if(!isdraw)
             {
                 Toast.makeText(this, "직선을 그리고 다음버튼을 눌러주세요", Toast.LENGTH_LONG).show()
@@ -170,6 +174,11 @@ class LineActivity : AppCompatActivity() {
                 val intent = Intent(this, AnalysisActivity::class.java)
                 intent.putExtra("filename", "${clinicID}_$filename.csv")
                 filename = SimpleDateFormat("yyyyMMdd_HH_mm").format(Calendar.getInstance().time)
+                var counts : String = count.toString()
+
+                intent.putExtra("count", counts)
+                intent.putExtra("startXX", startXX)
+                intent.putExtra("startYY", startYY)
                 intent.putExtra("timestamp", filename)// * timestamp 전달
                 intent.putExtra("clinicID", clinicID)
                 intent.putExtra("patientName", patientName)

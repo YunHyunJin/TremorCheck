@@ -41,9 +41,9 @@ public class LineTaskAnalyze {
     private static BandPassFilter LPF_line = new BandPassFilter(0.0012, 0.05, 0.00001, 0.5605);
     private static BandPassFilter BPF_spiral = new BandPassFilter(0.05, 0.25, 0.1, 0.0005608);
     private static BandPassFilter LPF_spiral = new BandPassFilter(0.0012, 0.05, 0.00001, 0.5605);
-    private static int counts;
     private static int countup;
     private static int set;
+    private static boolean sorl;
 
     private String Clinic_ID;
     static File file;
@@ -105,6 +105,9 @@ public class LineTaskAnalyze {
 
         data_float = DoubleToFloat(data);
 
+        sorl = SpiralOrLine;
+        Log.v("보자보자line", String.valueOf(sorl));
+
         //SpiralOrLine :  true일시 스파이럴 테스트 , false 일시 라인 테스트
         if (SpiralOrLine == true) {
             BPF_spiral.setExtrapolation(BandPassFilter.Extrapolation.ZERO_SLOPE);
@@ -118,6 +121,7 @@ public class LineTaskAnalyze {
             for (int i = 0; i < temp_double.length; i++) {
                 BPF_result[i] = temp_double[i];
             }
+
         } else {
             BPF_line.setExtrapolation(BandPassFilter.Extrapolation.ZERO_SLOPE);
             BPF_line.apply(data_float, temp_float);
@@ -172,8 +176,9 @@ public class LineTaskAnalyze {
 
     // ***************************** PCA *****************************
 
-    public double[] myPCA(double[] x, double[] y) {
+    public double[] myPCA(double[] x, double[] y, double[] time) {
         DenseMatrix pca_prime;
+
         double[][] temp = new double[x.length][2];
         double[][] temp2 = new double[2][x.length];
         double[][] cong = new double[1][2];
@@ -198,6 +203,7 @@ public class LineTaskAnalyze {
         PCA pca = new PCA(temp);
         pca_prime = pca.getProjection();
 
+
         for (int i = 0; i < x.length; i++) {
             x_sum += x[i];
         }
@@ -221,6 +227,9 @@ public class LineTaskAnalyze {
 
         Log.d("test1", "잘돌고있음 PCA");
         Log.d("결과~과정2", String.valueOf(re_pca));
+        for(int i=0 ; i<re_pca.length ; i++){
+            Log.d("결과~과정22", String.valueOf(re_pca[i]));
+        }
 
         return re_pca;
     }
@@ -420,6 +429,7 @@ public class LineTaskAnalyze {
         double sum = 0.0;
         double additional_angle = 0.0;
         double angle_gap = 0.0;
+        int counts=0;
 
         double[] base_x = new double[x.length];
         double[] base_y= new double[x.length];
@@ -459,6 +469,7 @@ public class LineTaskAnalyze {
             ed[i] = ( Math.abs((length/DPI) - (base_angle[i]* (5/(Math.PI*6))) ) );
 
             Log.v("ed: ", String.valueOf(ed[i]));
+            Log.v("counts: ", String.valueOf(counts));
 
             sum += ed[i];
 
@@ -574,9 +585,7 @@ public class LineTaskAnalyze {
 
 
     //x축을 구하긴 하지만 사용하는거는 y축밖에 없음
-    public double myFFT(double[] pca_data) {
-
-
+    public double myFFT(double[] pca_data, double[] time) {
         int n = pca_data.length;
         Complex[] temp_com = new Complex[n];
 
@@ -624,7 +633,16 @@ public class LineTaskAnalyze {
         }
 
         result_fft = FFT_PeakFind(absfft_pca, index);
-        Log.d("결과~과정3", String.valueOf(result_fft));
+
+        File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp");
+        try {
+            csvmaker(absfft_pca, index, filePath);
+        } catch (IOException e) {
+            Log.v("하야야ㅇㅇ: ", "처음오류");
+            e.printStackTrace();
+        }
+
+        Log.v("result_fft: ", String.valueOf(result_fft));
 
         return result_fft;
     }
@@ -657,8 +675,18 @@ public class LineTaskAnalyze {
         // X의 값이 주파수 대역의 데이터가 하나의 peak점만 찾게하기 위한 A의 값을 정하면됨
         // 실험 해봤을땐 40이 적당했음
         int b = 0;
+        int four_six=0;
+        Log.v("보자보자---", String.valueOf(sorl));
+
+        if(sorl == true){//나선
+            four_six = 60;
+        }else if(sorl == false){
+            four_six = 40;
+        }
+        Log.v("보자보자", String.valueOf(four_six));
+
         for (int i = 0; i < result.length; i++) {
-            if (result[i] >= (mean + 40 * std)) { //몇 배 할껀지 정하기
+            if (result[i] >= (mean + four_six * std)) { //몇 배 할껀지 정하기
                 temp2[b++] = result[i];
 
             }
@@ -703,6 +731,50 @@ public class LineTaskAnalyze {
         return root;
     }
 
+    public static void csvmaker(double[] base_x, float[] time, File filePath) throws IOException {
+//        StringBuilder baseData = new StringBuilder();
+//        baseData.append("baseX,baseY");
+//
+//        for(int i=0 ; i<base_x.length ; i++){
+//            baseData.append("\n"+base_x+","+base_y);
+//        }
+//        Log.v("하 이것봐라","하야야");
+//
+//        try{
+//            File file = new File("/TremorApp/Real_base.csv");
+//            FileWriter fw = new FileWriter(file, true);
+//
+//            for(int i=0 ; i<base_x.length ; i++){
+//                fw.write("\n"+base_x+","+base_y);
+//            }
+//            Log.v("하 이것봐라","저장완료");
+//
+//            fw.flush();
+//            fw.close();
+//        }catch (IOExcepion e){
+//            e.printStackTrace();
+//        }
+        StringBuilder baseData = new StringBuilder();
+        baseData.append("baseX,time");
+
+        for(int i = 0 ; i<base_x.length ; i++){
+            baseData.append("\n"+base_x[i]+","+time[i]);
+        }
+
+        File baseCsv = new File(filePath, "FFT나와라"+".csv");
+
+        try {
+            FileWriter write = new FileWriter(baseCsv,false);
+            Log.v("하야야ㅇㅇ: ", "왔다");
+
+            PrintWriter csv = new PrintWriter(write);
+            csv.println(baseData);
+            csv.close();
+        }catch (IOException e){
+            Log.v("하야야ㅇㅇ: ", "오류");
+            e.printStackTrace();
+        }
+    }
 }
 //    public double MyED(double[] x, double[] y ){
 //        double[] angle_atan = new double[x.length];
