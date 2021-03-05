@@ -39,7 +39,7 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_patient);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        Intent intent = getIntent() ;
+        Intent intent = getIntent();
         tabLayout = (TabLayout) findViewById(R.id.taskTab) ;
         tabLayout.addTab(tabLayout.newTab().setText("나선 그리기"));
         tabLayout.addTab(tabLayout.newTab().setText("선 긋기"));
@@ -229,14 +229,14 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, nonTaskFragment);
                     fragmentTransaction.commit();
-                }
-                else{
+                }else{
                     taskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, taskFragment);
                     fragmentTransaction.commit();
                 }
                 break;
+
             case 1 : // 라인 클릭했을떄
                 bundle = new Bundle() ;
                 task="Line";
@@ -250,8 +250,7 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, nonTaskFragment);
                     fragmentTransaction.commit();
-                }
-                else {
+                }else {
                     taskFragment.setArguments(bundle);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.task, taskFragment);

@@ -178,7 +178,7 @@ public class fitting {
 		re_bpf_y= lineTaskAnalyze.myBPF(orgY,SorL);
 
 		//PCA
-		re_pca = lineTaskAnalyze.myPCA(re_bpf_x,re_bpf_y, time);
+		re_pca = lineTaskAnalyze.myPCA(re_bpf_x,re_bpf_y);
 
 		//LPF
 		re_lpf_x=lineTaskAnalyze.myLPF(orgX,SorL);
@@ -213,9 +213,9 @@ public class fitting {
 		TremorFrequency = lineTaskAnalyze.myFFT(re_pca, time);
 		Log.d("결과~과정4", String.valueOf(TremorFrequency));
 
-		if(TremorMagnitude < 0.1 || ErrorDistance < 0.1 ){
-			TremorFrequency = -1;
-		}
+//		if(TremorMagnitude < 0.1  ){
+//			TremorFrequency = -1;
+//		}
 
 		if (SorL){ //spiral
 			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);

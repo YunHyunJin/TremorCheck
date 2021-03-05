@@ -176,7 +176,7 @@ public class LineTaskAnalyze {
 
     // ***************************** PCA *****************************
 
-    public double[] myPCA(double[] x, double[] y, double[] time) {
+    public double[] myPCA(double[] x, double[] y) {
         DenseMatrix pca_prime;
 
         double[][] temp = new double[x.length][2];
@@ -705,9 +705,9 @@ public class LineTaskAnalyze {
             }
         }
         //간혹 가다가 peak점은 찾았는데 떨림이 없는 데이터면 안되니까 3.2Hz이하면 안쳐줌
-        if (hz < 3.2) {
-            hz = -1;
-        }
+//        if (hz < 3.2) {
+//            hz = -1;
+//        }
 
         System.out.println("주파수는"+hz);
         return hz;

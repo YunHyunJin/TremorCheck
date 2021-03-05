@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//Spiral
 public class main {
 
 	private static fft ft;
