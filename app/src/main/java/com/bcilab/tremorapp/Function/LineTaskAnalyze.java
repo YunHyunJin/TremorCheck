@@ -648,69 +648,79 @@ public class LineTaskAnalyze {
     }
 
     public double FFT_PeakFind(double[] result, float[] index) {
-        double mean = 0;
-        double std = 0;
         double hz = 0;
-        double max_amp = 0;
-        double[] session = new double[result.length];
-        double[] temp1 = new double[result.length]; //temp1 : 10~25Hz 사이의 값을 추출해서 저장하는 변수
-        double[] temp2 = new double[result.length]; //temp2 : temp1에서 mean + 70*std 값보다 큰 값을 저장하는 변수
-
-        // 10~25Hz 사이의 정보만 받기위해
-        int a = 0;
-        for (int i = 0; i < result.length; i++) {
-            if (index[i] >= 10 && index[i] <= 25) {
-                temp1[a++] = result[i];
-
-            }
-        }
-        Log.d("test2", "필터링된 주파수 갯수1:  " + a);
-
-        // 10~25Hz 사이의 정보의 표준편차와 평균을 구함
-        mean = Math.mean(temp1);
-        std = Math.var(temp1);
-
-
-        // 10~25Hz의 표준편차와 평균을 구해서  X = mean + std * A 의 식을 만듦
-        // X의 값이 주파수 대역의 데이터가 하나의 peak점만 찾게하기 위한 A의 값을 정하면됨
-        // 실험 해봤을땐 40이 적당했음
-        int b = 0;
-        int four_six=0;
-        Log.v("보자보자---", String.valueOf(sorl));
-
-        if(sorl == true){//나선
-            four_six = 60;
-        }else if(sorl == false){
-            four_six = 40;
-        }
-        Log.v("보자보자", String.valueOf(four_six));
 
         for (int i = 0; i < result.length; i++) {
-            if (result[i] >= (mean + four_six * std)) { //몇 배 할껀지 정하기
-                temp2[b++] = result[i];
-
-            }
-        }
-
-        Log.d("test2", "필터링된 주파수 갯수2:  " + b);
-
-        max_amp = Math.max(temp2);
-
-        Log.d("test2", "주파수 맥시멈:  " + max_amp);
-
-        for (int i = 0; i < result.length; i++) {
-            if (max_amp == result[i]) {
+            if ( Math.max(result) == result[i]) {
                 hz = index[i];
                 break;
             }
         }
-        //간혹 가다가 peak점은 찾았는데 떨림이 없는 데이터면 안되니까 3.2Hz이하면 안쳐줌
-//        if (hz < 3.2) {
-//            hz = -1;
-//        }
 
-        System.out.println("주파수는"+hz);
         return hz;
+//        double mean = 0;
+//        double std = 0;
+//        double hz = 0;
+//        double max_amp = 0;
+//        double[] session = new double[result.length];
+//        double[] temp1 = new double[result.length]; //temp1 : 10~25Hz 사이의 값을 추출해서 저장하는 변수
+//        double[] temp2 = new double[result.length]; //temp2 : temp1에서 mean + 70*std 값보다 큰 값을 저장하는 변수
+//
+//        // 10~25Hz 사이의 정보만 받기위해
+//        int a = 0;
+//        for (int i = 0; i < result.length; i++) {
+//            if (index[i] >= 10 && index[i] <= 25) {
+//                temp1[a++] = result[i];
+//
+//            }
+//        }
+//        Log.d("test2", "필터링된 주파수 갯수1:  " + a);
+//
+//        // 10~25Hz 사이의 정보의 표준편차와 평균을 구함
+//        mean = Math.mean(temp1);
+//        std = Math.var(temp1);
+//
+//
+//        // 10~25Hz의 표준편차와 평균을 구해서  X = mean + std * A 의 식을 만듦
+//        // X의 값이 주파수 대역의 데이터가 하나의 peak점만 찾게하기 위한 A의 값을 정하면됨
+//        // 실험 해봤을땐 40이 적당했음
+//        int b = 0;
+//        int four_six=0;
+//        Log.v("보자보자---", String.valueOf(sorl));
+//
+//        if(sorl == true){//나선
+//            four_six = 60;
+//        }else if(sorl == false){
+//            four_six = 40;
+//        }
+//        Log.v("보자보자", String.valueOf(four_six));
+//
+//        for (int i = 0; i < result.length; i++) {
+//            if (result[i] >= (mean + four_six * std)) { //몇 배 할껀지 정하기
+//                temp2[b++] = result[i];
+//
+//            }
+//        }
+//
+//        Log.d("test2", "필터링된 주파수 갯수2:  " + b);
+//
+//        max_amp = Math.max(temp2);
+//
+//        Log.d("test2", "주파수 맥시멈:  " + max_amp);
+//
+//        for (int i = 0; i < result.length; i++) {
+//            if (max_amp == result[i]) {
+//                hz = index[i];
+//                break;
+//            }
+//        }
+//        //간혹 가다가 peak점은 찾았는데 떨림이 없는 데이터면 안되니까 3.2Hz이하면 안쳐줌
+////        if (hz < 3.2) {
+////            hz = -1;
+////        }
+//
+//        System.out.println("주파수는"+hz);
+//        return hz;
     }
 
     public double rmsValue(double[] arr, int n) {
