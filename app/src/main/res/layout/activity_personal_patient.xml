@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/Background"
+    android:layout_height="match_parent"
+    tools:context=".PersonalPatientActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:titleTextColor="#000000"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/taskTab"
+        app:tabTextAppearance="@style/MyCustomTextAppearance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="#FFFFFF"
+        app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:tabIndicatorColor="@null"
+        app:tabTextColor="#545454"
+        app:tabSelectedTextColor="@color/many">
+
+    </android.support.design.widget.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/task"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/T30"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="@dimen/T30"
+        android:layout_marginStart="@dimen/T30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskTab" />
+
+</android.support.constraint.ConstraintLayout>

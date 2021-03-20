@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ta_listitem2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tasktype"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/small2"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/taskNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/W10"
+                android:layout_gravity="center_vertical"
+                android:text="01"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize2" />
+            <TextView
+                android:id="@+id/taskDate"
+                android:layout_marginStart="@dimen/T25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="19.07.20"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="@dimen/textSize2" />
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10">
+
+            <TextView
+                android:id="@+id/taskHandside"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/W10"
+                android:layout_marginTop="8dp"
+                android:textColor="#545454"
+                android:textSize="@dimen/textSize5"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/H280"
+                android:layout_height="@dimen/H280"
+                android:rotation="90"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

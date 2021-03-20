@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H110"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/white_rounded"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/client_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/S34"
+                android:layout_marginTop="@dimen/T25"
+                android:gravity="right"
+                android:text="하하재재경"
+                android:textSize="@dimen/TX20"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="@dimen/T25"
+                android:text="님,"
+                android:textSize="@dimen/textSize4"
+                app:layout_constraintStart_toEndOf="@+id/client_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/task_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/patientListMargin"
+                android:layout_marginTop="@dimen/T25"
+                android:text="총 번"
+                android:textSize="@dimen/TX20"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="@dimen/T25"
+                android:text="의"
+                android:textSize="@dimen/textSize4"
+                app:layout_constraintStart_toEndOf="@+id/task_count"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/task_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/T25"
+                android:layout_marginStart="@dimen/S34"
+                android:text="SPIRAL Task"
+                android:textSize="@dimen/TX20"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/T25"
+                android:layout_marginStart="2dp"
+                android:text="를 진행하였습니다. "
+                android:textSize="@dimen/textSize4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/task_name" />
+
+            <Button
+                android:id="@+id/spiral_add"
+                android:layout_width="@dimen/W252"
+                android:layout_height="@dimen/personalBack"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/patientListMargin"
+                android:layout_marginEnd="@dimen/S34"
+                android:layout_marginTop="@dimen/patientListMargin"
+                android:background="@drawable/green_gradient_rounded"
+                android:gravity="center"
+                android:text="새로운 검사 진행하기"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/textSize4"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/handTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="@dimen/T150"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabTextColor="#FFFFFF"
+            app:tabSelectedTextColor="#545454"
+            style="@style/TabLayoutSelectStyle">
+        </android.support.design.widget.TabLayout>
+
+        <FrameLayout
+            android:id="@+id/handside"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@color/list_item_normal_state"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/handTab" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

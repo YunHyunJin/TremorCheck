@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="patientListStart">33dp</dimen>
+    <dimen name="patientListTop">57dp</dimen>
+    <dimen name="patientListSearchW">490dp</dimen>
+    <dimen name="patientListSearchH">44dp</dimen>
+    <dimen name="patientListSearchBottom">24dp</dimen>
+    <dimen name="patientListSearchPadding">5dp</dimen>
+
+    <dimen name="patientListProImage">40dp</dimen>
+    <dimen name="patientListProStart">578dp</dimen>
+    <dimen name="patientListProTop">70dp</dimen>
+    <dimen name="patientListAccStart">626dp</dimen>
+    <dimen name="patientListAccTop">78dp</dimen>
+    <dimen name="patientListPolTop">82dp</dimen>
+
+    <dimen name="patientListAddW">180dp</dimen>
+    <dimen name="patientListAddH">44dp</dimen>
+
+    <dimen name="patientListMargin">8dp</dimen>
+
+    <dimen name="textSize1">30sp</dimen>
+    <dimen name="textSize2">18sp</dimen>
+    <dimen name="textSize3">16sp</dimen>
+    <dimen name="textSize4">18sp</dimen>
+
+    <dimen name="imageWeight">20dp</dimen>
+    <dimen name="imageHeight">14dp</dimen>
+    <dimen name="teHeightxtSize">12dp</dimen>
+    <dimen name="topMargin">5dp</dimen>
+
+    <dimen name="patientListMargin2">16dp</dimen>
+    <dimen name="patientListHeaderW">708dp</dimen>
+    <dimen name="patientListHeaderH">43dp</dimen>
+    <dimen name="patientListHeaderP">25dp</dimen>
+
+    <dimen name="patientListMargin3">12dp</dimen>
+    <dimen name="patientListReH">62dp</dimen>
+    <dimen name="patientListReL">37dp</dimen>
+    <dimen name="patientListMargin4">8dp</dimen>
+
+    <dimen name="personalTopH">145dp</dimen>
+    <dimen name="personalBack">60dp</dimen>
+    <dimen name="personalBackS">32dp</dimen>
+    <dimen name="textSize5">24sp</dimen>
+    <dimen name="personalDotW">36dp</dimen>
+
+    <dimen name="W45">45dp</dimen>
+    <dimen name="H110">110dp</dimen>
+    <dimen name="S34">34dp</dimen>
+    <dimen name="T25">25dp</dimen>
+    <dimen name="TX20">20sp</dimen>
+    <dimen name="T32">32dp</dimen>
+    <dimen name="S160">160dp</dimen>
+    <dimen name="T62">62dp</dimen>
+    <dimen name="W252">252dp</dimen>
+    <dimen name="W220">220dp</dimen>
+    <dimen name="H50">50dp</dimen>
+    <dimen name="T150">150dp</dimen>
+    <dimen name="S230">230dp</dimen>
+    <dimen name="S458">458dp</dimen>
+    <dimen name="T30">30dp</dimen>
+    <dimen name="H380">380dp</dimen>
+
+    <dimen name="W400">400dp</dimen>
+    <dimen name="H420">420dp</dimen>
+    <dimen name="H280">280dp</dimen>
+    <dimen name="S70">70dp</dimen>
+    <dimen name="S80">80dp</dimen>
+    <dimen name="W150">150dp</dimen>
+    <dimen name="W690">690dp</dimen>
+    <dimen name="H60">60dp</dimen>
+
+    <dimen name="H120">120dp</dimen>
+    <dimen name="W695">695dp</dimen>
+
+    <dimen name="W65">65dp</dimen>
+    <dimen name="W10">10dp</dimen>
+
+</resources>

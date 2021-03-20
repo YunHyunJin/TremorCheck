@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 세로로는 1.8 가로로는 2 글씨는 -->
+<resources>
+    <dimen name="patientListStart">16.5dp</dimen>
+    <dimen name="patientListTop">31.67dp</dimen>
+    <dimen name="patientListSearchW">245dp</dimen>
+    <dimen name="patientListSearchH">28dp</dimen>
+    <dimen name="patientListSearchBottom">13.3dp</dimen>
+    <dimen name="patientListSearchPadding">2.7dp</dimen>
+
+    <dimen name="patientListProImage">22.2dp</dimen>
+    <dimen name="patientListProStart">321.1dp</dimen>
+    <dimen name="patientListProTop">38.89dp</dimen>
+    <dimen name="patientListAccStart">347.78dp</dimen>
+    <dimen name="patientListAccTop">43.3dp</dimen>
+    <dimen name="patientListPolTop">45.56dp</dimen>
+
+    <dimen name="patientListAddW">90dp</dimen>
+    <dimen name="patientListAddH">28dp</dimen>
+    <dimen name="patientListAddE">20dp</dimen>
+
+    <dimen name="patientListMargin">4.4dp</dimen>
+
+    <dimen name="textSize1">20sp</dimen>
+    <dimen name="textSize2">16sp</dimen>
+    <dimen name="textSize3">12sp</dimen>
+    <dimen name="textSize4">14sp</dimen>
+
+    <dimen name="imageWeight">10dp</dimen>
+    <dimen name="imageHeight">7.78dp</dimen>
+    <dimen name="teHeightxtSize">6.67dp</dimen>
+    <dimen name="topMargin">2.7dp</dimen>
+
+
+    <dimen name="patientListMargin2">8dp</dimen>
+    <dimen name="patientListHeaderW">354dp</dimen>
+    <dimen name="patientListHeaderH">35dp</dimen>
+    <dimen name="patientListHeaderP">12.5dp</dimen>
+
+    <dimen name="patientListMargin3">7.5dp</dimen>
+    <dimen name="patientListReH">34.4dp</dimen>
+    <dimen name="patientListReL">24dp</dimen>
+    <dimen name="patientListMargin4">5dp</dimen>
+    <dimen name="H400">290dp</dimen>
+    <dimen name="personalTopH">80.5dp</dimen>
+    <dimen name="personalBack">37.5dp</dimen>
+    <dimen name="personalBackS">17.78dp</dimen>
+    <dimen name="textSize5">15sp</dimen>
+    <dimen name="personalDotW">18.75dp</dimen>
+
+    <dimen name="H110">61dp</dimen>
+    <dimen name="S34">17dp</dimen>
+    <dimen name="T25">10dp</dimen>
+    <dimen name="TX20">15sp</dimen>
+    <dimen name="T32">17.78dp</dimen>
+    <dimen name="S160">80dp</dimen>
+    <dimen name="T62">31dp</dimen>
+    <dimen name="W252">126dp</dimen>
+    <dimen name="W220">110dp</dimen>
+    <dimen name="H50">27.78dp</dimen>
+    <dimen name="T150">83.3dp</dimen>
+    <dimen name="S230">115dp</dimen>
+    <dimen name="S458">229dp</dimen>
+    <dimen name="T30">15dp</dimen>
+    <dimen name="H380">238.89dp</dimen>
+
+    <dimen name="W400">250dp</dimen>
+    <dimen name="H420">250dp</dimen>
+    <dimen name="H280">175dp</dimen>
+
+    <dimen name="H120">75dp</dimen>
+    <dimen name="W695">347dp</dimen>
+
+    <dimen name="W65">34dp</dimen>
+    <dimen name="W10">5dp</dimen>
+</resources>

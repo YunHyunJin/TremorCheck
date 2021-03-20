@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/patientListL"
+    android:layout_width="match_parent"
+    android:background="@color/Background"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".PatientListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/searchPatient"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/patientListSearchH"
+            android:layout_marginBottom="@dimen/patientListSearchBottom"
+            android:background="@drawable/gray_rounded"
+            android:drawableLeft="@drawable/ic_action_search"
+            android:paddingStart="@dimen/W10"
+            android:drawablePadding="@dimen/patientListSearchPadding"
+            android:hint="Search by UserID or Info"
+            android:textColor="#000000"
+            android:textColorHint="#838383"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/constraintLayout3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/patientListHeaderH"
+                android:layout_marginStart="@dimen/patientListMargin3"
+                android:layout_marginEnd="@dimen/patientListMargin3"
+                android:background="@drawable/white_roundedd"
+                android:paddingLeft="@dimen/patientListHeaderP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <CheckBox
+                    android:id="@+id/all_checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="right|center_vertical" />
+
+
+                <TextView
+                    android:id="@+id/sort_id"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="UserID"
+                    android:drawableRight="@drawable/down"/>
+
+                <TextView
+                    android:id="@+id/sort_name"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="Info"
+                    android:drawableRight="@drawable/down"/>
+
+                <TextView
+                    android:id="@+id/sort_date"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_weight="2"
+                    android:textAllCaps="false"
+                    android:textColor="#545454"
+                    android:background="#0000"
+                    android:textSize="@dimen/textSize4"
+                    android:text="Date"
+                    android:drawableRight="@drawable/down"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/patientList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/patientListMargin3"
+                android:layout_marginEnd="@dimen/patientListMargin3"
+                android:layout_marginTop="@dimen/patientListMargin3"
+                android:fadeScrollbars="false"
+                android:scrollbars="vertical"
+                android:background="#ffffff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</RelativeLayout>

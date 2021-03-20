@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/white_halfrounded">
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_blackline_rounded"
+            android:text="취소"
+            android:layout_weight="1"
+            android:textColor="#545454"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/patient_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총 0명의 환자 선택"
+            android:gravity="center"
+            android:layout_weight="2"
+            android:textColor="#545454"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/red_rounded"
+            android:text="삭제"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp" >
+
+    <TextView
+        android:id="@+id/textviewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add User"
+        android:textSize="28sp" />
+
+    <EditText
+        android:id="@+id/addClinicID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textviewLogo"
+        android:ems="10"
+        android:hint="User ID"
+        android:inputType="textMultiLine|textNoSuggestions">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/addPatientName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addClinicID"
+        android:ems="10"
+        android:hint="Info"
+        android:inputType="textMultiLine|textNoSuggestions" />
+
+</RelativeLayout>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:titleTextColor="#000000"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
+        <LinearLayout
+            android:id="@+id/imageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40px"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/pre_result_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H280"
+                    android:layout_marginStart="@dimen/imageWeight"
+                    android:layout_marginEnd="@dimen/imageWeight"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:rotation="90"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/pre_result_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.1"
+                    android:textColor="#545454"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/T30"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/imageLayout">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_blackline">
+
+                <TextView
+                    android:id="@+id/hz"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="1초당 떨림의 횟수"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/pre_hz_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pre_hz_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="이번결과"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSize5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/hz"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_blackline">
+
+                <TextView
+                    android:id="@+id/mag"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="떨림의 세기"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/pre_mag_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pre_mag_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="이번결과"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSize5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/mag"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_blackline">
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="목표선에 벗어난 거리"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/pre_distance_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/pre_distance_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="이번결과"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSize5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/distance"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_blackline">
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="검사 수행 시간"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/pre_time_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pre_time_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="이번결과"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSize5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/time"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H60"
+                android:layout_marginStart="@dimen/W45"
+                android:layout_marginEnd="@dimen/W45"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_blackline">
+
+                <TextView
+                    android:id="@+id/speed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="검사 평균 속도"
+                    android:textSize="@dimen/TX20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/pre_speed_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pre_speed_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="이번결과"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textSize5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/speed"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/result_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/T30"
+            android:layout_marginStart="@dimen/H50"
+            android:layout_marginEnd="@dimen/H50"
+            android:gravity="left|center_vertical"
+            android:text="이전 결과 추이"
+            android:paddingEnd="@dimen/T25"
+            android:paddingStart="@dimen/T25"
+            android:textStyle="bold"
+            android:textSize="@dimen/TX20"
+            android:background="@drawable/white_rounded"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/spiral_graph"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H420"
+            android:layout_marginEnd="@dimen/H50"
+            android:layout_marginStart="@dimen/H50"
+            app:layout_constraintTop_toBottomOf="@+id/result_button" >
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/measure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/many">
+
+            </android.support.design.widget.TabLayout>
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H380"
+                app:layout_constraintTop_toBottomOf="@+id/measure" >
+            </com.jjoe64.graphview.GraphView>
+        </android.support.constraint.ConstraintLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/S34"
+            app:layout_constraintTop_toBottomOf="@+id/spiral_graph"/>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskSelectActivity">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/imageWeight"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:background="@drawable/ic_action_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/right_select"
+        android:layout_width="@dimen/W400"
+        android:layout_height="@dimen/H280"
+        android:layout_marginStart="@dimen/patientListMargin"
+        android:layout_marginTop="@dimen/H280"
+        android:layout_marginEnd="@dimen/patientListMargin"
+        android:background="@drawable/right_select"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/left_select"
+        android:layout_width="@dimen/W400"
+        android:layout_height="@dimen/H280"
+        android:layout_marginStart="@dimen/patientListMargin"
+        android:layout_marginEnd="@dimen/patientListMargin"
+        android:layout_marginBottom="@dimen/H280"
+        android:background="@drawable/left_select"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

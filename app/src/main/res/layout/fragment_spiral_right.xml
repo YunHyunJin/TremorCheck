@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:text="결과 그래프"
+        android:textSize="@dimen/textSize4"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/spiral_graph"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:layout_marginEnd="@dimen/patientListMargin"
+        android:layout_marginStart="@dimen/patientListMargin"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/measure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/many"
+            >
+        </android.support.design.widget.TabLayout>
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.jjoe64.graphview.GraphView>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/imageWeight"
+        android:text="이전 결과 목록"
+        android:textSize="@dimen/textSize4"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spiral_graph" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/imageWeight"
+        android:layout_marginEnd="@dimen/imageWeight"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        android:background="#9E9E9E"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/personal_taskList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/patientListMargin"
+        android:layout_marginTop="@dimen/patientListMargin2"
+        android:layout_marginEnd="@dimen/patientListMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+
+</LinearLayout>

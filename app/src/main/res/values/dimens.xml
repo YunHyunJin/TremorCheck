@@ -1,0 +1,16 @@
+<resources>
+	<dimen name="patientListProStart">481.7dp</dimen>
+	<dimen name="textSize">10dp</dimen>
+	<dimen name="patientListSearchW">375dp</dimen>
+	<dimen name="patientListTop">47.5dp</dimen>
+	<dimen name="imageHeight">16.7dp</dimen>
+	<dimen name="patientListProTop">58.3dp</dimen>
+	<dimen name="topMargin">4.2dp</dimen>
+	<dimen name="patientListSearchH">36.7dp</dimen>
+	<dimen name="patientListSearchPadding">4.2dp</dimen>
+	<dimen name="patientListStart">27.5dp</dimen>
+	<dimen name="patientListProImage">33.3dp</dimen>
+	<dimen name="patientListSearchBottom">20dp</dimen>
+	<dimen name="textSize1">25sp</dimen>
+	<dimen name="textSize2">15sp</dimen>
+</resources>
