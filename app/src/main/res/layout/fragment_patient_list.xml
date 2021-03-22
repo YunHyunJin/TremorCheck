@@ -42,7 +42,7 @@
                 android:layout_height="@dimen/patientListHeaderH"
                 android:layout_marginStart="@dimen/patientListMargin3"
                 android:layout_marginEnd="@dimen/patientListMargin3"
-                android:background="@drawable/white_rounded"
+                android:background="@drawable/gray_round"
                 android:paddingLeft="@dimen/patientListHeaderP"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

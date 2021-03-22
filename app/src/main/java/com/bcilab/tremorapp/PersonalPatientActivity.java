@@ -99,62 +99,7 @@ public class PersonalPatientActivity extends AppCompatActivity {// * 상세 정�
 //    }
     @Override public boolean onOptionsItemSelected(MenuItem item) {//
         switch (item.getItemId()) {
-            case R.id.edit_patient :
-            {// * 삭제 하기.
-                PopupMenu popupMenu = new PopupMenu(PersonalPatientActivity.this, (View) findViewById(R.id.edit_patient));
-                popupMenu.getMenuInflater().inflate(R.menu.patient_edit, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.person_delete:
-                                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PersonalPatientActivity.this);
-                                dialogBuilder.setMessage("삭제 하시겠습니까?");
-                                dialogBuilder.setPositiveButton("예",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                File source = Environment.getExternalStoragePublicDirectory(
-                                                        "/TremorApp/"+clinicID);
-                                                File dest = Environment.getExternalStoragePublicDirectory(
-                                                        "/TremorApp/RemovePatient/"+clinicID);
-                                                try {
-                                                    FileUtils.copyDirectory(source, dest);
-                                                    File[] deleteList = source.listFiles();
 
-                                                    for(File file : deleteList) {
-                                                        if(file.listFiles()!=null && file.listFiles().length!=0) {
-                                                            for (File inner_file : file.listFiles()) {
-                                                                inner_file.delete();
-                                                            }
-
-                                                        }
-                                                        file.delete();
-                                                    }
-
-                                                    source.delete();
-                                                    Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                                dialogBuilder.setNegativeButton("아니오",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                            }
-                                        });
-                                dialogBuilder.create().show();
-                                return true;
-
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
-                return true;
-            }
             case android.R.id.home: {
                 Intent intent = new Intent(PersonalPatientActivity.this, PatientListActivity.class);
                 startActivity(intent);

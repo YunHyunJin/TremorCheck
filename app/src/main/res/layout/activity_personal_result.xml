@@ -273,7 +273,6 @@
             android:text="이전 결과 추이"
             android:paddingEnd="@dimen/T25"
             android:paddingStart="@dimen/T25"
-            android:drawableRight="@drawable/down"
             android:textStyle="bold"
             android:textSize="@dimen/TX20"
             android:background="@drawable/white_rounded"
