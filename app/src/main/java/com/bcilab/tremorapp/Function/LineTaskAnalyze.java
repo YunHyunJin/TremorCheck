@@ -430,7 +430,7 @@ public class LineTaskAnalyze {
         double additional_angle = 0.0;
         double angle_gap = 0.0;
         int counts=0;
-
+        boolean comparison = true;
         double[] base_x = new double[x.length];
         double[] base_y= new double[x.length];
 
@@ -481,7 +481,7 @@ public class LineTaskAnalyze {
         }
         File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
         try {
-            csvmaker(base_x,base_y,x,y, time, filePath, Clinic_ID, task, both, count);
+            csvmaker(base_x,base_y,x,y, time, filePath, Clinic_ID, task, both, count, comparison);
         } catch (IOException e) {
             Log.v("하야야ㅇㅇ: ", "처음오류");
             e.printStackTrace();
@@ -492,10 +492,81 @@ public class LineTaskAnalyze {
 
         return sum/x.length;
     }
+    public double MyED_previous(double[] x, double[] y, double[] time, String Clinic_ID,
+                                String task, String both, String count, String startXX, String startYY) {
 
+        double result = 0.0;
+        int idx = 0;
+        boolean comparison = false;
+
+        double[] angle_atan = new double[x.length];
+        double[] angle_pos = new double[x.length];
+
+        double[] base_x = new double[x.length];
+        double[] base_y= new double[x.length];
+
+        //get the angle of spiral
+        for (int i = 0; i < x.length; i++)
+        {
+            angle_atan[i] = Math.atan2(y[i], x[i]);
+        }
+
+        for(int i = 0; i < x.length; i++)
+        {
+            if(i == 0)
+                angle_pos[i] = unwrap(0, angle_atan[i]);
+            else
+                angle_pos[i] = unwrap(angle_atan[i-1], angle_atan[i]);
+        }
+
+        //calculate base point
+        double v = 600;
+        double w = 10*Math.PI;
+        double t = angle_pos[0]/w;
+        double r = v*t;
+        double[] pair_pos_x = new double[x.length];
+        double[] pair_pos_y = new double[x.length];
+
+        for (int i = 0; i < x.length; i++)
+        {
+            if(i == 0)
+            {
+                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
+                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
+            }
+
+            else
+            {
+                t = angle_pos[i]/w;
+                r = v*t;
+                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
+                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
+            }
+        }
+        //calculate error distance
+        double sum = 0;
+        for(int i = 0; i < x.length; i++)
+        {
+            sum += Math.sqrt(Math.pow((x[i]-pair_pos_x[i]), 2) + Math.pow((y[i]-pair_pos_y[i]), 2));
+        }
+
+        for (int i = 0; i < x.length; i++) {
+            base_x[i] = pair_pos_x[i];
+            base_y[i] = pair_pos_y[i];
+        }
+        File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
+        try {
+            csvmaker(base_x,base_y,x,y, time, filePath, Clinic_ID, task, both, count, comparison);
+        } catch (IOException e) {
+            Log.v("하야야ㅇㅇ: ", "처음오류");
+            e.printStackTrace();
+        }
+
+        return sum/x.length;
+    }
 
     public static void csvmaker(double[] base_x, double[] base_y,double[] x, double[] y,double[] time, File filePath,
-                                String Clinic_ID, String task, String both, String count) throws IOException {
+                                String Clinic_ID, String task, String both, String count, boolean comparison) throws IOException {
 //        StringBuilder baseData = new StringBuilder();
 //        baseData.append("baseX,baseY");
 //
@@ -525,8 +596,11 @@ public class LineTaskAnalyze {
         for(int i = 0 ; i<base_x.length ; i++){
             baseData.append("\n"+base_x[i]+","+base_y[i]+","+x[i]+","+y[i]+","+time[i]);
         }
+        String name;
+        if(comparison) name = "_Final";
+        else name = "_Previous";
 
-        File baseCsv = new File(filePath, Clinic_ID+"_"+task+"_"+both+"_"+count+"_Final"+".csv");
+        File baseCsv = new File(filePath, Clinic_ID+"_"+task+"_"+both+"_"+count+name+".csv");
 
         try {
             FileWriter write = new FileWriter(baseCsv,false);
@@ -541,47 +615,32 @@ public class LineTaskAnalyze {
         }
     }
 
-    public static double unwrap(double reference, double wrapped) {
-        double po = reference;
+    public static double unwrap(double reference, double wrapped)
+    {
+        double po = 0.0;
         double dp = wrapped - reference;
 
+        if (dp > Math.PI)
+        {
+            while(dp > Math.PI)
+            {
+                po -= 2*Math.PI;
+                dp -= 2*Math.PI;
+            }
+        }
 
-//        if (dp > Math.PI ) { // 각도가 -에서 +로 넘어갈때
-//            while (dp > Math.PI) {
-//                po -= 2 * Math.PI;
-//                dp -= 2 * Math.PI;
-//            }
-//        }
-//        if (dp < -Math.PI) { //각도가 +에서 -로 넘어갈떄
-//            while (dp < -Math.PI) {
-//                po += 2 * Math.PI;
-//                dp += 2 * Math.PI;
-//            }
-//        }
-        // 뒤집어 지는 것을 찾으면 2pi를 더해줌으로서
-//
-//        if (dp < -Math.PI ) {
-//            countup++;      // 각도가 +에서 -로 넘어갈때
-//            set = 1;         // 아랫부분 on
-//
-//            if(countup >=3) count+=2;
-//
-//        }else if(dp > Math.PI){//각도가 -에서 +로 넘어갈때
-//            set = 2;            // 윗부분 on
-//            countup++;
-//        }
-//
-//
-//        if (set == 1) {
-//            po += count * Math.PI;
-//        }
-//        if (set ==2) {
-//            po += count * Math.PI;
-//        }
+        if (dp < -Math.PI)
+        {
+            while(dp < -Math.PI)
+            {
+                po += 2*Math.PI;
+                dp += 2*Math.PI;
+            }
+        }
 
-        Log.d("결과~upwrap", String.valueOf(wrapped + po));
         return wrapped + po;
     }
+
 
 
     //x축을 구하긴 하지만 사용하는거는 y축밖에 없음

@@ -340,7 +340,7 @@ class SpiralActivity : AppCompatActivity() {
             baseTrace = arrayListOf()
 
             for (t in theta) {
-                if (k == 162) {
+                if (k == 0) { // 시작점을 찍는 위
                     baseX_0 = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
                     baseY_0 = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
                     basePath.moveTo(baseX_0, baseY_0)
@@ -352,8 +352,8 @@ class SpiralActivity : AppCompatActivity() {
                 k++
             }
 
-            for (t in theta) {
-                if (i >= 162) {
+            for (t in theta) {정
+                if (i >= 0) { // 찍힌 시작점을 중심으로 둥글게 그리는 시작 위 //수정 알고리즘은 둘디 162로 설
                     baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
                     baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
                     Log.v("중심", i.toString())

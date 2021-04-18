@@ -166,6 +166,7 @@ public class fitting {
 		double re_drawing_length = 0;
 
 		double ErrorDistance = 0;
+		double ErrorDistance_previous = 0;
 		double Velocity=0;
 		double TremorMagnitude=0;
 		double Finish_time = 0;
@@ -218,6 +219,8 @@ public class fitting {
 //		}
 
 		if (SorL){ //spiral
+			ErrorDistance_previous = lineTaskAnalyze.MyED_previous(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
+
 			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
 		}
 		else{ //Line
