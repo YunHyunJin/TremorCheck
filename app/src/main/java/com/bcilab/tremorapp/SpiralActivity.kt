@@ -352,7 +352,7 @@ class SpiralActivity : AppCompatActivity() {
                 k++
             }
 
-            for (t in theta) {정
+            for (t in theta) {
                 if (i >= 0) { // 찍힌 시작점을 중심으로 둥글게 그리는 시작 위 //수정 알고리즘은 둘디 162로 설
                     baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
                     baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
