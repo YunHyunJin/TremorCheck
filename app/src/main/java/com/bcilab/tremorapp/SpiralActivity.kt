@@ -23,6 +23,8 @@ import com.bcilab.tremorapp.Function.SafeClickListener
 import com.bcilab.tremorapp.Function.fitting
 import com.bcilab.tremorapp.functions.Drawable
 import kotlinx.android.synthetic.main.activity_spiral.*
+import org.codehaus.groovy.runtime.DefaultGroovyMethods.printf
+import smile.math.Math.c
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -347,13 +349,14 @@ class SpiralActivity : AppCompatActivity() {
 
                     startXX = baseX_0.toString()
                     startYY = baseY_0.toString()
+                    Log.v("tttttt: ", "xx: "+startXX+ " yy: "+ startYY)
                     break
                 }
                 k++
             }
 
             for (t in theta) {
-                if (i >= 0) { // 찍힌 시작점을 중심으로 둥글게 그리는 시작 위 //수정 알고리즘은 둘디 162로 설
+                if (i >= 0) { // 찍힌 시작점을 중심으로 둥글게 그리는 시작 위 //수정 알고리즘은 둘 162로 설
                     baseX = (t * Math.cos(2.5 * t) * 60 + startX).toFloat()
                     baseY = (t * Math.sin(2.5 * t) * 60 + startY).toFloat()
                     Log.v("중심", i.toString())

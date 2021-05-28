@@ -136,7 +136,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
-        if(spiral_result[1] == -1) {// 현재 결과값
+        if(spiral_result[1] == -1 || spiral_result[0] <= 0.2) {// 현재 결과값
             ((TextView) findViewById(R.id.pre_hz_result)).setText("정상");
         }
        else {
@@ -226,7 +226,7 @@ public class ResultActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            if(Double.parseDouble(spiralStr[1])==-1) {// 직전 데이터
+            if(Double.parseDouble(spiralStr[1])==-1 || Double.parseDouble(spiralStr[0])<=0.2 ) {// 직전 데이터
                 ((TextView) findViewById(R.id.hz_result)).setText("정상");
             }
             else {

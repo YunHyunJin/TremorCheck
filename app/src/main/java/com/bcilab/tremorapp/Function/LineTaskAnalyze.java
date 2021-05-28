@@ -435,21 +435,25 @@ public class LineTaskAnalyze {
         double[] base_y= new double[x.length];
 
         double start_X = Double.parseDouble(startXX);
-        double start_Y = Double.parseDouble(startYY)+114;
+        double start_Y = Double.parseDouble(startYY)/*+114 꼬랑지 없을땐 추가시켜야댐!!*/;
 
         //get the angle of spiral
         for (int i = 0; i < x.length; i++) {
 
             thetax[i] = x[i] - start_X; //확인용
             thetay[i] = y[i] - start_Y;
-            Log.v("화긴해보자", "X: "+start_X+ "Y: "+start_Y);
+            Log.v("화긴해보자", "startX: "+start_X+ " startY: "+start_Y);
+            Log.v("화긴해보자2", "X: "+x[0]+ " Y: "+y[0]);
+            Log.v("화긴해보자3", "thetax: "+x[0]+ " thetay: "+y[0]);
+
 
             theta[i] = Math.atan2(thetay[i], thetax[i]);
 
             if(i==0){
-                base_angle[i] = theta[i]+(Math.PI*2);
+                base_angle[i] = theta[i]/*+(Math.PI*2) 꼬랑지 없을땐 추가시켜야함*/;
             }else{
                 angle_gap = theta[i]-theta[i-1];
+
                 if((angle_gap < -1.5*Math.PI)){ // (+) --> (-) 로 넘어갔을 경우
                     counts++;
                     additional_angle =  counts*(2*Math.PI);
@@ -457,7 +461,8 @@ public class LineTaskAnalyze {
                     counts--;
                     additional_angle =  counts*(2*Math.PI);
                 }
-                base_angle[i] = theta[i]+ additional_angle+(Math.PI*2);
+
+                base_angle[i] = theta[i]+ additional_angle/*+(Math.PI*2) 꼬랑지 없을땐 추가시켜야*/;
             }
             length = ( Math.sqrt( Math.pow(thetax[i],2) + Math.pow(thetay[i],2) ) );
 
@@ -473,12 +478,13 @@ public class LineTaskAnalyze {
 
             sum += ed[i];
 
-            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+start_X ;
+            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+start_X ; //좌표상 원점을 기준으로 그리는 것이 아니기 때문에 각 시작점을 더해준다.
             base_y[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.sin(base_angle[i])+start_Y;
             Log.v("베이스나와라: ", "x: "+base_x[i]+" y: "+base_y[i]);
             Log.v("원래거나와라: ", "x: "+x[i]+" y: "+y[i]);
 
         }
+        comparison = true;
         File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
         try {
             csvmaker(base_x,base_y,x,y, time, filePath, Clinic_ID, task, both, count, comparison);
@@ -490,69 +496,131 @@ public class LineTaskAnalyze {
         Log.v("sum: ", String.valueOf(sum));
         Log.v("sumq: ", String.valueOf(sum/x.length));
 
+        MyED_previous(base_x,base_y,time,Clinic_ID,task,both,count,startXX,startYY);
+
         return sum/x.length;
     }
     public double MyED_previous(double[] x, double[] y, double[] time, String Clinic_ID,
                                 String task, String both, String count, String startXX, String startYY) {
 
-        double result = 0.0;
-        int idx = 0;
+//        double result = 0.0;
+//        int idx = 0;
+//        boolean comparison = false;
+//
+//        double[] angle_atan = new double[x.length];
+//        double[] angle_pos = new double[x.length];
+//
+//        double[] base_x = new double[x.length];
+//        double[] base_y= new double[x.length];
+//
+//        //get the angle of spiral
+//        for (int i = 0; i < x.length; i++)
+//        {
+//            angle_atan[i] = Math.atan2(y[i], x[i]);
+//        }
+//
+//        for(int i = 0; i < x.length; i++)
+//        {
+//            if(i == 0)
+//                angle_pos[i] = unwrap(0, angle_atan[i]);
+//            else
+//                angle_pos[i] = unwrap(angle_atan[i-1], angle_atan[i]);
+//        }
+//
+//        //calculate base point
+//        double v = 600;
+//        double w = 10*Math.PI;
+//        double t = angle_pos[0]/w;
+//        double r = v*t;
+//        double[] pair_pos_x = new double[x.length];
+//        double[] pair_pos_y = new double[x.length];
+//
+//        for (int i = 0; i < x.length; i++)
+//        {
+//            if(i == 0)
+//            {
+//                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
+//                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
+//            }
+//
+//            else
+//            {
+//                t = angle_pos[i]/w;
+//                r = v*t;
+//                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
+//                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
+//            }
+//        }
+//        //calculate error distance
+//        double sum = 0;
+//        for(int i = 0; i < x.length; i++)
+//        {
+//            sum += Math.sqrt(Math.pow((x[i]-pair_pos_x[i]), 2) + Math.pow((y[i]-pair_pos_y[i]), 2));
+//        }
+//
+//        for (int i = 0; i < x.length; i++) {
+//            base_x[i] = pair_pos_x[i];
+//            base_y[i] = pair_pos_y[i];
+//        }
+        double[] thetax = new double[x.length];
+        double[] thetay = new double[x.length];
+        double[] theta = new double[x.length];
+        double[] base_angle = new double[x.length];
+        double[] ed = new double[x.length];
+        double length = 0.0;
+        double sum = 0.0;
+        double additional_angle = 0.0;
+        double angle_gap = 0.0;
+        int counts=0;
         boolean comparison = false;
-
-        double[] angle_atan = new double[x.length];
-        double[] angle_pos = new double[x.length];
-
         double[] base_x = new double[x.length];
         double[] base_y= new double[x.length];
 
-        //get the angle of spiral
-        for (int i = 0; i < x.length; i++)
-        {
-            angle_atan[i] = Math.atan2(y[i], x[i]);
+        double[] bb_x = new double[x.length];
+        double[] bb_y = new double[x.length];
+        double[] bb_angle = new double[x.length];
+
+        for(int i=0 ; i<x.length ; i++){
+            double angle =
+            bb_angle[i];
         }
 
-        for(int i = 0; i < x.length; i++)
-        {
-            if(i == 0)
-                angle_pos[i] = unwrap(0, angle_atan[i]);
-            else
-                angle_pos[i] = unwrap(angle_atan[i-1], angle_atan[i]);
-        }
-
-        //calculate base point
-        double v = 600;
-        double w = 10*Math.PI;
-        double t = angle_pos[0]/w;
-        double r = v*t;
-        double[] pair_pos_x = new double[x.length];
-        double[] pair_pos_y = new double[x.length];
-
-        for (int i = 0; i < x.length; i++)
-        {
-            if(i == 0)
-            {
-                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
-                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
-            }
-
-            else
-            {
-                t = angle_pos[i]/w;
-                r = v*t;
-                pair_pos_x[i] = r*Math.cos(angle_pos[i]);
-                pair_pos_y[i] = r*Math.sin(angle_pos[i]);
-            }
-        }
-        //calculate error distance
-        double sum = 0;
-        for(int i = 0; i < x.length; i++)
-        {
-            sum += Math.sqrt(Math.pow((x[i]-pair_pos_x[i]), 2) + Math.pow((y[i]-pair_pos_y[i]), 2));
-        }
+        double start_X = Double.parseDouble(startXX);
+        double start_Y = Double.parseDouble(startYY)/*+114 꼬랑지 없을땐 추가시켜야댐!!*/;
 
         for (int i = 0; i < x.length; i++) {
-            base_x[i] = pair_pos_x[i];
-            base_y[i] = pair_pos_y[i];
+
+            thetax[i] = x[i] - start_X; //확인용
+            thetay[i] = y[i] - start_Y;
+
+            theta[i] = Math.atan2(thetay[i], thetax[i]);
+
+            if(i==0){
+                base_angle[i] = theta[i]/*+(Math.PI*2) 꼬랑지 없을땐 추가시켜야함*/;
+            }else{
+                angle_gap = theta[i]-theta[i-1];
+
+                if((angle_gap < -1.5*Math.PI)){ // (+) --> (-) 로 넘어갔을 경우
+                    counts++;
+                    additional_angle =  counts*(2*Math.PI);
+                }else if((angle_gap > 1.5*Math.PI)){ // (-) --> (+) 로 넘어갔을 경우
+                    counts--;
+                    additional_angle =  counts*(2*Math.PI);
+                }
+
+                base_angle[i] = theta[i]+ additional_angle/*+(Math.PI*2) 꼬랑지 없을땐 추가시켜야*/;
+            }
+            length = ( Math.sqrt( Math.pow(thetax[i],2) + Math.pow(thetay[i],2) ) );
+
+
+            ed[i] = ( Math.abs((length/DPI) - (base_angle[i]* (5/(Math.PI*6))) ) );
+
+            sum += ed[i];
+
+            base_x[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.cos(base_angle[i])+start_X ; //좌표상 원점을 기준으로 그리는 것이 아니기 때문에 각 시작점을 더해준다.
+            base_y[i] = (base_angle[i]*(5/(Math.PI*6))*DPI) * Math.sin(base_angle[i])+start_Y;
+
+
         }
         File filePath = Environment.getExternalStoragePublicDirectory("/TremorApp/"+Clinic_ID+"/"+task+both);
         try {

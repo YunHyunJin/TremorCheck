@@ -219,7 +219,7 @@ public class fitting {
 //		}
 
 		if (SorL){ //spiral
-			ErrorDistance_previous = lineTaskAnalyze.MyED_previous(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
+			//ErrorDistance_previous = lineTaskAnalyze.MyED_previous(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
 
 			ErrorDistance = lineTaskAnalyze.MyED(orgX,orgY,time, Clinic_ID, task, both, count, startXX, startYY);
 		}
